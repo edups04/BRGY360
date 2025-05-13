@@ -1,0 +1,20 @@
+1. user: difference of approved and completed sa user profile (file request, completed request)
+
+2. user: file request bakit may edit or delete yung user (dapat admin lang diba)
+
+3. admin: purpose ng calendar nyo (kung filter ano-ano yung na fi-filter, or for display lang)
+
+4. admin: purpose ng upload updates button (ano yung na a-upload dun pag pinindot) 
+
+5. admin: difference ng post and updates (sa may 2 recents tabs)
+
+6. admin: ano yung nag sho-show sa updates (budget overview, project updates, 
+	& accomplishments ba)
+
+7. admin: bakit may set status sa list ng file request (kung nasa loob yung approve/decline)
+
+8. admin: admin lang ba nakakapag print ng document at hindi user?
+
+9. admin: budget overview, ilan kada year and month (or unli ba)
+
+10. admin: bakit may reply sa chat bot (dapat tanggalin natin to)

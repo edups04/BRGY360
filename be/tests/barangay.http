@@ -1,0 +1,38 @@
+@port = 8080
+@baseUrl = http://localhost:{{port}}/api
+
+### * Get All Barangays
+GET {{baseUrl}}/barangays
+
+### * Get Barangay by ID
+GET {{baseUrl}}/barangays/6622e4314cbf20d84db35541
+
+### * Create New Barangay
+POST {{baseUrl}}/barangays
+Content-Type: application/json
+
+{
+  "barangayName": "Barangay Uno",
+  "barangayLocation": "Zone 1, Sample City"
+}
+
+### * Create Another Barangay
+POST {{baseUrl}}/barangays
+Content-Type: application/json
+
+{
+  "barangayName": "Barangay Dos",
+  "barangayLocation": "Zone 2, Sample City"
+}
+
+### * Update Barangay Info
+PUT {{baseUrl}}/barangays/6622e4314cbf20d84db35541
+Content-Type: application/json
+
+{
+  "barangayName": "Barangay Uno Updated",
+  "barangayLocation": "Zone 1-A, Updated City"
+}
+
+### * Delete Barangay
+DELETE {{baseUrl}}/barangays/6622e4314cbf20d84db35541
