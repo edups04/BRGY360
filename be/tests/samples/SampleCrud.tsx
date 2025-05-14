@@ -133,7 +133,7 @@ function SampleCrud() {
     }
   };
 
-  const onEditClick = (id) => {
+  const onEditClick = async (id) => {
     // const newsAnnouncements = list.find((u) => u._id === id);
     // if (newsAnnouncements) {
     //   setData({
@@ -145,16 +145,33 @@ function SampleCrud() {
     //   setUpdateId(newsAnnouncements._id);
     // }
     const budget = list.find((u) => u._id === id);
-    if (budget) {
-      setData({
-        title: budget.title,
-        // contents: budget.contents,
-        date: budget.date,
-        file: budget.file,
-        barangayId: budget.barangayId,
-      });
-      setUpdateId(budget._id);
+    try {
+      const response = await axios.get(`${url}/files/` + budget.file);
+      const blob = await response.blob();
+      const file = new File([blob], budget.file, { type: blob.type });
+
+      if (budget) {
+        setData({
+          title: budget.title,
+          // contents: budget.contents,
+          date: budget.date,
+          file: file,
+          barangayId: budget.barangayId,
+        });
+      }
+    } catch (ex) {
+      alert("N/A FILE!");
+      if (budget) {
+        setData({
+          title: budget.title,
+          // contents: budget.contents,
+          date: budget.date,
+          file: budget.file,
+          barangayId: budget.barangayId,
+        });
+      }
     }
+    setUpdateId(budget._id);
   };
 
   const onRemoveClick = async (id) => {

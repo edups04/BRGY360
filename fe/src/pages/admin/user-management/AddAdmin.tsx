@@ -66,11 +66,11 @@ const AddAdmin = () => {
 
         if (response.data.success === true) {
           setError(false);
-          setMessage("Register Successful! Please wait for the approval");
+          setMessage(response.data.message);
           setShowModal(true);
         }
       } catch (error: any) {
-        setMessage("An error occurred! Please check the form or try again");
+        setMessage(error.response.data.message);
         setError(true);
         setShowModal(true);
       }
@@ -405,7 +405,7 @@ const AddAdmin = () => {
             <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
               <div
                 className="w-full lg:w-1/2 flex items-center justify-center truncate bg-black/10 p-3 rounded-xl text-xs font-normal cursor-pointer"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/admin/users")}
               >
                 Cancel
               </div>

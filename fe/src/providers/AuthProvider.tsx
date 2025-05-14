@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }: any) => {
           navigate("/admin/dashboard");
         } else if (currentUser.role === "user") {
           navigate("/user/home");
-          // navigate("/user/samples");
         }
       }
     } else {

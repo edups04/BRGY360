@@ -9,15 +9,33 @@ const AutoIncrement = AutoIncrementFactory(connection);
 
 const fileRequestSchema = new mongoose.Schema({
   requestNumber: { type: Number },
-  requestedDocumentType: { type: String, required: true },
-  file: { type: String, required: true },
-  status: { type: String, required: true },
-  dateRequested: { type: Date, required: true },
+  requestedDocumentType: {
+    type: String,
+    enum: [
+      "barangay-clearance",
+      "barangay-indigency",
+      "certificate-of-residency",
+      "first-time-job-seeker",
+    ],
+    default: "barangay-clearance",
+  },
+  issuanceDate: { type: String, default: "N/A" },
+  placeOfIssuance: { type: String, default: "N/A" },
+  // file: { type: String, required: true },
+  status: {
+    type: String,
+    enum: ["pending", "approved", "declined", "completed"],
+    default: "pending",
+  },
+  dateRequested: { type: Date, default: Date.now, required: true },
   requestedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  data: {},
+  data: {
+    type: [mongoose.Schema.Types.Mixed],
+    default: [],
+  },
 });
 
 fileRequestSchema.plugin(AutoIncrement, { inc_field: "requestNumber" });

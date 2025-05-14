@@ -45,7 +45,7 @@ const getBudget = async (req, res) => {
 
 const getBudgets = async (req, res) => {
   try {
-    const { page = 1, limit = 10, title, date } = req.query;
+    const { page = 1, limit = 10, title, date, barangayId } = req.query;
 
     const filter = {};
     if (title) {
@@ -56,6 +56,9 @@ const getBudgets = async (req, res) => {
       const end = new Date(date);
       end.setDate(end.getDate() + 1);
       filter.date = { $gte: start, $lt: end };
+    } 
+    if (barangayId) {
+      filter.barangayId = barangayId;
     }
 
     const pageNumber = parseInt(page);

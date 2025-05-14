@@ -8,6 +8,7 @@ import { newsAnnouncementRoutes } from "./src/routes/newsAnnouncementsRoutes.js"
 import { projectRoutes } from "./src/routes/projectRoutes.js";
 import { accomplishmentsAchievementsRoutes } from "./src/routes/accomplishmentsAchievementsRoutes.js";
 import { budgetRoutes } from "./src/routes/budgetRoutes.js";
+import { fileRequestRoutes } from "./src/routes/fileRequestRoutes.js";
 
 // ! FOR WEB HOSTING
 // import path from "path";
@@ -52,6 +53,7 @@ app.use("/api/news-announcements", newsAnnouncementRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/accomplishments-achievements", accomplishmentsAchievementsRoutes);
 app.use("/api/budgets", budgetRoutes);
+app.use("/api/file-requests", fileRequestRoutes);
 
 // // ! TO RENDER FRONTEND ON WEB HOSTING
 // app.use(express.static(path.join(__dirname, "/fe/build/")));

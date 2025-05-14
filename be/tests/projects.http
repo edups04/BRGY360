@@ -6,7 +6,7 @@
 GET {{baseUrl}}/projects?page=1&limit=10&title=Sample Title v2&date=2025-05-17
 
 ### * Get All Projects
-GET {{baseUrl}}/projects
+GET {{baseUrl}}/projects?barangayId=681f5663bc1cafa5099611e3
 
 ### * Get by ID
 GET {{baseUrl}}/projects/6622e4314cbf20d84db35541
