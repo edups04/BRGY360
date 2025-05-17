@@ -1,9 +1,39 @@
-import React from "react";
+import {React, useEffect} from "react";
 import UserNavbar from "../../components/UserNavbar";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Set the chatbot config
+    const baseUrl = `${window.location.protocol}//${window.location.host}/`;
+    // alert(baseUrl);
+
+    let CURRENT_USER = JSON.parse(localStorage.getItem("user"));
+
+    window.chtlConfig = {
+      chatbotId: "6153291475",
+      variables: {
+        userId: CURRENT_USER._id || "",
+        baseUrl: baseUrl,
+      },
+    };
+
+    // Create and append the script
+    const script = document.createElement("script");
+    script.src = "https://chatling.ai/js/embed.js";
+    script.async = true;
+    script.id = "chtl-script";
+    script.setAttribute("data-id", "6153291475");
+
+    document.body.appendChild(script);
+
+    // Optional cleanup if the component unmounts
+    return () => {
+      document.getElementById("chtl-script")?.remove();
+    };
+  }, []);
 
   return (
     <>
