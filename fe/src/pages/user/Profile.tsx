@@ -2,7 +2,13 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useBarangay } from "../../providers/BarangayProvider";
 import { useNavigate } from "react-router-dom";
-import { RiAddLine, RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
+import {
+  RiAddLine,
+  RiCheckboxMultipleLine,
+  RiEyeCloseLine,
+  RiEyeLine,
+  RiTimelineView,
+} from "react-icons/ri";
 import Modal from "../../components/Modal";
 import DeleteModal from "../../components/DeleteModal";
 import UserNavbar from "../../components/UserNavbar";
@@ -243,7 +249,7 @@ const Profile = () => {
                   placeholder="first name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  disabled={edit ? false : true}
+                  disabled={true}
                 />
               </div>
               {/* last name */}
@@ -255,7 +261,7 @@ const Profile = () => {
                   placeholder="last name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  disabled={edit ? false : true}
+                  disabled={true}
                 />
               </div>
               {/* mobile num */}
@@ -282,7 +288,7 @@ const Profile = () => {
                   placeholder="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  disabled={edit ? false : true}
+                  disabled={true}
                 />
               </div>
               {/* street */}
@@ -325,7 +331,7 @@ const Profile = () => {
                   className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
                   value={birthDate}
                   onChange={(e) => setBirthDate(e.target.value)}
-                  disabled={edit ? false : true}
+                  disabled={true}
                 />
               </div>
               {/* age */}
@@ -340,7 +346,7 @@ const Profile = () => {
                     const value = e.target.value.replace(/\D/g, "");
                     setAge(value.slice(0, 2));
                   }}
-                  disabled={edit ? false : true}
+                  disabled={true}
                 />
               </div>
               {/* sex */}
@@ -387,6 +393,17 @@ const Profile = () => {
                     />
                   )}
                 </div>
+              </div>
+              <div className="w-full flex flex-row items-center justify-end gap-2">
+                <button
+                  className="flex flex-row gap-2 text-xs font-normal text-white bg-green-700 p-3 rounded-xl"
+                  onClick={() =>
+                    navigate("/user/request/history", { state: "completed" })
+                  }
+                >
+                  <RiCheckboxMultipleLine size={16} />
+                  <p>Completed Requests</p>
+                </button>
               </div>
             </div>
           </div>

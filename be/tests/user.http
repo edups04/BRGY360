@@ -7,9 +7,8 @@ GET {{baseUrl}}/users?page=1&limit=10&status=pending&sex=male&role=user&barangay
 ### * Get All Users (WITH PAGINATIONS AND SOME FILTER FOR role status sex barangayId)
 GET {{baseUrl}}/users?search=test
 
-
 ### * Get User by ID
-GET {{baseUrl}}/users/681f51d43caf65235d46e574
+GET {{baseUrl}}/users/68233a20d957bbcd6e2a33c2
 
 ### * Register User
 POST {{baseUrl}}/users
@@ -21,7 +20,7 @@ Content-Type: application/json
   "sex": "Male",  
   "birthdate": "2000-05-15",
   "age": 24,
-  "email": "juan.user@example.com",
+  "email": "test3",
   "phoneNumber": "0987654321",
   "password": "123",
   "address": "123 North St",
@@ -77,7 +76,7 @@ Content-Type: application/json
 }
 
 ### * Update User
-PUT {{baseUrl}}/users/6820e9b50b56e3dfe075dea3
+PUT {{baseUrl}}/users/68233a20d957bbcd6e2a33c2
 Content-Type: application/json
 
 {

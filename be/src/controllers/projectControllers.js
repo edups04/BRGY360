@@ -4,9 +4,36 @@ import { fileURLToPath } from "url";
 import path from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+import { nullChecker } from "../utils/nullChecker.js";
+import { checkDuplicate } from "../utils/duplicateChecker.js";
 
 const createProject = async (req, res) => {
   try {
+    // * nulls
+    const { title, date, contents, barangayId } = req.body;
+
+    // * Check for missing required fields
+    const hasMissingFields = nullChecker(res, {
+      title,
+      date,
+      contents,
+      barangayId,
+    });
+
+    if (hasMissingFields) return;
+
+    // * duplicates
+    let isDup = await checkDuplicate(res, Project, {
+      title,
+      date,
+    });
+    if (isDup) return;
+
+    isDup = await checkDuplicate(res, Project, {
+      title,
+    });
+    if (isDup) return;
+
     const image = req.file?.filename || "N/A";
 
     const project = new Project({
@@ -99,20 +126,52 @@ const getProjects = async (req, res) => {
   }
 };
 
-
 const updateProject = async (req, res) => {
   try {
     const projectId = req.params.id;
-    const existingProject = await Project.findById(
-      projectId
-    );
 
+    const existingProject = await Project.findById(projectId);
     if (!existingProject) {
       return res.status(404).json({
         success: false,
         message: "Project not found",
       });
     }
+
+    const { title, date, contents, barangayId } = req.body;
+
+    // * Check for missing required fields
+    const hasMissingFields = nullChecker(res, {
+      title,
+      date,
+      contents,
+      barangayId,
+    });
+
+    if (hasMissingFields) return;
+
+    // * duplicates
+    let isDup = await checkDuplicate(
+      res,
+      Project,
+      {
+        title: req.body.title,
+        date: req.body.date,
+      },
+      projectId
+    );
+    console.log(isDup);
+    if (isDup) return;
+
+    isDup = await checkDuplicate(
+      res,
+      Project,
+      {
+        title,
+      },
+      projectId
+    );
+    if (isDup) return;
 
     const image = req.file?.filename || "N/A";
     const updates = { ...req.body };
@@ -130,11 +189,10 @@ const updateProject = async (req, res) => {
       updates.image = "N/A";
     }
 
-    const updatedProject = await Project.findByIdAndUpdate(
-      projectId,
-      updates,
-      { new: true, runValidators: true }
-    );
+    const updatedProject = await Project.findByIdAndUpdate(projectId, updates, {
+      new: true,
+      runValidators: true,
+    });
 
     res.json({
       success: true,
@@ -190,10 +248,4 @@ const deleteProject = async (req, res) => {
   }
 };
 
-export {
-  createProject,
-  getProject,
-  getProjects,
-  updateProject,
-  deleteProject,
-};
+export { createProject, getProject, getProjects, updateProject, deleteProject };

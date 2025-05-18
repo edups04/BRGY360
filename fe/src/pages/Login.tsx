@@ -30,7 +30,6 @@ const Login = () => {
           localStorage.setItem("user", JSON.stringify(response.data.data));
           if (response.data.data.role === "user") {
             navigate("/user/home");
-            window.location.reload();
           } else if (response.data.data.role === "admin") {
             navigate("/admin/dashboard");
           }

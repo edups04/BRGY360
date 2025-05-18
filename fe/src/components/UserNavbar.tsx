@@ -23,6 +23,7 @@ import {
   RiUser4Line,
 } from "react-icons/ri";
 import Logo from "../assets/Logo.png";
+import Chatbot from "../pages/user/Chatbot";
 
 const UserNavbar = () => {
   const [expand, setExpand] = useState(false);
@@ -30,6 +31,7 @@ const UserNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeRoute, setActiveRoute] = useState("dashboard");
+  const [chatBot, showChatBot] = useState(false);
 
   useEffect(() => {
     if (location.pathname.includes("/user/home")) {
@@ -38,9 +40,9 @@ const UserNavbar = () => {
     } else if (location.pathname.includes("/user/profile")) {
       setActiveRoute("profile");
       document.title = "Profile";
-    } else if (location.pathname.includes("/user/requests")) {
-      setActiveRoute("requests");
-      document.title = "File Requests";
+    } else if (location.pathname.includes("/user/request")) {
+      setActiveRoute("request");
+      document.title = "File Request";
     } else if (location.pathname.includes("/user/news")) {
       setActiveRoute("news");
       document.title = "News and Announcements";
@@ -107,8 +109,11 @@ const UserNavbar = () => {
               {expand ? <p className="text-sm font-normal">Profile</p> : null}
             </div>
 
-            <div className="w-full flex flex-row items-center justify-start gap-2 cursor-pointer">
-              {activeRoute === "requests" ? (
+            <div
+              className="w-full flex flex-row items-center justify-start gap-2 cursor-pointer"
+              onClick={() => navigate("/user/request")}
+            >
+              {activeRoute === "request" ? (
                 <RiFilePdf2Fill
                   size={22}
                   color="white"
@@ -148,7 +153,10 @@ const UserNavbar = () => {
               ) : null}
             </div>
 
-            <div className="w-full flex flex-row items-center justify-start gap-2 cursor-pointer">
+            <div
+              className="w-full flex flex-row items-center justify-start gap-2 cursor-pointer"
+              onClick={() => navigate("/user/transparency")}
+            >
               {activeRoute === "transparency" ? (
                 <RiFundsBoxFill
                   size={22}
@@ -181,6 +189,7 @@ const UserNavbar = () => {
                   size={22}
                   color="white"
                   className="cursor-pointer"
+                  onClick={() => showChatBot(true)}
                 />
               )}
               {expand ? <p className="text-sm font-normal">Chatbot</p> : null}
@@ -211,6 +220,7 @@ const UserNavbar = () => {
           )}
         </div>
       </div>
+      {chatBot && <Chatbot onClose={() => showChatBot(false)} />}
     </>
   );
 };

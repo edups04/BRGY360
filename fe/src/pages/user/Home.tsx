@@ -1,4 +1,4 @@
-import {React, useEffect} from "react";
+import React, { useEffect } from "react";
 import UserNavbar from "../../components/UserNavbar";
 import { useNavigate } from "react-router-dom";
 

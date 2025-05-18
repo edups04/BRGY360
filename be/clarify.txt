@@ -18,3 +18,10 @@
 9. admin: budget overview, ilan kada year and month (or unli ba)
 
 10. admin: bakit may reply sa chat bot (dapat tanggalin natin to)
+
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "build": "npm install" // be only
+    // "build": "npm install --prefix ./fe && npm run build --prefix ./fe && npm install" //fe and be
+  },

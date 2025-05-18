@@ -1,20 +1,51 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles.css";
+// ! YOU NEED TO INSTALL THIS
+import PizZip from "pizzip";
+import Docxtemplater from "docxtemplater";
+import { saveAs } from "file-saver";
 
-function formatDate(date) {
+function formatISODate(date) {
   return date ? new Date(date).toISOString().split("T")[0] : "";
+}
+
+function formatReadableDate(date) {
+  return date
+    ? new Date(date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "";
 }
 
 function SampleCrud() {
   const url = "http://localhost:8080/api";
 
-  const [data, setData] = useState({
-    title: "BUDGET TITLE HERE!",
-    date: "2025-01-01",
-    // image: null,
-    file: null,
-    barangayId: "681f5663bc1cafa5099611e3",
+  const [documentType, setDocumentType] = useState("barangay-clearance");
+
+  const DOCUMENT_TYPES = [
+    { type: "barangay-clearance", url: "/templates/BARANGAY CLEARANCE.docx" },
+    // {
+    //   type: "barangay-indigency",
+    //   url: "/templates/ENTER_NAME_OF_DOCS_IN_BACKEND_HERE.docx",
+    // },
+    //{type:"certificate-of-residency", url:"/templates/ENTER_NAME_OF_DOCS_IN_BACKEND_HERE.docx"},
+    //{type:"first-time-job-seeker", url:"/templates/ENTER_NAME_OF_DOCS_IN_BACKEND_HERE.docx"},
+  ];
+
+  // ! FOR OTHER TYPES JUST CREATE ANOTHER OBJECT WITH THEIR UNIQUE ATTRIBUTES
+  const [barangayClearanceData, setBarangayClearanceData] = useState({
+    requestedDocumentType: "barangay-clearance",
+    requestedBy: "6823a90f87ce3399471a2013",
+    data: {
+      fullName: "",
+      address: "",
+      purok: "",
+      birthdate: "",
+      purpose: "",
+    },
   });
 
   const [list, setList] = useState([]);
@@ -25,103 +56,50 @@ function SampleCrud() {
   }, []);
 
   const fetchList = async () => {
-    // const res = await axios.get(`${url}/news-announcements`);
-    // const res = await axios.get(`${url}/projects`);
-    // const res = await axios.get(`${url}/accomplishments-achievements`);
-    const res = await axios.get(`${url}/budgets`);
+    const res = await axios.get(`${url}/file-requests`);
     setList(res.data.data || []);
   };
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
+    const { name, value } = e.target;
 
-    // if (name === "image") {
-    //   setData({ ...data, image: files[0] });
-    // } else {
-    //   setData({ ...data, [name]: value });
-    // }
-    if (name === "file") {
-      setData({ ...data, file: files[0] });
-    } else {
-      setData({ ...data, [name]: value });
-    }
+    setBarangayClearanceData((prev) => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        [name]: value,
+      },
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ! NOTE: IF UPDATING, YOU NEED TO SEND AGAIN THE ORIGINAL IMAGES
-    // ! IF NO IMAGES UPLOADED, IT WILL BE CONSIDERED AS NULL
-    // ! AND THE FILE ON BACKEND WILL BE DELETED
-    // ! NO IMAGE = DELETED FILE
-    const formData = new FormData();
-    for (const key in data) {
-      // if (key === "image") {
-      //   if (data.image) {
-      //     formData.append("image", data.image);
-      //   }
-      // } else {
-      //   formData.append(key, data[key]);
-      // }
-      if (key === "file") {
-        if (data.file) {
-          formData.append("file", data.file);
-        }
-      } else {
-        formData.append(key, data[key]);
-      }
+    let data = {};
+    // * TO MAKE IT EASY TO SEND DATA ON BACKEND
+    switch (documentType) {
+      case "barangay-clearance":
+        data = barangayClearanceData;
     }
 
     const config = {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",
       },
     };
 
+    console.log(data);
+
     try {
       if (updateId) {
-        // const res = await axios.put(
-        //   `${url}/news-announcements/${updateId}`,
-        //   formData,
-        //   config
-        // );
-        // const res = await axios.put(
-        //   `${url}/projects/${updateId}`,
-        //   formData,
-        //   config
-        // );
-        // const res = await axios.put(
-        //   `${url}/accomplishments-achievements/${updateId}`,
-        //   formData,
-        //   config
-        // );
         const res = await axios.put(
-          `${url}/budgets/${updateId}`,
-          formData,
+          `${url}/file-requests/${updateId}`,
+          data,
           config
         );
         alert(res.data.message);
       } else {
-        // const res = await axios.post(
-        //   `${url}/news-announcements`,
-        //   formData,
-        //   config
-        // );
-        // const res = await axios.post(
-        //   `${url}/projects`,
-        //   formData,
-        //   config
-        // );
-        // const res = await axios.post(
-        //   `${url}/accomplishments-achievements`,
-        //   formData,
-        //   config
-        // );
-        const res = await axios.post(
-          `${url}/budgets`,
-          formData,
-          config
-        );
+        const res = await axios.post(`${url}/file-requests`, data, config);
         alert(res.data.message);
       }
 
@@ -151,7 +129,7 @@ function SampleCrud() {
       const file = new File([blob], budget.file, { type: blob.type });
 
       if (budget) {
-        setData({
+        setBarangayClearanceData({
           title: budget.title,
           // contents: budget.contents,
           date: budget.date,
@@ -162,7 +140,7 @@ function SampleCrud() {
     } catch (ex) {
       alert("N/A FILE!");
       if (budget) {
-        setData({
+        setBarangayClearanceData({
           title: budget.title,
           // contents: budget.contents,
           date: budget.date,
@@ -174,114 +152,199 @@ function SampleCrud() {
     setUpdateId(budget._id);
   };
 
+  const onPrintFileClick = async (id) => {
+    try {
+      // * retrieve the saved data from the database
+      const dataFromDatabase = await axios.get(`${url}/file-requests/${id}`);
+      console.log("FROM DB:", dataFromDatabase);
+
+      // ! ASK FIRST FOR THIS DATA
+      // ! YOU'LL NEED TO UPDATE THIS AT THE END USING (PUT METHOD) ONCE THE PRINTING WAS SUCCESSFUL
+      // ! NOTE: CONVERT THIS INTO REACT COMPONENT PROMPT
+      let placeOfIssuance = dataFromDatabase.data.data.placeOfIssuance || "N/A";
+      // * only ask for this input if it is not yet set
+      if (dataFromDatabase.data.data.placeOfIssuance === "N/A") {
+        placeOfIssuance = window.prompt("Enter place of issuance:");
+        if (!placeOfIssuance) {
+          alert("Place of issuance is required.");
+          return;
+        }
+      }
+
+      // * based on selected type to access its document url later
+      const selectedDoc = DOCUMENT_TYPES.find(
+        (doc) => doc.type === documentType
+      );
+
+      // * LOAD WORD FILE TEMPLATE FROM BACKEND
+      console.log(documentType);
+
+      // * based on the selected doc, we will now get the template from the backend
+      const response = await axios.get(`${url}/files/${selectedDoc.url}`, {
+        responseType: "arraybuffer",
+      });
+      const arrayBuffer = response.data;
+      console.log(response);
+
+      // ! YOU NEED TO INSTALL THE FF:
+      // ! import Docxtemplater from "docxtemplater"; npm i docxtemplater
+      // ! import PizZip from "pizzip"; npm i pizzip
+      // ! import { saveAs } from ""; npm i file-saver
+      const zip = new PizZip(arrayBuffer);
+      const doc = new Docxtemplater(zip, {
+        paragraphLoop: true,
+        linebreaks: true,
+      });
+
+      // * we will build the data object based on what we need on the file
+      let dataToInject = {
+        // * common fields
+        requestNumber: dataFromDatabase.data.data.requestNumber,
+        issuanceDate: formatReadableDate(new Date()),
+        dateRequested: formatReadableDate(
+          dataFromDatabase.data.data.dateRequested
+        ),
+        placeOfIssuance: placeOfIssuance,
+        // * specific to the type of the document (dynamic)
+        ...dataFromDatabase.data.data.data,
+      };
+      console.log(dataToInject);
+
+      try {
+        // * this will populate the {attributeName} that we set on the document template
+        doc.render(dataToInject);
+
+        const blob = doc.getZip().generate({ type: "blob" });
+
+        // * saving the file
+        saveAs(blob, `${documentType}-${dataToInject.fullName}.docx`);
+
+        // * condition to only update these fields if it is not yet set
+        if (
+          dataFromDatabase.data.data.issuanceDate === "N/A" &&
+          dataFromDatabase.data.data.placeOfIssuance === "N/A"
+        ) {
+          // * updating 2 fields (placeOfIssuance and issuanceData in database)
+          const updatedData = await axios.put(
+            `${url}/file-requests/${id}`,
+            {
+              issuanceDate: new Date(),
+              placeOfIssuance,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          alert(updatedData.data.message);
+        }
+      } catch (error) {
+        console.error("Error modifying DOCX:", error);
+      }
+    } catch (ex) {
+      console.error(ex);
+    }
+  };
+
   const onRemoveClick = async (id) => {
     if (window.confirm("Are you sure?")) {
-      // const res = await axios.delete(`${url}/news-announcements/${id}`);
-      // const res = await axios.delete(
-      //   `${url}/accomplishments-achievements/${id}`
-      // );
-      const res = await axios.delete(
-        `${url}/budgets/${id}`
-      );
+      const res = await axios.delete(`${url}/file-requests/${id}`);
       alert(res.data.message);
       await fetchList();
     }
   };
 
+  const handleDocumentTypeChange = (e) => {
+    setDocumentType(e.target.value);
+  };
+
   return (
     <>
       <h1>Management</h1>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <label>title</label>
-        <input
-          name="title"
-          value={data.title}
-          onChange={handleChange}
+      <form onSubmit={handleSubmit} encType="application/json">
+        <label>Requested Document Type</label>
+        <select
+          name="requestedDocumentType"
+          value={documentType}
+          onChange={handleDocumentTypeChange}
           required
-        />
+        >
+          {DOCUMENT_TYPES.map((doc, index) => (
+            <option key={index} value={doc.type}>
+              {doc.type}
+            </option>
+          ))}
+        </select>
+        {documentType === "barangay-clearance" && (
+          <>
+            <label>fullName</label>
+            <input
+              name="fullName"
+              value={barangayClearanceData.fullName}
+              onChange={handleChange}
+              required
+            />
+            <label>address</label>
+            <input
+              name="address"
+              value={barangayClearanceData.address}
+              onChange={handleChange}
+              required
+            />
+            <label>purok</label>
+            <input
+              name="purok"
+              value={barangayClearanceData.purok}
+              onChange={handleChange}
+              required
+            />
 
-        {/* <label>contents</label>
-        <input
-          name="contents"
-          value={data.contents}
-          onChange={handleChange}
-          required
-        /> */}
-        <label>brgy id</label>
-        <input
-          name="barangayId"
-          value={data.barangayId}
-          onChange={handleChange}
-          required
-        />
+            <label>birthdate</label>
+            <input
+              type="date"
+              name="birthdate"
+              value={barangayClearanceData.birthdate}
+              onChange={handleChange}
+              required
+            />
 
-        <label>date</label>
-        <input
-          type="date"
-          name="date"
-          value={formatDate(data.date)}
-          onChange={handleChange}
-          required
-        />
-
-        {/* <label>image</label>
-        <input
-          type="file"
-          name="image"
-          onChange={handleChange}
-          accept="image/*"
-        /> */}
-        <label>file</label>
-        <input
-          type="file"
-          name="file"
-          onChange={handleChange}
-          accept="file/*"
-        />
-
-        <button type="submit">{updateId ? "Update" : "Create"}</button>
+            <label>purpose</label>
+            <input
+              name="purpose"
+              value={barangayClearanceData.purpose}
+              onChange={handleChange}
+              required
+            />
+            <button type="submit">{updateId ? "Update" : "Create"}</button>
+          </>
+        )}
       </form>
 
       <h2>List</h2>
       <table border={1}>
         <thead>
           <tr>
-            <th>title</th>
-            {/* <th>contents</th> */}
-            <th>date</th>
-            {/* <th>image</th> */}
-            <th>file</th>
+            <th>number</th>
+            <th>type</th>
+            <th>status</th>
+            <th>date req</th>
+            <th>ADMIN PRINT</th>
+            <th>actions</th>
           </tr>
         </thead>
         <tbody>
           {list.length > 0 ? (
             list.map((data) => (
               <tr key={data._id}>
-                <td>{data.title}</td>
-                {/* <td>{data.contents}</td> */}
-                <td>{data.date}</td>
-                {/* <td>
-                  <p>{data.image}</p>
-                  {data.image !== "N/A" && (
-                    <img
-                      src={`${url}/images/${data.image}`}
-                      alt="user"
-                      width={100}
-                      height={100}
-                    />
-                  )}
-                </td> */}
+                <td>{data.requestNumber}</td>
+                <td>{data.requestedDocumentType}</td>
+                <td>{data.status}</td>
+                <td>{data.dateRequested}</td>
                 <td>
-                  <p>{data.file}</p>
-                  {data.file !== "N/A" && (
-                    <a
-                      href={`${url}/files/${data.file}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      📥 View/Download Excel File
-                    </a>
-                  )}
+                  <button onClick={() => onPrintFileClick(data._id)}>
+                    ADMIN PRINT
+                  </button>
                 </td>
                 <td>
                   <button onClick={() => onEditClick(data._id)}>Edit</button>
@@ -293,7 +356,9 @@ function SampleCrud() {
             ))
           ) : (
             <tr>
-              <td colSpan={5}>No users found</td>
+              <td colSpan={5}>
+                <center>No data found</center>
+              </td>
             </tr>
           )}
         </tbody>
@@ -301,6 +366,302 @@ function SampleCrud() {
     </>
   );
 }
+
+// function SampleCrud() {
+//   const url = "http://localhost:8080/api";
+
+//   const [data, setData] = useState({
+//     title: "BUDGET TITLE HERE!",
+//     date: "2025-01-01",
+//     // image: null,
+//     file: null,
+//     barangayId: "681f5663bc1cafa5099611e3",
+//   });
+
+//   const [list, setList] = useState([]);
+//   const [updateId, setUpdateId] = useState(null);
+
+//   useEffect(() => {
+//     fetchList();
+//   }, []);
+
+//   const fetchList = async () => {
+//     // const res = await axios.get(`${url}/news-announcements`);
+//     // const res = await axios.get(`${url}/projects`);
+//     // const res = await axios.get(`${url}/accomplishments-achievements`);
+//     const res = await axios.get(`${url}/file-requests`);
+//     setList(res.data.data || []);
+//   };
+
+//   const handleChange = (e) => {
+//     const { name, value, files } = e.target;
+
+//     // if (name === "image") {
+//     //   setData({ ...data, image: files[0] });
+//     // } else {
+//     //   setData({ ...data, [name]: value });
+//     // }
+//     if (name === "file") {
+//       setData({ ...data, file: files[0] });
+//     } else {
+//       setData({ ...data, [name]: value });
+//     }
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     // ! NOTE: IF UPDATING, YOU NEED TO SEND AGAIN THE ORIGINAL IMAGES
+//     // ! IF NO IMAGES UPLOADED, IT WILL BE CONSIDERED AS NULL
+//     // ! AND THE FILE ON BACKEND WILL BE DELETED
+//     // ! NO IMAGE = DELETED FILE
+//     const formData = new FormData();
+//     for (const key in data) {
+//       // if (key === "image") {
+//       //   if (data.image) {
+//       //     formData.append("image", data.image);
+//       //   }
+//       // } else {
+//       //   formData.append(key, data[key]);
+//       // }
+//       if (key === "file") {
+//         if (data.file) {
+//           formData.append("file", data.file);
+//         }
+//       } else {
+//         formData.append(key, data[key]);
+//       }
+//     }
+
+//     const config = {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//       },
+//     };
+
+//     try {
+//       if (updateId) {
+//         // const res = await axios.put(
+//         //   `${url}/news-announcements/${updateId}`,
+//         //   formData,
+//         //   config
+//         // );
+//         // const res = await axios.put(
+//         //   `${url}/projects/${updateId}`,
+//         //   formData,
+//         //   config
+//         // );
+//         // const res = await axios.put(
+//         //   `${url}/accomplishments-achievements/${updateId}`,
+//         //   formData,
+//         //   config
+//         // );
+//         const res = await axios.put(
+//           `${url}/file-requests/${updateId}`,
+//           formData,
+//           config
+//         );
+//         alert(res.data.message);
+//       } else {
+//         // const res = await axios.post(
+//         //   `${url}/news-announcements`,
+//         //   formData,
+//         //   config
+//         // );
+//         // const res = await axios.post(
+//         //   `${url}/projects`,
+//         //   formData,
+//         //   config
+//         // );
+//         // const res = await axios.post(
+//         //   `${url}/accomplishments-achievements`,
+//         //   formData,
+//         //   config
+//         // );
+//         const res = await axios.post(
+//           `${url}/file-requests`,
+//           formData,
+//           config
+//         );
+//         alert(res.data.message);
+//       }
+
+//       await fetchList();
+//       setUpdateId(null);
+//     } catch (error) {
+//       console.error(error);
+//       alert("Submission failed");
+//     }
+//   };
+
+//   const onEditClick = async (id) => {
+//     // const newsAnnouncements = list.find((u) => u._id === id);
+//     // if (newsAnnouncements) {
+//     //   setData({
+//     //     title: newsAnnouncements.title,
+//     //     contents: newsAnnouncements.contents,
+//     //     date: newsAnnouncements.date,
+//     //     image: newsAnnouncements.image,
+//     //   });
+//     //   setUpdateId(newsAnnouncements._id);
+//     // }
+//     const budget = list.find((u) => u._id === id);
+//     try {
+//       const response = await axios.get(`${url}/files/` + budget.file);
+//       const blob = await response.blob();
+//       const file = new File([blob], budget.file, { type: blob.type });
+
+//       if (budget) {
+//         setData({
+//           title: budget.title,
+//           // contents: budget.contents,
+//           date: budget.date,
+//           file: file,
+//           barangayId: budget.barangayId,
+//         });
+//       }
+//     } catch (ex) {
+//       alert("N/A FILE!");
+//       if (budget) {
+//         setData({
+//           title: budget.title,
+//           // contents: budget.contents,
+//           date: budget.date,
+//           file: budget.file,
+//           barangayId: budget.barangayId,
+//         });
+//       }
+//     }
+//     setUpdateId(budget._id);
+//   };
+
+//   const onRemoveClick = async (id) => {
+//     if (window.confirm("Are you sure?")) {
+//       // const res = await axios.delete(`${url}/news-announcements/${id}`);
+//       // const res = await axios.delete(
+//       //   `${url}/accomplishments-achievements/${id}`
+//       // );
+//       const res = await axios.delete(
+//         `${url}/file-requests/${id}`
+//       );
+//       alert(res.data.message);
+//       await fetchList();
+//     }
+//   };
+
+//   return (
+//     <>
+//       <h1>Management</h1>
+//       <form onSubmit={handleSubmit} encType="multipart/form-data">
+//         <label>title</label>
+//         <input
+//           name="title"
+//           value={data.title}
+//           onChange={handleChange}
+//           required
+//         />
+
+//         {/* <label>contents</label>
+//         <input
+//           name="contents"
+//           value={data.contents}
+//           onChange={handleChange}
+//           required
+//         /> */}
+//         <label>brgy id</label>
+//         <input
+//           name="barangayId"
+//           value={data.barangayId}
+//           onChange={handleChange}
+//           required
+//         />
+
+//         <label>date</label>
+//         <input
+//           type="date"
+//           name="date"
+//           value={formatDate(data.date)}
+//           onChange={handleChange}
+//           required
+//         />
+
+//         {/* <label>image</label>
+//         <input
+//           type="file"
+//           name="image"
+//           onChange={handleChange}
+//           accept="image/*"
+//         /> */}
+//         <label>file</label>
+//         <input
+//           type="file"
+//           name="file"
+//           onChange={handleChange}
+//           accept="file/*"
+//         />
+
+//         <button type="submit">{updateId ? "Update" : "Create"}</button>
+//       </form>
+
+//       <h2>List</h2>
+//       <table border={1}>
+//         <thead>
+//           <tr>
+//             <th>title</th>
+//             {/* <th>contents</th> */}
+//             <th>date</th>
+//             {/* <th>image</th> */}
+//             <th>file</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {list.length > 0 ? (
+//             list.map((data) => (
+//               <tr key={data._id}>
+//                 <td>{data.title}</td>
+//                 {/* <td>{data.contents}</td> */}
+//                 <td>{data.date}</td>
+//                 {/* <td>
+//                   <p>{data.image}</p>
+//                   {data.image !== "N/A" && (
+//                     <img
+//                       src={`${url}/images/${data.image}`}
+//                       alt="user"
+//                       width={100}
+//                       height={100}
+//                     />
+//                   )}
+//                 </td> */}
+//                 <td>
+//                   <p>{data.file}</p>
+//                   {data.file !== "N/A" && (
+//                     <a
+//                       href={`${url}/files/${data.file}`}
+//                       target="_blank"
+//                       rel="noopener noreferrer"
+//                     >
+//                       📥 View/Download Excel File
+//                     </a>
+//                   )}
+//                 </td>
+//                 <td>
+//                   <button onClick={() => onEditClick(data._id)}>Edit</button>
+//                   <button onClick={() => onRemoveClick(data._id)}>
+//                     Delete
+//                   </button>
+//                 </td>
+//               </tr>
+//             ))
+//           ) : (
+//             <tr>
+//               <td colSpan={5}>No users found</td>
+//             </tr>
+//           )}
+//         </tbody>
+//       </table>
+//     </>
+//   );
+// }
 
 // function SampleCrud() {
 //   const url = "http://localhost:8080/api";

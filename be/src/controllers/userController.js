@@ -3,6 +3,8 @@ import { User } from "../models/userModel.js";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { nullChecker } from "../utils/nullChecker.js";
+import { checkDuplicate } from "../utils/duplicateChecker.js";
 
 // Get the directory name of the current module
 const __filename = fileURLToPath(import.meta.url);
@@ -11,6 +13,43 @@ const __dirname = path.dirname(__filename);
 // * register new user
 const registerUser = async (req, res) => {
   try {
+    // * nulls
+    const {
+      firstName,
+      lastName,
+      sex,
+      birthdate,
+      age,
+      email,
+      phoneNumber,
+      password,
+      address,
+    } = req.body;
+
+    // * Check for missing required fields
+    const hasMissingFields = nullChecker(res, {
+      firstName,
+      lastName,
+      sex,
+      birthdate,
+      age,
+      email,
+      phoneNumber,
+      password,
+      address,
+    });
+
+    if (hasMissingFields) return;
+
+    // * check duplicates
+    let isDup = await checkDuplicate(res, User, { email: req.body.email });
+    if (isDup) return;
+
+    isDup = await checkDuplicate(res, User, {
+      phoneNumber: req.body.phoneNumber,
+    });
+    if (isDup) return;
+
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     const files = req.files || {};
@@ -49,6 +88,12 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing required fields!" });
+    }
 
     const user = await User.findOne({ email });
     if (!user)
@@ -147,12 +192,62 @@ const getUsers = async (req, res) => {
   }
 };
 
-
 // * Update User
 const updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
     let updates = { ...req.body };
+
+    // * nulls
+    const {
+      firstName,
+      lastName,
+      sex,
+      birthdate,
+      age,
+      email,
+      phoneNumber,
+      address,
+    } = updates;
+
+    console.log(updates);
+
+    // * Check for missing required fields
+    if (!req.body.status) {
+      const hasMissingFields = nullChecker(res, {
+        firstName,
+        lastName,
+        sex,
+        birthdate,
+        age,
+        email,
+        phoneNumber,
+        address,
+      });
+
+      if (hasMissingFields) return;
+
+      // * check for duplicate (excluding current)
+      let isDup = await checkDuplicate(
+        res,
+        User,
+        {
+          email: updates.email,
+        },
+        userId
+      );
+      if (isDup) return;
+
+      isDup = await checkDuplicate(
+        res,
+        User,
+        {
+          phoneNumber: updates.phoneNumber,
+        },
+        userId
+      );
+      if (isDup) return;
+    }
 
     if (updates.password) {
       updates.password = await bcrypt.hash(updates.password, 10);

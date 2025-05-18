@@ -4,10 +4,34 @@ import { fileURLToPath } from "url";
 import path from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+import { nullChecker } from "../utils/nullChecker.js";
+import { checkDuplicate } from "../utils/duplicateChecker.js";
 
 const createAccomplishmentAchievement = async (req, res) => {
   try {
     const image = req.file?.filename || "N/A";
+
+    const { title, date, contents, barangayId } = req.body;
+
+    const hasMissingFields = nullChecker(res, {
+      title,
+      date,
+      contents,
+      barangayId,
+    });
+    console.log(hasMissingFields);
+    if (hasMissingFields) return;
+
+    let isDup = await checkDuplicate(res, AccomplishmentAchievement, {
+      title: title,
+      date: date,
+    });
+    if (isDup) return;
+
+    isDup = await checkDuplicate(res, AccomplishmentAchievement, {
+      title: req.body.title,
+    });
+    if (isDup) return;
 
     const accomplishmentAchievement = new AccomplishmentAchievement({
       ...req.body,
@@ -32,14 +56,14 @@ const createAccomplishmentAchievement = async (req, res) => {
 
 const getAccomplishmentAchievement = async (req, res) => {
   try {
-    const accomplishmentAchievement = await AccomplishmentAchievement.findById(req.params.id);
+    const accomplishmentAchievement = await AccomplishmentAchievement.findById(
+      req.params.id
+    );
     if (!accomplishmentAchievement)
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: "Accomplishments and Achievements not found",
-        });
+      return res.status(404).json({
+        success: false,
+        message: "Accomplishments and Achievements not found",
+      });
     res.json({
       success: true,
       message: "Accomplishments and Achievements retrieved",
@@ -74,7 +98,9 @@ const getAccomplishmentAchievements = async (req, res) => {
     const limitNumber = parseInt(limit);
     const skip = (pageNumber - 1) * limitNumber;
 
-    const accomplishmentAchievements = await AccomplishmentAchievement.find(filter)
+    const accomplishmentAchievements = await AccomplishmentAchievement.find(
+      filter
+    )
       .sort({ date: -1 }) // * Sort by date DESCENDING (latest first)
       .skip(skip)
       .limit(limitNumber);
@@ -104,7 +130,8 @@ const getAccomplishmentAchievements = async (req, res) => {
 const updateAccomplishmentAchievement = async (req, res) => {
   try {
     const accomplishmentAchievementId = req.params.id;
-    const existingAccomplishmentAchievement = await AccomplishmentAchievement.findById(accomplishmentAchievementId);
+    const existingAccomplishmentAchievement =
+      await AccomplishmentAchievement.findById(accomplishmentAchievementId);
 
     if (!existingAccomplishmentAchievement) {
       return res.status(404).json({
@@ -113,30 +140,72 @@ const updateAccomplishmentAchievement = async (req, res) => {
       });
     }
 
+    const { title, date, contents, barangayId } = req.body;
+
+    const hasMissingFields = nullChecker(res, {
+      title,
+      date,
+      contents,
+      barangayId,
+    });
+    console.log(hasMissingFields);
+    if (hasMissingFields) return;
+
+    let isDup = await checkDuplicate(
+      res,
+      AccomplishmentAchievement,
+      {
+        title: title,
+        date: date,
+      },
+      accomplishmentAchievementId
+    );
+    if (isDup) return;
+
+    isDup = await checkDuplicate(
+      res,
+      AccomplishmentAchievement,
+      {
+        title: req.body.title,
+      },
+      accomplishmentAchievementId
+    );
+    if (isDup) return;
+
     const image = req.file?.filename || "N/A";
     const updates = { ...req.body };
 
     if (image && image !== "N/A") {
       // * delete old profile image
-      if (existingAccomplishmentAchievement.image && existingAccomplishmentAchievement.image !== "N/A") {
-        const oldPath = path.join("public/images", existingAccomplishmentAchievement.image);
+      if (
+        existingAccomplishmentAchievement.image &&
+        existingAccomplishmentAchievement.image !== "N/A"
+      ) {
+        const oldPath = path.join(
+          "public/images",
+          existingAccomplishmentAchievement.image
+        );
         if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
       }
       updates.image = image;
     } else {
-      const oldPath = path.join("public/images", existingAccomplishmentAchievement.image);
+      const oldPath = path.join(
+        "public/images",
+        existingAccomplishmentAchievement.image
+      );
       if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
       updates.image = "N/A";
     }
 
-    const updatedAccomplishmentAchievement = await AccomplishmentAchievement.findByIdAndUpdate(
-      accomplishmentAchievementId,
-      updates,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    const updatedAccomplishmentAchievement =
+      await AccomplishmentAchievement.findByIdAndUpdate(
+        accomplishmentAchievementId,
+        updates,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
 
     res.json({
       success: true,
@@ -154,15 +223,15 @@ const updateAccomplishmentAchievement = async (req, res) => {
 
 const deleteAccomplishmentAchievement = async (req, res) => {
   try {
-    const accomplishmentAchievement = await AccomplishmentAchievement.findById(req.params.id);
+    const accomplishmentAchievement = await AccomplishmentAchievement.findById(
+      req.params.id
+    );
 
     if (!accomplishmentAchievement) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: "Accomplishments and Achievements not found",
-        });
+      return res.status(404).json({
+        success: false,
+        message: "Accomplishments and Achievements not found",
+      });
     }
 
     const deleteFile = (filename) => {

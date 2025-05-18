@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const accomplishmentAchievementSchema = new mongoose.Schema({
-  title: { type: String, unique: true, required: true },
+  title: { type: String, required: true },
   date: { type: Date, required: true },
   contents: { type: String, required: true },
   image: { type: String, default: "N/A" },
@@ -10,6 +10,8 @@ const accomplishmentAchievementSchema = new mongoose.Schema({
     ref: "Barangay",
   },
 });
+
+accomplishmentAchievementSchema.index({ title: 1, date: 1 }, { unique: true });
 
 export const AccomplishmentAchievement = mongoose.model(
   "AccomplishmentAchievement",

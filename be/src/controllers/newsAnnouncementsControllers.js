@@ -4,10 +4,34 @@ import { fileURLToPath } from "url";
 import path from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+import { nullChecker } from "../utils/nullChecker.js";
+import { checkDuplicate } from "../utils/duplicateChecker.js";
 
 const createNewsAnnouncement = async (req, res) => {
   try {
     const image = req.file?.filename || "N/A";
+
+    const { title, date, contents, barangayId } = req.body;
+
+    const hasMissingFields = nullChecker(res, {
+      title,
+      date,
+      contents,
+      barangayId,
+    });
+    console.log(hasMissingFields);
+    if (hasMissingFields) return;
+
+    let isDup = await checkDuplicate(res, NewsAnnouncement, {
+      title,
+      date,
+    });
+    if (isDup) return;
+
+    isDup = await checkDuplicate(res, NewsAnnouncement, {
+      title,
+    });
+    if (isDup) return;
 
     const newsAnnouncement = new NewsAnnouncement({
       ...req.body,
@@ -111,6 +135,38 @@ const updateNewsAnnouncement = async (req, res) => {
         message: "News Announcement not found",
       });
     }
+
+    const { title, date, contents, barangayId } = req.body;
+
+    const hasMissingFields = nullChecker(res, {
+      title,
+      date,
+      contents,
+      barangayId,
+    });
+    console.log(hasMissingFields);
+    if (hasMissingFields) return;
+
+    let isDup = await checkDuplicate(
+      res,
+      NewsAnnouncement,
+      {
+        title: req.body.title,
+        date: req.body.date,
+      },
+      newsAnnouncementId
+    );
+    if (isDup) return;
+
+    isDup = await checkDuplicate(
+      res,
+      NewsAnnouncement,
+      {
+        title,
+      },
+      newsAnnouncementId
+    );
+    if (isDup) return;
 
     const image = req.file?.filename || "N/A";
     const updates = { ...req.body };

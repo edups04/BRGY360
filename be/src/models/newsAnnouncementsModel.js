@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const newsAnnouncementSchema = new mongoose.Schema({
-  title: { type: String, unique: true, required: true },
+  title: { type: String, required: true },
   date: { type: Date, required: true },
   contents: { type: String, required: true },
   image: { type: String, default: "N/A" },
@@ -10,6 +10,8 @@ const newsAnnouncementSchema = new mongoose.Schema({
     ref: "Barangay",
   },
 });
+
+newsAnnouncementSchema.index({ title: 1, date: 1 }, { unique: true });
 
 export const NewsAnnouncement = mongoose.model(
   "NewsAnnouncement",

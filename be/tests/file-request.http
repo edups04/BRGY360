@@ -2,6 +2,15 @@
 @baseUrl = http://localhost:{{port}}/api
 
 ### * Get All File Requests
+GET {{baseUrl}}/file-requests?status=pending&requestedBy=6823a90f87ce3399471a2013&requestedDocumentType=barangay
+
+### * Get All File Requests
+GET {{baseUrl}}/file-requests?status=pending&requestedDocumentType=barangay-clearance
+
+### * Get File Request by barangay ID
+GET {{baseUrl}}/file-requests?barangayId=681f5663bc1cafa5099611e3
+
+### * Get File Reques
 GET {{baseUrl}}/file-requests
 
 ### * Get File Request by ID
@@ -28,14 +37,15 @@ Content-Type: application/json
 
 {
   "requestedDocumentType": "barangay-clearance",
-  "requestedBy": "68231f10d957bbcd6e2a31ba",
+  "requestedBy": "6824e07102ab5f580a54f0aa",
   "data": {
     "fullName" : "Jiro Mendador",
     "address" : "112 D. Ko Alam",
     "purok" : "Trese",
     "birthdate" : "2007-02-13T00:00:00.000+00:00",
     "purpose" : "Secret!!!"
-  }
+  },
+  "barangayId": "681f5663bc1cafa5099611e3"
 }
 
 ### * Create Another File Request
@@ -51,24 +61,34 @@ Content-Type: application/json
     "purok" : "",
     "birthdate" : "2007-02-13T00:00:00.000+00:00",
     "purpose" : ""
-  }
+  },
+  "barangayId": "681f5663bc1cafa5099611e3"
+}
+
+### * Update File Request Info (1 field)
+PUT {{baseUrl}}/file-requests/6824fc23c6a6da6d99852a19
+Content-Type: application/json
+
+{
+  "barangayId": "6824fc23c6a6da6d99852a19"
 }
 
 ### * Update File Request Info
-PUT {{baseUrl}}/file-requests/6622e4314cbf20d84db35541
+PUT {{baseUrl}}/file-requests/68292f5c1430b4a6b5cd36d0
 Content-Type: application/json
 
 {
   "requestedDocumentType": "barangay-clearance",
   "requestedBy": "68231f10d957bbcd6e2a31ba",
   "data": {
-    "fullName" : "",
-    "address" : "",
-    "purok" : "",
+    "fullName" : "HAHA",
+    "address" : "HAHA",
+    "purok" : "HAHA",
     "birthdate" : "2007-02-13T00:00:00.000+00:00",
-    "purpose" : ""
-  }
+    "purpose" : "HAHA"
+  },
+  "barangayId": "681f5663bc1cafa5099611e3"
 }
 
 ### * Delete Barangay
-DELETE {{baseUrl}}/file-requests/6824d2bce9cdeb1343e94211
+DELETE {{baseUrl}}/file-requests/68292fa6e4655577c6320775

@@ -102,7 +102,10 @@ const AdminNavbar = () => {
               {expand ? <p className="text-sm font-normal">Profile</p> : null}
             </div>
 
-            <div className="w-full flex flex-row items-center justify-start gap-2 cursor-pointer">
+            <div
+              className="w-full flex flex-row items-center justify-start gap-2 cursor-pointer"
+              onClick={() => navigate("/admin/requests")}
+            >
               {activeRoute === "requests" ? (
                 <RiFilePdf2Fill
                   size={22}
@@ -143,7 +146,10 @@ const AdminNavbar = () => {
               ) : null}
             </div>
 
-            <div className="w-full flex flex-row items-center justify-start gap-2 cursor-pointer">
+            <div
+              className="w-full flex flex-row items-center justify-start gap-2 cursor-pointer"
+              onClick={() => navigate("/admin/transparency")}
+            >
               {activeRoute === "transparency" ? (
                 <RiFundsBoxFill
                   size={22}
@@ -186,7 +192,10 @@ const AdminNavbar = () => {
           </div>
 
           <div className="w-auto lg:w-full flex flex-row lg:flex-col items-center justify-center gap-4 lg:gap-6">
-            <div className="w-full flex flex-row items-center justify-start gap-2 cursor-pointer">
+            <div
+              className="w-full flex flex-row items-center justify-start gap-2 cursor-pointer"
+              onClick={() => navigate("/admin/chatbot")}
+            >
               {activeRoute === "chatbot" ? (
                 <RiChat4Fill
                   size={22}

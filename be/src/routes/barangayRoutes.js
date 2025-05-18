@@ -3,14 +3,17 @@ import express from "express";
 import {
   createBarangay,
   getBarangay,
-  geBarangays,
+  getBarangays,
   updateBarangay,
   deleteBarangay,
+  getBarangayReports,
 } from "../controllers/barangayController.js";
 
 let barangayRoutes = express.Router();
 
-barangayRoutes.get("/", geBarangays);
+barangayRoutes.get("/reports/:id", getBarangayReports);
+barangayRoutes.get("/reports", getBarangayReports);
+barangayRoutes.get("/", getBarangays);
 barangayRoutes.get("/:id", getBarangay);
 barangayRoutes.post("/", createBarangay);
 barangayRoutes.put("/:id", updateBarangay);

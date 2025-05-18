@@ -1,91 +1,53 @@
-// import React, { createContext, useContext, useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-
-// const AuthContext = createContext<any>(null);
-
-// export const AuthProvider = ({ children }: any) => {
-//   const navigate = useNavigate();
-
-//   const getCredentials = async () => {
-//     const user = await localStorage.getItem("user");
-
-//     if (user) {
-//       const currentUser = JSON.parse(user);
-
-//       if (currentUser) {
-//         if (currentUser.role === "admin") {
-//           navigate("/admin/dashboard");
-//         } else if (currentUser.role === "user") {
-//           navigate("/user/home");
-//         }
-//       }
-//     } else {
-//       navigate("/");
-//     }
-//   };
-
-//   useEffect(() => {
-//     getCredentials();
-//     //   onLogout();
-//   }, []);
-
-//   const onLogout = () => {
-//     localStorage.removeItem("user");
-//     navigate("/");
-//     window.location.reload();
-//   };
-
-//   return (
-//     <AuthContext.Provider value={{ onLogout }}>{children}</AuthContext.Provider>
-//   );
-// };
-
-// export const useAuth = () => useContext(AuthContext);
-
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext<any>(null);
 
 export const AuthProvider = ({ children }: any) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const getCredentials = async () => {
     const user = await localStorage.getItem("user");
 
-    if (!user) {
-      // If no user and currently on a protected route, redirect to login
-      if (
-        location.pathname !== "/" &&
-        !location.pathname.includes("/register")
-      ) {
-        navigate("/");
-      }
-      return;
-    }
+    if (user) {
+      const currentUser = JSON.parse(user);
 
-    const currentUser = JSON.parse(user);
+      const path = location.pathname;
 
-    // If on root ("/"), redirect based on role
-    if (location.pathname === "/") {
       if (currentUser.role === "admin") {
-        navigate("/admin/dashboard");
+        if (
+          path.includes("/user/") ||
+          path === "/" ||
+          path.includes("/register")
+        ) {
+          navigate("/admin/dashboard", { replace: true });
+        }
       } else if (currentUser.role === "user") {
-        navigate("/user/home");
-        window.location.reload();
+        if (
+          path.includes("/admin/") ||
+          path === "/" ||
+          path.includes("/register")
+        ) {
+          navigate("/user/home", { replace: true });
+        }
+      }
+    } else {
+      const path = location.pathname;
+
+      if (!path.includes("/register") && path !== "/") {
+        navigate("/", { replace: true });
       }
     }
   };
 
   useEffect(() => {
     getCredentials();
-  }, [location.pathname]);
+    //   onLogout();
+  }, []);
 
   const onLogout = () => {
     localStorage.removeItem("user");
     navigate("/");
-    window.location.reload();
   };
 
   return (

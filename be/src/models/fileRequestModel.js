@@ -21,7 +21,6 @@ const fileRequestSchema = new mongoose.Schema({
   },
   issuanceDate: { type: String, default: "N/A" },
   placeOfIssuance: { type: String, default: "N/A" },
-  // file: { type: String, required: true },
   status: {
     type: String,
     enum: ["pending", "approved", "declined", "completed"],
@@ -33,8 +32,12 @@ const fileRequestSchema = new mongoose.Schema({
     ref: "User",
   },
   data: {
-    type: [mongoose.Schema.Types.Mixed],
-    default: [],
+    type: mongoose.Schema.Types.Mixed,
+    default: {},
+  },
+  barangayId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Barangay",
   },
 });
 

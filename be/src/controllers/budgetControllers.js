@@ -4,10 +4,33 @@ import { fileURLToPath } from "url";
 import path from "path";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+import { nullChecker } from "../utils/nullChecker.js";
+import { checkDuplicate } from "../utils/duplicateChecker.js";
 
 const createBudget = async (req, res) => {
   try {
     const file = req.file?.filename || "N/A";
+
+    const { title, date, barangayId } = req.body;
+
+    const hasMissingFields = nullChecker(res, {
+      title,
+      date,
+      barangayId,
+    });
+    console.log(hasMissingFields);
+    if (hasMissingFields) return;
+
+    let isDup = await checkDuplicate(res, Budget, {
+      title,
+      date,
+    });
+    if (isDup) return;
+
+    isDup = await checkDuplicate(res, Budget, {
+      title,
+    });
+    if (isDup) return;
 
     let budget = new Budget({
       ...req.body,
@@ -43,50 +66,119 @@ const getBudget = async (req, res) => {
   }
 };
 
+// const getBudgets = async (req, res) => {
+//   try {
+//     const { page = 1, limit = 10, title, date, barangayId } = req.query;
+
+//     const filter = {};
+//     if (title) {
+//       filter.title = { $regex: title, $options: "i" }; // * partial, case-insensitive match
+//     }
+//     if (date) {
+//       // const start = new Date(date);
+//       // const end = new Date(date);
+//       // end.setDate(end.getDate() + 1);
+//       // filter.date = { $gte: start, $lt: end };
+//       filter.date = date;
+//     }
+//     if (barangayId) {
+//       filter.barangayId = barangayId;
+//     }
+
+//     const pageNumber = parseInt(page);
+//     const limitNumber = parseInt(limit);
+//     const skip = (pageNumber - 1) * limitNumber;
+
+//     const budgets = await Budget.find(filter)
+//       .sort({ date: -1 }) // * Sort by date DESCENDING (latest first)
+//       .skip(skip)
+//       .limit(limitNumber);
+
+//     const total = await Budget.countDocuments(filter);
+
+//     res.json({
+//       success: true,
+//       message: "Budgets retrieved",
+//       data: budgets,
+//       meta: {
+//         total,
+//         page: pageNumber,
+//         limit: limitNumber,
+//         totalPages: Math.ceil(total / limitNumber),
+//       },
+//     });
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ success: false, message: "Server error", error: error.message });
+//   }
+// };
+
 const getBudgets = async (req, res) => {
   try {
-    const { page = 1, limit = 10, title, date, barangayId } = req.query;
+    const { page = 1, limit = 10, title, barangayId, date } = req.query;
 
     const filter = {};
     if (title) {
-      filter.title = { $regex: title, $options: "i" }; // * partial, case-insensitive match
+      filter.title = { $regex: title, $options: "i" };
     }
-    if (date) {
-      const start = new Date(date);
-      const end = new Date(date);
-      end.setDate(end.getDate() + 1);
-      filter.date = { $gte: start, $lt: end };
-    } 
     if (barangayId) {
       filter.barangayId = barangayId;
     }
 
-    const pageNumber = parseInt(page);
-    const limitNumber = parseInt(limit);
+    // Step 1: Get all distinct years from `date` field
+    const yearsAgg = await Budget.aggregate([
+      {
+        $group: {
+          _id: { $year: "$date" },
+        },
+      },
+      { $sort: { _id: -1 } },
+    ]);
+    const yearList = yearsAgg.map((y) => y._id);
+
+    // Step 2: Apply year filter if provided
+    let selectedYear = null;
+    if (date) {
+      selectedYear = parseInt(date);
+      if (!isNaN(selectedYear)) {
+        const startOfYear = new Date(`${selectedYear}-01-01T00:00:00Z`);
+        const endOfYear = new Date(`${selectedYear}-12-31T23:59:59Z`);
+        filter.date = { $gte: startOfYear, $lte: endOfYear };
+      }
+    }
+
+    // Step 3: Apply pagination
+    const pageNumber = Math.max(1, parseInt(page));
+    const limitNumber = Math.max(1, parseInt(limit));
     const skip = (pageNumber - 1) * limitNumber;
 
-    const budgets = await Budget.find(filter)
-      .sort({ date: -1 }) // * Sort by date DESCENDING (latest first)
-      .skip(skip)
-      .limit(limitNumber);
-
-    const total = await Budget.countDocuments(filter);
+    const [budgets, total] = await Promise.all([
+      Budget.find(filter).sort({ date: -1 }).skip(skip).limit(limitNumber),
+      Budget.countDocuments(filter),
+    ]);
 
     res.json({
       success: true,
-      message: "Budgets retrieved",
+      message: selectedYear
+        ? `Budgets retrieved for year ${selectedYear}`
+        : "Budgets retrieved",
       data: budgets,
+      years: yearList,
       meta: {
         total,
         page: pageNumber,
         limit: limitNumber,
         totalPages: Math.ceil(total / limitNumber),
+        year: selectedYear,
       },
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({ success: false, message: "Server error", error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 
@@ -101,6 +193,32 @@ const updateBudget = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Budget not found" });
     }
+
+    const { title, date, barangayId } = req.body;
+
+    const hasMissingFields = nullChecker(res, {
+      title,
+      date,
+      barangayId,
+    });
+    console.log(hasMissingFields);
+    if (hasMissingFields) return;
+
+    let isDup = await checkDuplicate(
+      res,
+      Budget,
+      {
+        title,
+        date,
+      },
+      budgetId
+    );
+    if (isDup) return;
+
+    isDup = await checkDuplicate(res, Budget, {
+      title,
+    }, budgetId);
+    if (isDup) return;
 
     const file = req.file?.filename || "N/A";
     const updates = { ...req.body };

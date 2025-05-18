@@ -9,6 +9,7 @@ import { projectRoutes } from "./src/routes/projectRoutes.js";
 import { accomplishmentsAchievementsRoutes } from "./src/routes/accomplishmentsAchievementsRoutes.js";
 import { budgetRoutes } from "./src/routes/budgetRoutes.js";
 import { fileRequestRoutes } from "./src/routes/fileRequestRoutes.js";
+import { chatBotRoutes } from "./src/routes/chatBotRoutes.js";
 
 // ! FOR WEB HOSTING
 // import path from "path";
@@ -54,6 +55,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/accomplishments-achievements", accomplishmentsAchievementsRoutes);
 app.use("/api/budgets", budgetRoutes);
 app.use("/api/file-requests", fileRequestRoutes);
+app.use("/api/chat-bot-messages", chatBotRoutes);
 
 // // ! TO RENDER FRONTEND ON WEB HOSTING
 // app.use(express.static(path.join(__dirname, "/fe/build/")));
