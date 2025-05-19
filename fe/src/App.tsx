@@ -53,6 +53,7 @@ import AddBudgets from "./pages/admin/budgets/AddBudgets";
 import EditBudgets from "./pages/admin/budgets/EditBudgets";
 import FileRequests from "./pages/admin/FileRequests";
 import AdminChatbot from "./pages/admin/Chatbot";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   return (
@@ -77,6 +78,10 @@ function App() {
                         />
                         {/* user */}
                         <Route path="/user/home" element={<Home />} />
+                        <Route
+                          path="/user/forgot-password/:token"
+                          element={<ForgotPassword />}
+                        />
                         <Route path="/user/profile" element={<UserProfile />} />
                         <Route path="/user/news" element={<UserNews />} />
                         <Route path="/user/news/all" element={<AllNews />} />

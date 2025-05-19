@@ -5,10 +5,10 @@
 GET {{baseUrl}}/users?page=1&limit=10&status=pending&sex=male&role=user&barangayId=681f5663bc1cafa5099611e3
 
 ### * Get All Users (WITH PAGINATIONS AND SOME FILTER FOR role status sex barangayId)
-GET {{baseUrl}}/users?search=test
+GET {{baseUrl}}/users?search=validation&barangayId=6829378cd9e090ec146c3a65&page=undefined&limit=undefined&status=undefined&role=undefined
 
 ### * Get User by ID
-GET {{baseUrl}}/users/68233a20d957bbcd6e2a33c2
+GET {{baseUrl}}/users/682a10ebf6153e49e2ada124
 
 ### * Register User
 POST {{baseUrl}}/users

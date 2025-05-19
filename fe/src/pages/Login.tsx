@@ -30,8 +30,10 @@ const Login = () => {
           localStorage.setItem("user", JSON.stringify(response.data.data));
           if (response.data.data.role === "user") {
             navigate("/user/home");
+            window.location.reload();
           } else if (response.data.data.role === "admin") {
             navigate("/admin/dashboard");
+            window.location.reload();
           }
         } else {
           setShowModal(true);
@@ -40,6 +42,30 @@ const Login = () => {
             "Account Pending! Please wait for admins to approve your account"
           );
         }
+      }
+    } catch (error: any) {
+      setShowModal(true);
+      setError(true);
+      setMessage(error.response.data.message);
+    }
+  };
+
+  const onForgotPassword = async () => {
+    try {
+      let url = "http://localhost:8080/api/users/forgot-password";
+
+      let response = await axios.post(url, {
+        email: email,
+      });
+
+      if (response.data.success === true) {
+        setShowModal(true);
+        setError(false);
+        setMessage(response.data.message);
+      } else {
+        setShowModal(true);
+        setError(true);
+        setMessage(response.data.message);
       }
     } catch (error: any) {
       setShowModal(true);
@@ -121,6 +147,14 @@ const Login = () => {
                 ></div>
               )}
               <p className="text-xs font-normal">Remember me</p>
+            </div>
+            <div className="w-1/2 flex flex-row items-center justify-end gap-2">
+              <p
+                className="text-xs font-normal text-green-600"
+                onClick={onForgotPassword}
+              >
+                Forgot Password
+              </p>
             </div>
           </div>
           {/* button */}

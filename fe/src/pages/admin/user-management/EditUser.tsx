@@ -29,6 +29,7 @@ const EditUser = () => {
   const [back, setBack] = useState<File | null>(null);
   const [idType, setIdType] = useState("");
   const [status, setStatus] = useState("");
+  const [role, setRole] = useState("");
 
   const [edit, setEdit] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -90,6 +91,7 @@ const EditUser = () => {
         setSex(response.data.data.sex);
         setProfile(response.data.data.profile);
         setUserId(response.data.data._id);
+        setRole(response.data.data.role);
         setFront(response.data.data.validId.front);
         setBack(response.data.data.validId.back);
         setIdType(response.data.data.validId.type);
@@ -125,7 +127,7 @@ const EditUser = () => {
         formData.append("phoneNumber", mobileNumber);
         formData.append("address", address);
         profile && formData.append("profile", profile);
-        formData.append("role", "admin");
+        formData.append("role", role);
         formData.append("barangayId", barangay);
         password && formData.append("password", password);
         formData.append("type", idType);
@@ -229,7 +231,7 @@ const EditUser = () => {
                 <p className="text-sm font-semibold">{firstName}</p>
                 <p className="text-xs font-normal">{email}</p>
                 <div className="p-2 rounded-xl bg-yellow-500 mt-2">
-                  <p className="text-xs font-normal">Admin</p>
+                  <p className="text-xs font-normal">{role}</p>
                 </div>
               </div>
             </div>

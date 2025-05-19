@@ -305,7 +305,7 @@ const Profile = () => {
               </div>
               {/* barangay */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Address</p>
+                <p className="text-xs font-normal">Barangay</p>
                 <select
                   value={barangay}
                   onChange={(e) => setBarangay(e.target.value)}
@@ -351,12 +351,13 @@ const Profile = () => {
               </div>
               {/* sex */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Age</p>
+                <p className="text-xs font-normal">Sex</p>
                 <select
                   value={sex}
                   onChange={(e) => setSex(e.target.value)}
                   className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-xs font-normal"
-                  disabled={edit ? false : true}
+                  // disabled={edit ? false : true}
+                  disabled={true}
                 >
                   <option value="" disabled>
                     Select an option

@@ -2,7 +2,7 @@
 @baseUrl = http://localhost:{{port}}/api
 
 ### * Get All Chat Bot Messages
-GET {{baseUrl}}/chat-bot-messages?barangayId=681f5663bc1cafa5099611e3
+GET {{baseUrl}}/chat-bot-messages?barangayId=6829378cd9e090ec146c3a65
 
 ### * Get All Chat Bot Messages for ONE USER (to see their own convo, for user)
 GET {{baseUrl}}/chat-bot-messages?userId=68231f10d957bbcd6e2a31ba

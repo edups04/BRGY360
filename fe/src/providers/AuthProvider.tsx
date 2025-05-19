@@ -34,7 +34,11 @@ export const AuthProvider = ({ children }: any) => {
     } else {
       const path = location.pathname;
 
-      if (!path.includes("/register") && path !== "/") {
+      if (
+        !path.includes("/register") &&
+        path !== "/" &&
+        !path.includes("/forgot-password")
+      ) {
         navigate("/", { replace: true });
       }
     }
@@ -48,6 +52,7 @@ export const AuthProvider = ({ children }: any) => {
   const onLogout = () => {
     localStorage.removeItem("user");
     navigate("/");
+    window.location.reload();
   };
 
   return (

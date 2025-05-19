@@ -25,6 +25,9 @@ export const UsersProvider = ({ children }: any) => {
           console.log(response.data.data);
           setUsers(response.data.data);
           setTotalPages(response.data.meta.totalPages);
+
+          console.log("url", url);
+          console.log("FROM DB", response.data.data);
         }
       } catch (error: any) {
         console.log(error);

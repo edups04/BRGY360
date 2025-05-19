@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
   },
   address: { type: String, required: true },
   profile: { type: String, default: "N/A" },
-  validId:{
+  validId: {
     type: { type: String, default: "N/A" },
     front: { type: String, default: "N/A" },
     back: { type: String, default: "N/A" },
@@ -30,6 +30,8 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Barangay",
   },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
 });
 
 export const User = mongoose.model("User", userSchema);

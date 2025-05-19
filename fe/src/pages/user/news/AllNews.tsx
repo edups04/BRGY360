@@ -54,7 +54,7 @@ const AllNews = () => {
                   >
                     {/* image */}
                     <div
-                      className="w-full h-[220px] lg:h-[620px] bg-gray-200 rounded-xl bg-cover bg-center"
+                      className="w-full max-w-[75%] h-[220px] lg:h-[620px] bg-gray-200 rounded-xl bg-cover bg-center"
                       style={{
                         backgroundImage:
                           latestNews.image !== "N/A"

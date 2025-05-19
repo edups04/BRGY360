@@ -4,12 +4,56 @@ import mongoose from "mongoose";
 import { nullChecker } from "../utils/nullChecker.js";
 import { checkDuplicate } from "../utils/duplicateChecker.js";
 
+// const createFileRequest = async (req, res) => {
+//   try {
+//     console.log(req.body);
+
+//     const { requestedDocumentType, requestedBy, barangayId, data } = req.body;
+
+//     let hasMissingFields = nullChecker(res, {
+//       requestedDocumentType,
+//       requestedBy,
+//       barangayId,
+//     });
+//     if (hasMissingFields) return;
+
+//     hasMissingFields = nullChecker(res, { ...data });
+//     if (hasMissingFields) return;
+
+//     const image = req.file?.filename || "N/A";
+
+//     const fileRequest = new FileRequest({
+//       ...req.body,
+//       data: {
+//         ...req.body.data,
+//         image: image,
+//       },
+//     });
+
+//     // let fileRequest = new FileRequest(req.body);
+
+//     await fileRequest.save();
+
+//     res.status(201).json({
+//       success: true,
+//       message: "File Request created successfully",
+//       data: fileRequest,
+//     });
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ success: false, message: "Server error", error: error.message });
+//   }
+// };
+
 const createFileRequest = async (req, res) => {
   try {
-    console.log(req.body);
+    console.log("Body:", req.body);
+    console.log("File:", req.file);
 
-    const { requestedDocumentType, requestedBy, barangayId, data } = req.body;
+    const { requestedDocumentType, requestedBy, barangayId } = req.body;
 
+    // Validate top-level fields
     let hasMissingFields = nullChecker(res, {
       requestedDocumentType,
       requestedBy,
@@ -17,10 +61,39 @@ const createFileRequest = async (req, res) => {
     });
     if (hasMissingFields) return;
 
-    hasMissingFields = nullChecker(res, { ...data });
+    // Parse data fields based on document type
+    let data = {};
+    if (requestedDocumentType === "barangay-clearance") {
+      data = {
+        fullName: req.body.fullName,
+        address: req.body.address,
+        purok: req.body.purok,
+        birthdate: req.body.birthdate,
+        purpose: req.body.purpose,
+        image: req.file?.filename || null,
+      };
+    } else {
+      data = req.body.data; // For other form types, assume data is a JSON object
+    }
+
+    // Validate data fields
+    hasMissingFields = nullChecker(res, data);
     if (hasMissingFields) return;
 
-    let fileRequest = new FileRequest(req.body);
+    // Validate image for barangay-clearance
+    if (requestedDocumentType === "barangay-clearance" && !req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Image is required for barangay clearance",
+      });
+    }
+
+    const fileRequest = new FileRequest({
+      requestedDocumentType,
+      requestedBy,
+      barangayId,
+      data,
+    });
 
     await fileRequest.save();
 

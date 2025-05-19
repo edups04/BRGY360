@@ -1,6 +1,6 @@
 import axios from "axios";
 import { PDFDocument } from "pdf-lib";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import Modal from "./Modal";
 
@@ -12,10 +12,15 @@ const CompletionForm = ({
   onClose: () => void;
 }) => {
   const [placeOfIssuance, setPlaceOfIssuance] = useState("");
+  const [residentCertificateNumber, setResidentCertificateNumber] = useState(0);
 
   const [modal, showModal] = useState(false);
   const [error, setError] = useState(true);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    console.log("DATA", data);
+  }, []);
 
   const generateAndPreviewPdf = async () => {
     console.log(data);
@@ -59,9 +64,12 @@ const CompletionForm = ({
       form.getTextField("birthdate")?.setText(data.data.birthdate);
       form.getTextField("purpose")?.setText(data.data.purpose);
       form.getTextField("dateRequested")?.setText(formattedDate);
+      // form
+      //   .getTextField("requestNumber")
+      //   ?.setText(data.requestNumber.toString());
       form
         .getTextField("requestNumber")
-        ?.setText(data.requestNumber.toString());
+        ?.setText(residentCertificateNumber.toString());
       data.issuanceDate === "N/A"
         ? form.getTextField("issuanceDate")?.setText("")
         : form.getTextField("issuanceDate")?.setText(data.issuanceDate);
@@ -83,10 +91,52 @@ const CompletionForm = ({
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("honorifics")?.setText(data.data.honorifics);
       form.getTextField("schoolName")?.setText(data.data.schoolName);
-      form.getTextField("purpose")?.setText(data.data.purpose);
+      form.getTextField("purpose")?.setText(data.data.fullName);
       form.getTextField("dateRequested")?.setText(formattedDate);
     }
 
+    try {
+      if (
+        data.data.image &&
+        data.data.image !== "N/A" &&
+        data.requestedDocumentType === "barangay-clearance"
+      ) {
+        // Fetch the image from the server
+        const response = await axios.get(
+          `http://localhost:8080/api/images/${data.data.image}`,
+          { responseType: "arraybuffer" } // Ensure response is an array buffer
+        );
+
+        console.log("IMAGE FROM SERVER:", response);
+
+        // Get the image bytes and MIME type
+        const imageBytes = response.data;
+        const mimeType = response.headers["content-type"];
+
+        // Embed the image based on MIME type
+        let embeddedImage;
+        if (mimeType === "image/jpeg") {
+          embeddedImage = await pdfDoc.embedJpg(imageBytes);
+        } else if (mimeType === "image/png") {
+          embeddedImage = await pdfDoc.embedPng(imageBytes);
+        } else {
+          console.error("Unsupported image format. Use JPEG or PNG.");
+          return;
+        }
+
+        // Get the image field
+        const imageField = form.getField("image"); // Use "imageField" if that's the correct name
+
+        if (imageField) {
+          // Set the image in the field
+          imageField.setImage(embeddedImage);
+        } else {
+          console.error("Image field 'image' not found in the PDF.");
+        }
+      }
+    } catch (error) {
+      console.error("Error setting image in PDF:", error);
+    }
     // Flatten to make fields non-editable
     form.flatten();
 
@@ -141,7 +191,10 @@ const CompletionForm = ({
       form.getTextField("dateRequested")?.setText(formattedDate);
       form
         .getTextField("requestNumber")
-        ?.setText(data.requestNumber.toString());
+        ?.setText(residentCertificateNumber.toString());
+      // form
+      //   .getTextField("requestNumber")
+      //   ?.setText(data.requestNumber.toString());
       data.issuanceDate === "N/A"
         ? form.getTextField("issuanceDate")?.setText("")
         : form.getTextField("issuanceDate")?.setText(data.issuanceDate);
@@ -164,10 +217,52 @@ const CompletionForm = ({
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("honorifics")?.setText(data.data.honorifics);
       form.getTextField("schoolName")?.setText(data.data.schoolName);
-      form.getTextField("purpose")?.setText(data.data.purpose);
+      form.getTextField("purpose")?.setText(data.data.fullName);
       form.getTextField("dateRequested")?.setText(formattedDate);
     }
 
+    try {
+      if (
+        data.data.image &&
+        data.data.image !== "N/A" &&
+        data.requestedDocumentType === "barangay-clearance"
+      ) {
+        // Fetch the image from the server
+        const response = await axios.get(
+          `http://localhost:8080/api/images/${data.data.image}`,
+          { responseType: "arraybuffer" } // Ensure response is an array buffer
+        );
+
+        console.log("IMAGE FROM SERVER:", response);
+
+        // Get the image bytes and MIME type
+        const imageBytes = response.data;
+        const mimeType = response.headers["content-type"];
+
+        // Embed the image based on MIME type
+        let embeddedImage;
+        if (mimeType === "image/jpeg") {
+          embeddedImage = await pdfDoc.embedJpg(imageBytes);
+        } else if (mimeType === "image/png") {
+          embeddedImage = await pdfDoc.embedPng(imageBytes);
+        } else {
+          console.error("Unsupported image format. Use JPEG or PNG.");
+          return;
+        }
+
+        // Get the image field
+        const imageField = form.getField("image"); // Use "imageField" if that's the correct name
+
+        if (imageField) {
+          // Set the image in the field
+          imageField.setImage(embeddedImage);
+        } else {
+          console.error("Image field 'image' not found in the PDF.");
+        }
+      }
+    } catch (error) {
+      console.error("Error setting image in PDF:", error);
+    }
     // Flatten to make fields non-editable
     form.flatten();
 
@@ -204,6 +299,7 @@ const CompletionForm = ({
         status: "completed",
         issuanceDate: formatted,
         data: updatedData,
+        residentCertificateNumber: residentCertificateNumber,
       });
 
       if (response.data.success === true) {
@@ -236,16 +332,33 @@ const CompletionForm = ({
             />
           </div>
           {/* input */}
-          <div className="w-full flex flex-col items-start justify-center gap-2">
-            <p className="text-xs font-normal">Place of Issuance</p>
-            <input
-              type="text"
-              value={placeOfIssuance}
-              onChange={(e) => setPlaceOfIssuance(e.target.value)}
-              placeholder="place of issuance"
-              className="text-xs font-normal outline-none border border-green-700 p-3 rounded-xl w-full"
-            />
-          </div>
+          {data.requestedDocumentType === "barangay-clearance" && (
+            <>
+              <div className="w-full flex flex-col items-start justify-center gap-2">
+                <p className="text-xs font-normal">Place of Issuance</p>
+                <input
+                  type="text"
+                  value={placeOfIssuance}
+                  onChange={(e) => setPlaceOfIssuance(e.target.value)}
+                  placeholder="place of issuance"
+                  className="text-xs font-normal outline-none border border-green-700 p-3 rounded-xl w-full"
+                />
+              </div>
+              <div className="w-full flex flex-col items-start justify-center gap-2">
+                <p className="text-xs font-normal">Resident Certificate No</p>
+                <input
+                  type="number"
+                  min={0}
+                  value={residentCertificateNumber}
+                  onChange={(e) => setResidentCertificateNumber(e.target.value)}
+                  placeholder="place of issuance"
+                  className="text-xs font-normal outline-none border border-green-700 p-3 rounded-xl w-full"
+                />
+              </div>
+            </>
+          )}
+
+          {/* buttons */}
           <div className="w-full flex flex-row items-center justify-end gap-2">
             <button
               className="text-xs font-normal text-white bg-green-700 p-3 rounded-xl"
@@ -253,7 +366,8 @@ const CompletionForm = ({
             >
               Preview
             </button>
-            {placeOfIssuance ? (
+            {(placeOfIssuance && residentCertificateNumber > 0) ||
+            data.requestedDocumentType !== "barangay-clearance" ? (
               <button
                 className="text-xs font-normal text-white bg-green-700 p-3 rounded-xl"
                 onClick={() => printRequest()}

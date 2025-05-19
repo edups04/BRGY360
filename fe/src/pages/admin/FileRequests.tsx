@@ -118,7 +118,7 @@ const FileRequests = () => {
       form.getTextField("dateRequested")?.setText(formattedDate);
       form
         .getTextField("requestNumber")
-        ?.setText(data.requestNumber.toString());
+        ?.setText(data.residentCertificateNumber.toString());
       data.issuanceDate === "N/A"
         ? form.getTextField("issuanceDate")?.setText("")
         : form.getTextField("issuanceDate")?.setText(data.issuanceDate);
@@ -142,8 +142,51 @@ const FileRequests = () => {
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("honorifics")?.setText(data.data.honorifics);
       form.getTextField("schoolName")?.setText(data.data.schoolName);
-      form.getTextField("purpose")?.setText(data.data.purpose);
+      form.getTextField("purpose")?.setText(data.data.fullName);
       form.getTextField("dateRequested")?.setText(formattedDate);
+    }
+
+    try {
+      if (
+        data.data.image &&
+        data.data.image !== "N/A" &&
+        data.requestedDocumentType === "barangay-clearance"
+      ) {
+        // Fetch the image from the server
+        const response = await axios.get(
+          `http://localhost:8080/api/images/${data.data.image}`,
+          { responseType: "arraybuffer" } // Ensure response is an array buffer
+        );
+
+        console.log("IMAGE FROM SERVER:", response);
+
+        // Get the image bytes and MIME type
+        const imageBytes = response.data;
+        const mimeType = response.headers["content-type"];
+
+        // Embed the image based on MIME type
+        let embeddedImage;
+        if (mimeType === "image/jpeg") {
+          embeddedImage = await pdfDoc.embedJpg(imageBytes);
+        } else if (mimeType === "image/png") {
+          embeddedImage = await pdfDoc.embedPng(imageBytes);
+        } else {
+          console.error("Unsupported image format. Use JPEG or PNG.");
+          return;
+        }
+
+        // Get the image field
+        const imageField = form.getField("image"); // Use "imageField" if that's the correct name
+
+        if (imageField) {
+          // Set the image in the field
+          imageField.setImage(embeddedImage);
+        } else {
+          console.error("Image field 'image' not found in the PDF.");
+        }
+      }
+    } catch (error) {
+      console.error("Error setting image in PDF:", error);
     }
 
     // Flatten to make fields non-editable

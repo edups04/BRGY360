@@ -41,30 +41,30 @@ const Dashboard = () => {
   const [jobseekerCount, setJobseekerCount] = useState(0);
   const [graphData, setGraphData] = useState([]);
 
-  useEffect(() => {
-    // Set the chatbot config
-    window.chtlConfig = {
-      chatbotId: "6153291475",
-      variables: {
-        user_role: JSON.parse(localStorage.getItem("user")).role || "",
-        user_fName: JSON.parse(localStorage.getItem("user")).firstName || "",
-      },
-    };
+  // useEffect(() => {
+  //   // Set the chatbot config
+  //   window.chtlConfig = {
+  //     chatbotId: "6153291475",
+  //     variables: {
+  //       user_role: JSON.parse(localStorage.getItem("user")).role || "",
+  //       user_fName: JSON.parse(localStorage.getItem("user")).firstName || "",
+  //     },
+  //   };
 
-    // Create and append the script
-    const script = document.createElement("script");
-    script.src = "https://chatling.ai/js/embed.js";
-    script.async = true;
-    script.id = "chtl-script";
-    script.setAttribute("data-id", "6153291475");
+  //   // Create and append the script
+  //   const script = document.createElement("script");
+  //   script.src = "https://chatling.ai/js/embed.js";
+  //   script.async = true;
+  //   script.id = "chtl-script";
+  //   script.setAttribute("data-id", "6153291475");
 
-    document.body.appendChild(script);
+  //   document.body.appendChild(script);
 
-    // Optional cleanup if the component unmounts
-    return () => {
-      document.getElementById("chtl-script")?.remove();
-    };
-  }, []);
+  //   // Optional cleanup if the component unmounts
+  //   return () => {
+  //     document.getElementById("chtl-script")?.remove();
+  //   };
+  // }, []);
 
   const getData = async () => {
     const user = localStorage.getItem("user");

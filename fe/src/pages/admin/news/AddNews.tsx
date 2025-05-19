@@ -47,7 +47,8 @@ const AddNews = () => {
 
           if (response.data.success === true) {
             const barangayId = response.data.data.barangayId;
-            const currentDate = new Date().toISOString().split("T")[0];
+            // const currentDate = new Date().toISOString().split("T")[0];
+            const currentDate = new Date().toISOString(); // e.g., '2025-05-19T12:34:56.789Z'
 
             try {
               let url = "http://localhost:8080/api/news-announcements";
@@ -102,7 +103,7 @@ const AddNews = () => {
             </p>
           </div>
           {/* image */}
-          <div className="w-full h-[240px] lg:h-[660px] bg-gray-200 flex items-center justify-center rounded-xl overflow-hidden relative">
+          <div className="w-full max-w-[50%] h-[240px] lg:h-[660px] bg-gray-200 flex items-center justify-center rounded-xl overflow-hidden relative">
             {image && (
               <img
                 src={URL.createObjectURL(image)}

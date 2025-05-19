@@ -1,14 +1,178 @@
 import bcrypt from "bcryptjs";
 import { User } from "../models/userModel.js";
+import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { nullChecker } from "../utils/nullChecker.js";
 import { checkDuplicate } from "../utils/duplicateChecker.js";
+import nodemailer from "nodemailer";
+import crypto from "crypto";
 
 // Get the directory name of the current module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+dotenv.config();
+
+// * forgot password
+// const forgotPassword = async (req, res) => {
+//   try {
+//     const { email } = req.body;
+
+//     if (!email) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Please input your email to send a confirmation code link",
+//       });
+//     }
+
+//     const user = await User.findOne({ email });
+//     if (!user)
+//       return res
+//         .status(400)
+//         .json({ success: false, message: "Invalid email!" });
+
+//     res.json({
+//       success: true,
+//       message: "Confirmation link sent!",
+//       data: user,
+//     });
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ success: false, message: "Server error", error: error.message });
+//   }
+// };
+
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Please input your email to send a confirmation link",
+      });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email!",
+      });
+
+    // Generate token and expiration
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetTokenExpires = Date.now() + 1000 * 60 * 15; // 15 minutes
+
+    // Save token in user document (requires fields in schema)
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = resetTokenExpires;
+    await user.save();
+
+    // Create transporter (example using Gmail)
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL, // Your email
+        pass: process.env.GMAIL_PK, // Your email app password (not your Gmail password!)
+      },
+    });
+
+    // Reset link
+    const resetLink = `http://localhost:5173/user/forgot-password/${resetToken}`;
+
+    // Send mail
+    await transporter.sendMail({
+      from: `"BRGY360" <${process.env.GMAIL}>`,
+      to: email,
+      subject: "Password Reset Request",
+      html: `
+        <h3>Password Reset</h3>
+        <p>Click the link below to reset your password. This link is valid for 15 minutes:</p>
+        <a href="${resetLink}">${resetLink}</a>
+      `,
+    });
+
+    res.json({
+      success: true,
+      message: "Password reset link sent to email!",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { token, password } = req.body;
+  console.log("RESET ATTEMPT:", req.body); // Add this
+
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+
+  console.log("USER FOUND FOR TOKEN:", user); // Add this
+
+  if (!user) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid or expired token.",
+    });
+  }
+
+  user.password = await bcrypt.hash(password, 10);
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+  await user.save();
+
+  console.log("PASSWORD RESET AND TOKEN CLEARED");
+
+  res.json({ success: true, message: "Password successfully updated!" });
+};
+
+const verifyResetToken = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        message: "Token is required",
+      });
+    }
+
+    // Find the user with the matching reset token and check expiration
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() }, // not expired
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired password reset link.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Token is valid",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
 
 // * register new user
 const registerUser = async (req, res) => {
@@ -49,6 +213,18 @@ const registerUser = async (req, res) => {
       phoneNumber: req.body.phoneNumber,
     });
     if (isDup) return;
+
+    // * Password Criteria Check
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_+=~{}\[\]:;"'<>,.?/\\]).{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+      });
+    }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
@@ -249,7 +425,19 @@ const updateUser = async (req, res) => {
       if (isDup) return;
     }
 
+    // * Password Criteria Check
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_+=~{}\[\]:;"'<>,.?/\\]).{8,}$/;
+
     if (updates.password) {
+      if (!passwordRegex.test(updates.password)) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+        });
+      }
+
       updates.password = await bcrypt.hash(updates.password, 10);
     }
 
@@ -379,4 +567,14 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export { loginUser, registerUser, updateUser, deleteUser, getUser, getUsers };
+export {
+  loginUser,
+  registerUser,
+  updateUser,
+  deleteUser,
+  getUser,
+  getUsers,
+  forgotPassword,
+  resetPassword,
+  verifyResetToken,
+};

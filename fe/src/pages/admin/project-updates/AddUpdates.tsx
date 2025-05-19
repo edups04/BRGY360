@@ -46,7 +46,8 @@ const AddUpdates = () => {
 
           if (response.data.success === true) {
             const barangayId = response.data.data.barangayId;
-            const currentDate = new Date().toISOString().split("T")[0];
+            // const currentDate = new Date().toISOString().split("T")[0];
+            const currentDate = new Date().toISOString();
 
             try {
               let url = "http://localhost:8080/api/projects";
@@ -101,7 +102,7 @@ const AddUpdates = () => {
             </p>
           </div>
           {/* image */}
-          <div className="w-full h-[240px] lg:h-[660px] bg-gray-200 flex items-center justify-center rounded-xl overflow-hidden relative">
+          <div className="w-full max-w-[50%] h-[240px] lg:h-[660px] bg-gray-200 flex items-center justify-center rounded-xl overflow-hidden relative">
             {image && (
               <img
                 src={URL.createObjectURL(image)}

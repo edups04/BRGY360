@@ -9,6 +9,7 @@ const AutoIncrement = AutoIncrementFactory(connection);
 
 const fileRequestSchema = new mongoose.Schema({
   requestNumber: { type: Number },
+  residentCertificateNumber: { type: Number, default: 0 },
   requestedDocumentType: {
     type: String,
     enum: [

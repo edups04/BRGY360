@@ -13,7 +13,8 @@ const Home = () => {
     let CURRENT_USER = JSON.parse(localStorage.getItem("user"));
 
     window.chtlConfig = {
-      chatbotId: "6153291475",
+      // chatbotId: "6153291475", // prev bot
+      chatbotId: "6382343746", // new 
       variables: {
         userId: CURRENT_USER._id || "",
         baseUrl: baseUrl,
@@ -23,9 +24,11 @@ const Home = () => {
     // Create and append the script
     const script = document.createElement("script");
     script.src = "https://chatling.ai/js/embed.js";
+    // script.src = "http://localhost:8080/api/users/proxy/chatbot";
     script.async = true;
     script.id = "chtl-script";
-    script.setAttribute("data-id", "6153291475");
+    // script.setAttribute("data-id", "6153291475"); // prev bot
+    script.setAttribute("data-id", "6382343746"); // new
 
     document.body.appendChild(script);
 

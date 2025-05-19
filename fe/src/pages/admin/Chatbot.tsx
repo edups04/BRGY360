@@ -1,18 +1,70 @@
 import React, { useEffect, useRef, useState } from "react";
 import AdminNavbar from "../../components/AdminNavbar";
 import { useChats } from "../../providers/ChatsProvider";
-import { RiSendPlaneFill } from "react-icons/ri";
+import { RiSendPlaneFill, RiSearchLine } from "react-icons/ri";
 import axios from "axios";
-
+import { useUsers } from "../../providers/UsersProvider";
 const Chatbot = () => {
+  const { users, getUsers, totalPages } = useUsers();
   const { adminChats, getAdminChats } = useChats();
   const [selectedUser, setSelectedUser] = useState("");
   const [message, setMessage] = useState("");
   const chatEndRef = useRef<HTMLDivElement | null>(null);
+  const [search, setSearch] = useState("");
+  const [barangayId, setBarangayId] = useState("");
 
-  const selectedChat = adminChats.find(
-    (chat: any) => chat.user._id === selectedUser
-  );
+  // const selectedChat = adminChats.find(
+  //   (chat: any) => chat.user._id === selectedUser
+  // );
+
+  const [selectedUserObject, setSelectedUserObject] = useState(null);
+
+  const selectedChat =
+    adminChats.find((chat: any) => chat.user._id === selectedUser) ||
+    (selectedUserObject && {
+      user: selectedUserObject,
+      messages: [], // no messages yet
+    });
+
+  const handleUserClick = (user: any) => {
+    setSelectedUser(user._id);
+    setSelectedUserObject(user); // Store full user object
+  };
+
+  const getUserDataBasedOnSearch = async () => {
+    const user = localStorage.getItem("user");
+
+    if (user) {
+      const currUser = JSON.parse(user);
+
+      if (currUser) {
+        try {
+          let url = `http://localhost:8080/api/users/${currUser._id}`;
+
+          let response = await axios.get(url);
+
+          if (response.data.success === true) {
+            setBarangayId(response.data.data.barangayId);
+            await getUsers(
+              search,
+              response.data.data.barangayId,
+              1,
+              1000,
+              "",
+              ""
+            );
+            console.log("users", users);
+          }
+        } catch (error: any) {
+          console.log(error.response.data);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    getUserDataBasedOnSearch();
+  }, [search]);
 
   useEffect(() => {
     if (chatEndRef.current) {
@@ -56,6 +108,7 @@ const Chatbot = () => {
         console.log(response.data);
         await getData();
         setMessage("");
+        setSearch("");
       }
     } catch (error: any) {
       console.log(error);
@@ -72,30 +125,91 @@ const Chatbot = () => {
           <div className="w-full flex flex-row items-center justify-start">
             <p className="text-sm font-semibold capitalize">Messages</p>
           </div>
+          {/* SEARCH USER TO MESSAGE */}
+          <div className="w-full flex flex-col items-start justify-between gap-2">
+            <div className="relative flex items-center justify-center">
+              <input
+                type="text"
+                className="outline-none border border-green-700 text-xs font-normal w-full pl-10 pr-3 py-3 rounded-xl"
+                placeholder="search for users"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <RiSearchLine
+                size={16}
+                color="black"
+                className="absolute left-4"
+              />
+            </div>
+            {/* Overlay Dropdown */}
+            {search && (
+              <div className="w-full max-h-60 overflow-y-auto bg-white shadow-lg rounded-xl z-10">
+                {users.length > 0 ? (
+                  users
+                    .filter(
+                      (user: any) =>
+                        user._id !==
+                        JSON.parse(localStorage.getItem("user"))._id
+                    )
+                    .map((user, idx) => (
+                      <div
+                        key={idx}
+                        className="flex flex-row items-center gap-4 px-4 py-2 hover:bg-green-600 hover:text-white cursor-pointer text-sm"
+                        onClick={() => {
+                          handleUserClick(user);
+                        }}
+                      >
+                        <div
+                          className="shrink-0 bg-cover bg-center h-[40px] w-[40px] bg-white rounded-full"
+                          style={{
+                            backgroundImage: `url("http://localhost:8080/api/images/${user.profile}")`,
+                          }}
+                        ></div>
+                        {user.firstName} {user.lastName}
+                        {/* – {user.email} */}
+                      </div>
+                    ))
+                ) : (
+                  <div className="px-4 py-2 text-gray-400 text-sm">
+                    No results found
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          {/* MESSAGES */}
           <div className="w-full flex flex-col lg:flex-row items-start justify-center gap-2">
             {adminChats.length > 0 ? (
               <div className="w-full lg:w-1/4 flex flex-col items-center justify-center bg-gray-200 rounded-xl overflow-hidden overflow-y-auto max-h-[20vh] lg:max-h-[60vh]">
-                {adminChats.map((chat: any) => {
-                  const isSelected = selectedUser === chat.user._id;
+                {/* {adminChats.map((chat: any) => { */}
+                {adminChats
+                  .filter(
+                    (chat: any) =>
+                      chat.user._id !==
+                      JSON.parse(localStorage.getItem("user"))._id
+                  )
+                  .map((chat: any) => {
+                    const isSelected = selectedUser === chat.user._id;
 
-                  return (
-                    <div
-                      className={`w-full flex flex-row items-center justify-start p-4 gap-2 cursor-pointer ${
-                        isSelected ? "bg-green-700 text-white" : ""
-                      }`}
-                      key={chat.user._id}
-                      onClick={() => setSelectedUser(chat.user._id)}
-                    >
+                    return (
                       <div
-                        className="shrink-0 bg-cover bg-center h-[40px] w-[40px] bg-white rounded-full"
-                        style={{
-                          backgroundImage: `url("http://localhost:8080/api/images/${chat.user.profile}")`,
-                        }}
-                      ></div>
-                      <p className="text-xs font-normal">{`${chat.user.firstName} ${chat.user.lastName}`}</p>
-                    </div>
-                  );
-                })}
+                        className={`w-full flex flex-row items-center justify-start p-4 gap-2 cursor-pointer ${
+                          isSelected ? "bg-green-700 text-white" : ""
+                        }`}
+                        key={chat.user._id}
+                        // onClick={() => setSelectedUser(chat.user._id)}
+                        onClick={() => handleUserClick(chat.user)}
+                      >
+                        <div
+                          className="shrink-0 bg-cover bg-center h-[40px] w-[40px] bg-white rounded-full"
+                          style={{
+                            backgroundImage: `url("http://localhost:8080/api/images/${chat.user.profile}")`,
+                          }}
+                        ></div>
+                        <p className="text-xs font-normal">{`${chat.user.firstName} ${chat.user.lastName}`}</p>
+                      </div>
+                    );
+                  })}
               </div>
             ) : (
               <div className="w-full lg:w-1/4 flex flex-col items-center justify-center bg-gray-200 rounded-xl overflow-hidden overflow-y-auto max-h-[20vh] lg:max-h-[60vh]">
