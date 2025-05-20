@@ -192,7 +192,7 @@ const UserNavbar = () => {
                   onClick={() => showChatBot(true)}
                 />
               )}
-              {expand ? <p className="text-sm font-normal">Chatbot</p> : null}
+              {expand ? <p className="text-sm font-normal">Chat</p> : null}
             </div>
 
             <div

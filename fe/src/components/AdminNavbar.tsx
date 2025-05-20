@@ -209,7 +209,7 @@ const AdminNavbar = () => {
                   className="cursor-pointer"
                 />
               )}
-              {expand ? <p className="text-sm font-normal">Chatbot</p> : null}
+              {expand ? <p className="text-sm font-normal">Chat</p> : null}
             </div>
 
             <div
