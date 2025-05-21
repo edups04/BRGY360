@@ -150,7 +150,7 @@ const Login = () => {
             </div>
             <div className="w-1/2 flex flex-row items-center justify-end gap-2">
               <p
-                className="text-xs font-normal text-green-600"
+                className="text-xs font-normal text-green-600 cursor-pointer"
                 onClick={onForgotPassword}
               >
                 Forgot Password
