@@ -1,17 +1,11 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import AdminNavbar from "../../components/AdminNavbar";
 import { useBarangay } from "../../providers/BarangayProvider";
-import { useNavigate } from "react-router-dom";
-import {
-  RiAddLine,
-  RiCheckboxMultipleLine,
-  RiEyeCloseLine,
-  RiEyeLine,
-  RiTimelineView,
-} from "react-icons/ri";
+import axios from "axios";
 import Modal from "../../components/Modal";
 import DeleteModal from "../../components/DeleteModal";
-import UserNavbar from "../../components/UserNavbar";
+import { useNavigate } from "react-router-dom";
+import { RiAddLine, RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
 
 const Profile = () => {
   const [firstName, setFirstName] = useState("");
@@ -62,7 +56,7 @@ const Profile = () => {
     }
   };
 
-  const updateUser = async () => {
+  const updateAdmin = async () => {
     try {
       let url = `http://localhost:8080/api/users/${userId}`;
 
@@ -76,7 +70,7 @@ const Profile = () => {
       formData.append("phoneNumber", mobileNumber);
       formData.append("address", address);
       profile && formData.append("profile", profile);
-      formData.append("role", "user");
+      formData.append("role", "admin");
       formData.append("barangayId", barangay);
       password && formData.append("password", password);
       formData.append("type", idType);
@@ -157,7 +151,7 @@ const Profile = () => {
 
   return (
     <>
-      <UserNavbar />
+      <AdminNavbar />
       <div className="flex flex-col lg:flex-row items-center justify-center">
         <div className="hidden lg:flex w-[100px]"></div>
         <div className="w-full min-h-screen flex items-center justify-center px-4 py-6">
@@ -174,13 +168,16 @@ const Profile = () => {
                   </div>
                   <div
                     className="p-2 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer mr-2"
-                    onClick={() => setEdit(false)}
+                    onClick={() => {
+                      setEdit(false);
+                      window.location.reload();
+                    }}
                   >
                     Cancel
                   </div>
                   <div
                     className="p-2 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer"
-                    onClick={() => updateUser()}
+                    onClick={() => updateAdmin()}
                   >
                     Save
                   </div>
@@ -234,7 +231,7 @@ const Profile = () => {
                 <p className="text-sm font-semibold">{firstName}</p>
                 <p className="text-xs font-normal">{email}</p>
                 <div className="p-2 rounded-xl bg-yellow-500 mt-2">
-                  <p className="text-xs font-normal">User</p>
+                  <p className="text-xs font-normal">Admin</p>
                 </div>
               </div>
             </div>
@@ -394,17 +391,6 @@ const Profile = () => {
                     />
                   )}
                 </div>
-              </div>
-              <div className="w-full flex flex-row items-center justify-end gap-2">
-                <button
-                  className="flex flex-row gap-2 text-xs font-normal text-white bg-green-700 p-3 rounded-xl"
-                  onClick={() =>
-                    navigate("/user/request/history", { state: "completed" })
-                  }
-                >
-                  <RiCheckboxMultipleLine size={16} />
-                  <p>Completed Requests</p>
-                </button>
               </div>
             </div>
           </div>
