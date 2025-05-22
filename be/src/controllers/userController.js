@@ -81,7 +81,8 @@ const forgotPassword = async (req, res) => {
     });
 
     // Reset link
-    const resetLink = `http://localhost:5173/user/forgot-password/${resetToken}`;
+    let url = `https://brgy360-be.onrender.com/api/file-requests/${data._id}`;
+    // const resetLink = `http://localhost:5173/user/forgot-password/${resetToken}`;
 
     // Send mail
     await transporter.sendMail({
