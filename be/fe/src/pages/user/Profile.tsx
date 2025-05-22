@@ -210,7 +210,7 @@ const Profile = () => {
                         preview
                           ? preview
                           : profile
-                          ? `http://localhost:8080/api/images/${profile}`
+                          ? `https://brgy360-be.onrender.com/api/images/${profile}`
                           : ""
                       }
                       alt=""
