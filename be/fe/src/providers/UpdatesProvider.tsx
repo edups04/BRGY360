@@ -31,7 +31,8 @@ export const UpdatesProvider = ({ children }: any) => {
 
   const getRecentUpdates = async (barangayId: string, limit: number) => {
     try {
-      let url = `http://localhost:8080/api/projects?limit=${limit}&barangayId=${barangayId}`;
+      let url = `https://brgy360-be.onrender.com/api/projects?limit=${limit}&barangayId=${barangayId}`;
+      // let url = `http://localhost:8080/api/projects?limit=${limit}&barangayId=${barangayId}`;
 
       let response = await axios.get(url);
 
