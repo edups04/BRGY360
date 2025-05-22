@@ -111,7 +111,8 @@ const Profile = () => {
         if (currUser) {
           console.log(currUser);
           try {
-            let url = `http://localhost:8080/api/users/${currUser._id}`;
+            let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+            // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
             let response = await axios.get(url);
 
@@ -203,7 +204,7 @@ const Profile = () => {
                         preview
                           ? preview
                           : profile
-                          ? `http://localhost:8080/api/images/${profile}`
+                          ? `https://brgy360-be.onrender.com/api/images/${profile}`
                           : ""
                       }
                       alt=""
