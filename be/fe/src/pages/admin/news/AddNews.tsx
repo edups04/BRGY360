@@ -41,7 +41,8 @@ const AddNews = () => {
 
       if (currUser) {
         try {
-          let url = `http://localhost:8080/api/users/${currUser._id}`;
+          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
 
@@ -51,7 +52,9 @@ const AddNews = () => {
             const currentDate = new Date().toISOString(); // e.g., '2025-05-19T12:34:56.789Z'
 
             try {
-              let url = "http://localhost:8080/api/news-announcements";
+              let url =
+                "https://brgy360-be.onrender.com/api/news-announcements";
+              // let url = "http://localhost:8080/api/news-announcements";
 
               const formData = new FormData();
               formData.append("title", title);

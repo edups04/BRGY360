@@ -52,7 +52,7 @@ const FileRequests = () => {
 
   const approveRequest = async (requestId: string) => {
     try {
-      let url = `http://localhost:8080/api/file-requests/${requestId}`;
+      let url = `https://brgy360-be.onrender.com/api/file-requests/${requestId}`;
 
       let response = await axios.put(url, {
         status: "approved",
@@ -180,6 +180,7 @@ const FileRequests = () => {
 
         if (imageField) {
           // Set the image in the field
+          // @ts-ignore
           imageField.setImage(embeddedImage);
         } else {
           console.error("Image field 'image' not found in the PDF.");
@@ -201,7 +202,8 @@ const FileRequests = () => {
 
   const deleteRequest = async (requestId: string) => {
     try {
-      let url = `http://localhost:8080/api/file-requests/${requestId}`;
+      let url = `https://brgy360-be.onrender.com/api/file-requests/${requestId}`;
+      // let url = `http://localhost:8080/api/file-requests/${requestId}`;
 
       let response = await axios.delete(url);
 
@@ -219,7 +221,8 @@ const FileRequests = () => {
 
   const declineRequest = async (requestId: string) => {
     try {
-      let url = `http://localhost:8080/api/file-requests/${requestId}`;
+      let url = `https://brgy360-be.onrender.com/api/file-requests/${requestId}`;
+      // let url = `http://localhost:8080/api/file-requests/${requestId}`;
 
       let response = await axios.put(url, {
         status: "declined",

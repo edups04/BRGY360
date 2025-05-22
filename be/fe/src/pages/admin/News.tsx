@@ -36,7 +36,8 @@ const News = () => {
   const deleteNews = async (newsId: string) => {
     if (newsId) {
       try {
-        let url = `http://localhost:8080/api/news-announcements/${newsId}`;
+        let url = `https://brgy360-be.onrender.com/api/news-announcements/${newsId}`;
+        // let url = `http://localhost:8080/api/news-announcements/${newsId}`;
 
         let response = await axios.delete(url);
 
@@ -62,7 +63,8 @@ const News = () => {
 
       if (currUser) {
         try {
-          let url = `http://localhost:8080/api/users/${currUser._id}`;
+          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
 
@@ -136,7 +138,7 @@ const News = () => {
                         style={{
                           backgroundImage:
                             news.image !== "N/A"
-                              ? `url(http://localhost:8080/api/images/${encodeURIComponent(
+                              ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
                                   news.image
                                 )})`
                               : "",

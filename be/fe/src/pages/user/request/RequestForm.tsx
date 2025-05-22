@@ -158,6 +158,7 @@ const RequestForm = () => {
 
         if (imageField) {
           // Set the image in the field
+          // @ts-ignore
           imageField.setImage(image);
         } else {
           console.error("Image field 'imageField' not found in the PDF.");
@@ -229,7 +230,8 @@ const RequestForm = () => {
 
   const submitRequest = async () => {
     try {
-      let url = `http://localhost:8080/api/file-requests`;
+      let url = `https://brgy360-be.onrender.com/api/file-requests`;
+      // let url = `http://localhost:8080/api/file-requests`;
 
       let response;
       if (formType === "barangay-clearance") {
@@ -294,7 +296,8 @@ const RequestForm = () => {
         showModal(true);
         // Call generateAndPreviewPdf with the original image
         if (formType === "barangay-clearance" && image) {
-          generateAndPreviewPdf(image);
+          // generateAndPreviewPdf(image);
+          generateAndPreviewPdf();
         }
       }
     } catch (error) {

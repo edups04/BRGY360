@@ -58,11 +58,13 @@ app.use("/api/file-requests", fileRequestRoutes);
 app.use("/api/chat-bot-messages", chatBotRoutes);
 
 // ! TO RENDER FRONTEND ON WEB HOSTING
-app.use(express.static(path.join(__dirname, "/fe/build/")));
+// app.use(express.static(path.join(__dirname, "/fe/build/")));
+app.use(express.static(path.join(__dirname, "/fe/dist/")));
 
 // ! RENDER FRONTEND ON ANY PATH
 app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "/fe/build/index.html"))
+  res.sendFile(path.join(__dirname, "/fe/dist/index.html"))
+  // res.sendFile(path.join(__dirname, "/fe/build/index.html"))
 );
 
 // * start server

@@ -35,7 +35,8 @@ const AddBudgets = () => {
 
       if (currUser) {
         try {
-          let url = `http://localhost:8080/api/users/${currUser._id}`;
+          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
 
@@ -69,7 +70,8 @@ const AddBudgets = () => {
 
       if (currUser) {
         try {
-          let url = `http://localhost:8080/api/users/${currUser._id}`;
+          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
 
@@ -77,7 +79,8 @@ const AddBudgets = () => {
             const barangayId = response.data.data.barangayId;
 
             try {
-              let url = "http://localhost:8080/api/budgets";
+              let url = "https://brgy360-be.onrender.com/api/budgets";
+              // let url = "http://localhost:8080/api/budgets";
 
               console.log(budgetYear);
 

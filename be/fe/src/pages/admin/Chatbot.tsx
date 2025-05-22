@@ -39,7 +39,8 @@ const Chatbot = () => {
 
       if (currUser) {
         try {
-          let url = `http://localhost:8080/api/users/${currUser._id}`;
+          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
 
@@ -96,7 +97,8 @@ const Chatbot = () => {
 
   const sendMessage = async () => {
     try {
-      let url = `http://localhost:8080/api/chat-bot-messages`;
+      let url = `https://brgy360-be.onrender.com/api/chat-bot-messages`;
+      // let url = `http://localhost:8080/api/chat-bot-messages`;
 
       let response = await axios.post(url, {
         message: message,
@@ -162,7 +164,7 @@ const Chatbot = () => {
                         <div
                           className="shrink-0 bg-cover bg-center h-[40px] w-[40px] bg-white rounded-full"
                           style={{
-                            backgroundImage: `url("http://localhost:8080/api/images/${user.profile}")`,
+                            backgroundImage: `url("https://brgy360-be.onrender.com/api/images/${user.profile}")`,
                           }}
                         ></div>
                         {user.firstName} {user.lastName}
@@ -203,7 +205,7 @@ const Chatbot = () => {
                         <div
                           className="shrink-0 bg-cover bg-center h-[40px] w-[40px] bg-white rounded-full"
                           style={{
-                            backgroundImage: `url("http://localhost:8080/api/images/${chat.user.profile}")`,
+                            backgroundImage: `url("https://brgy360-be.onrender.com/api/images/${chat.user.profile}")`,
                           }}
                         ></div>
                         <p className="text-xs font-normal">{`${chat.user.firstName} ${chat.user.lastName}`}</p>
@@ -227,7 +229,7 @@ const Chatbot = () => {
                     className="shrink-0 bg-cover bg-center h-[40px] w-[40px] bg-gray-200 rounded-full"
                     style={{
                       backgroundImage: selectedChat
-                        ? `url("http://localhost:8080/api/images/${selectedChat.user.profile}")`
+                        ? `url("https://brgy360-be.onrender.com/api/images/${selectedChat.user.profile}")`
                         : "",
                     }}
                   ></div>

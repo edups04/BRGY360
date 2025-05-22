@@ -13,7 +13,8 @@ const ViewUpdates = () => {
     const getData = async () => {
       if (state) {
         try {
-          let url = `http://localhost:8080/api/projects/${state}`;
+          let url = `https://brgy360-be.onrender.com/api/projects/${state}`;
+          // let url = `http://localhost:8080/api/projects/${state}`;
 
           let response = await axios.get(url);
 
@@ -54,7 +55,7 @@ const ViewUpdates = () => {
             style={{
               backgroundImage:
                 data.image !== "N/A"
-                  ? `url(http://localhost:8080/api/images/${encodeURIComponent(
+                  ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
                       data.image
                     )})`
                   : "",

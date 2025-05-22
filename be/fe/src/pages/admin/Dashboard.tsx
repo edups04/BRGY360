@@ -79,7 +79,8 @@ const Dashboard = () => {
         await getRecentUpdates(currUser.barangayId, 5);
 
         try {
-          let url = `http://localhost:8080/api/barangays/reports/${currUser.barangayId}`;
+          let url = `https://brgy360-be.onrender.com/api/barangays/reports/${currUser.barangayId}`;
+          // let url = `http://localhost:8080/api/barangays/reports/${currUser.barangayId}`;
 
           let response = await axios.get(url);
 

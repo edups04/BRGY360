@@ -50,7 +50,8 @@ const EditNews = () => {
 
       if (currUser) {
         try {
-          let url = `http://localhost:8080/api/users/${currUser._id}`;
+          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
 
@@ -60,7 +61,8 @@ const EditNews = () => {
             const currentDate = new Date().toISOString(); 
 
             try {
-              let url = `http://localhost:8080/api/news-announcements/${state}`;
+              let url = `https://brgy360-be.onrender.com/api/news-announcements/${state}`;
+              // let url = `http://localhost:8080/api/news-announcements/${state}`;
 
               const formData = new FormData();
               formData.append("title", title);
@@ -69,7 +71,7 @@ const EditNews = () => {
               formData.append("date", currentDate);
 
               if (!imageChanged) {
-                let url = `http://localhost:8080/api/images/${encodeURIComponent(
+                let url = `https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
                   image
                 )}`;
 
@@ -107,7 +109,8 @@ const EditNews = () => {
 
   const deleteNews = async () => {
     try {
-      let url = `http://localhost:8080/api/news-announcements/${state}`;
+      let url = `https://brgy360-be.onrender.com/api/news-announcements/${state}`;
+      // let url = `http://localhost:8080/api/news-announcements/${state}`;
 
       let response = await axios.delete(url);
 
@@ -127,7 +130,8 @@ const EditNews = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        let url = `http://localhost:8080/api/news-announcements/${state}`;
+        let url = `https://brgy360-be.onrender.com/api/news-announcements/${state}`;
+        // let url = `http://localhost:8080/api/news-announcements/${state}`;
 
         let response = await axios.get(url);
 

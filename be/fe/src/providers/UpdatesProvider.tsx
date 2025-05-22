@@ -15,7 +15,8 @@ export const UpdatesProvider = ({ children }: any) => {
     limit: number
   ) => {
     try {
-      let url = `http://localhost:8080/api/projects?title=${title}&barangayId=${barangayId}&page=${page}&limit=${limit}`;
+      let url = `https://brgy360-be.onrender.com/api/projects?title=${title}&barangayId=${barangayId}&page=${page}&limit=${limit}`;
+      // let url = `http://localhost:8080/api/projects?title=${title}&barangayId=${barangayId}&page=${page}&limit=${limit}`;
 
       let response = await axios.get(url);
 

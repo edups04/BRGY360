@@ -18,7 +18,8 @@ const Login = () => {
 
   const onLogin = async () => {
     try {
-      let url = "http://localhost:8080/api/users/login";
+      let url = "https://brgy360-be.onrender.com/api/users/login";
+      // let url = "http://localhost:8080/api/users/login";
 
       let response = await axios.post(url, {
         email: email,
@@ -52,7 +53,8 @@ const Login = () => {
 
   const onForgotPassword = async () => {
     try {
-      let url = "http://localhost:8080/api/users/forgot-password";
+      let url = "https://brgy360-be.onrender.com/api/users/forgot-password";
+      // let url = "http://localhost:8080/api/users/forgot-password";
 
       let response = await axios.post(url, {
         email: email,

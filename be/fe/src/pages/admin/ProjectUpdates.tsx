@@ -37,7 +37,8 @@ const ProjectUpdates = () => {
   const deleteUpdates = async (updateId: string) => {
     if (updateId) {
       try {
-        let url = `http://localhost:8080/api/projects/${updateId}`;
+        let url = `https://brgy360-be.onrender.com/api/projects/${updateId}`;
+        // let url = `http://localhost:8080/api/projects/${updateId}`;
 
         let response = await axios.delete(url);
 
@@ -63,7 +64,8 @@ const ProjectUpdates = () => {
 
       if (currUser) {
         try {
-          let url = `http://localhost:8080/api/users/${currUser._id}`;
+          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
 
@@ -143,7 +145,7 @@ const ProjectUpdates = () => {
                         style={{
                           backgroundImage:
                             update.image !== "N/A"
-                              ? `url(http://localhost:8080/api/images/${encodeURIComponent(
+                              ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
                                   update.image
                                 )})`
                               : "",

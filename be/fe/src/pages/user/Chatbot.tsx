@@ -41,7 +41,8 @@ const Chatbot = ({ onClose }: { onClose: () => void }) => {
 
   const sendMessage = async () => {
     try {
-      let url = `http://localhost:8080/api/chat-bot-messages`;
+      let url = `https://brgy360-be.onrender.com/api/chat-bot-messages`;
+      // let url = `http://localhost:8080/api/chat-bot-messages`;
 
       let response = await axios.post(url, {
         message: message,

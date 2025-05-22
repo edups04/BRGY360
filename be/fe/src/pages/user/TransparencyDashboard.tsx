@@ -17,7 +17,8 @@ const TransparencyDashboard = () => {
 
         if (currUser) {
           try {
-            let url = `http://localhost:8080/api/barangays/${currUser.barangayId}`;
+            let url = `https://brgy360-be.onrender.com/api/barangays/${currUser.barangayId}`;
+            // let url = `http://localhost:8080/api/barangays/${currUser.barangayId}`;
 
             let response = await axios.get(url);
 

@@ -8,7 +8,8 @@ export const BarangayProvider = ({ children }: any) => {
 
   const getBarangays = async () => {
     try {
-      let url = "http://localhost:8080/api/barangays";
+      let url = "https://brgy360-be.onrender.com/api/barangays";
+      // let url = "http://localhost:8080/api/barangays";
 
       let response = await axios.get(url);
 

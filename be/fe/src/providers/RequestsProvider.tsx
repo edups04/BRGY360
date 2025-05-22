@@ -18,7 +18,8 @@ export const RequestsProvider = ({ children }: any) => {
     limit: number
   ) => {
     try {
-      let url = `http://localhost:8080/api/file-requests?search=${search}&barangayId=${barangayId}&status=${status}&requestedDocumentType=${requestedDocumentType}&page=${page}&limit=${limit}`;
+      let url = `https://brgy360-be.onrender.com/api/file-requests?search=${search}&barangayId=${barangayId}&status=${status}&requestedDocumentType=${requestedDocumentType}&page=${page}&limit=${limit}`;
+      // let url = `http://localhost:8080/api/file-requests?search=${search}&barangayId=${barangayId}&status=${status}&requestedDocumentType=${requestedDocumentType}&page=${page}&limit=${limit}`;
 
       let response = await axios.get(url);
 
@@ -39,7 +40,8 @@ export const RequestsProvider = ({ children }: any) => {
     limit: number
   ) => {
     try {
-      let url = `http://localhost:8080/api/file-requests?requestedBy=${userId}&status=${status}&requestedDocumentType=${requestedDocumentType}&page=${page}&limit=${limit}`;
+      let url = `https://brgy360-be.onrender.com/api/file-requests?requestedBy=${userId}&status=${status}&requestedDocumentType=${requestedDocumentType}&page=${page}&limit=${limit}`;
+      // let url = `http://localhost:8080/api/file-requests?requestedBy=${userId}&status=${status}&requestedDocumentType=${requestedDocumentType}&page=${page}&limit=${limit}`;
 
       let response = await axios.get(url);
 

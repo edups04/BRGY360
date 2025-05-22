@@ -40,7 +40,8 @@ const AddAchievements = () => {
 
       if (currUser) {
         try {
-          let url = `http://localhost:8080/api/users/${currUser._id}`;
+          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
 
@@ -51,7 +52,9 @@ const AddAchievements = () => {
 
             try {
               let url =
-                "http://localhost:8080/api/accomplishments-achievements";
+                "https://brgy360-be.onrender.com/api/accomplishments-achievements";
+              // let url =
+              //   "http://localhost:8080/api/accomplishments-achievements";
 
               const formData = new FormData();
               formData.append("title", title);

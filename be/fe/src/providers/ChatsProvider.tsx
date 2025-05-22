@@ -9,7 +9,8 @@ export const ChatsProvider = ({ children }: any) => {
 
   const getUserChats = async (userId: string) => {
     try {
-      let url = `http://localhost:8080/api/chat-bot-messages?userId=${userId}`;
+      let url = `https://brgy360-be.onrender.com/api/chat-bot-messages?userId=${userId}`;
+      // let url = `http://localhost:8080/api/chat-bot-messages?userId=${userId}`;
 
       let response = await axios.get(url);
 
@@ -23,7 +24,8 @@ export const ChatsProvider = ({ children }: any) => {
 
   const getAdminChats = async (barangayId: string) => {
     try {
-      let url = `http://localhost:8080/api/chat-bot-messages?grouped=true&barangayId=${barangayId}`;
+      let url = `https://brgy360-be.onrender.com/api/chat-bot-messages?grouped=true&barangayId=${barangayId}`;
+      // let url = `http://localhost:8080/api/chat-bot-messages?grouped=true&barangayId=${barangayId}`;
 
       let response = await axios.get(url);
 

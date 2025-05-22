@@ -30,7 +30,8 @@ const Users = () => {
   const deleteUser = async (userId: string) => {
     if (userId) {
       try {
-        let url = `http://localhost:8080/api/users/${userId}`;
+        let url = `https://brgy360-be.onrender.com/api/users/${userId}`;
+        // let url = `http://localhost:8080/api/users/${userId}`;
 
         let response = await axios.delete(url);
 
@@ -57,7 +58,8 @@ const Users = () => {
 
         if (currUser) {
           try {
-            let url = `http://localhost:8080/api/users/${currUser._id}`;
+            let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+            // let url = `http://localhost:8080/api/users/${currUser._id}`;
             setCurrentUser(currUser._id);
 
             let response = await axios.get(url);
@@ -176,7 +178,7 @@ const Users = () => {
                         <div
                           className="w-[40px] h-[40px] rounded-full overflow-hidden bg-gray-200 bg-cover bg-center"
                           style={{
-                            backgroundImage: `url("http://localhost:8080/api/images/${user.profile}")`,
+                            backgroundImage: `url("https://brgy360-be.onrender.com/api/images/${user.profile}")`,
                           }}
                         ></div>
                         <p className="text-xs font-normal">{`${user.firstName} ${user.lastName}`}</p>

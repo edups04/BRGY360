@@ -33,7 +33,8 @@ const EditBudgets = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        let url = `http://localhost:8080/api/budgets/${state}`;
+        let url = `https://brgy360-be.onrender.com/api/budgets/${state}`;
+        // let url = `http://localhost:8080/api/budgets/${state}`;
 
         let response = await axios.get(url);
 
@@ -57,7 +58,8 @@ const EditBudgets = () => {
 
         if (currUser) {
           try {
-            let url = `http://localhost:8080/api/users/${currUser._id}`;
+            let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+            // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
             let response = await axios.get(url);
 
@@ -93,7 +95,8 @@ const EditBudgets = () => {
 
       if (currUser) {
         try {
-          let url = `http://localhost:8080/api/users/${currUser._id}`;
+          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
 
@@ -101,7 +104,8 @@ const EditBudgets = () => {
             const barangayId = response.data.data.barangayId;
 
             try {
-              let url = `http://localhost:8080/api/budgets/${state}`;
+              let url = `https://brgy360-be.onrender.com/api/budgets/${state}`;
+              // let url = `http://localhost:8080/api/budgets/${state}`;
 
               const formData = new FormData();
               formData.append("title", title);
@@ -110,7 +114,7 @@ const EditBudgets = () => {
 
               if (!fileChanged) {
                 if (file !== "N/A") {
-                  let url = `http://localhost:8080/api/files/${encodeURIComponent(
+                  let url = `https://brgy360-be.onrender.com/api/files/${encodeURIComponent(
                     file
                   )}`;
 
@@ -173,7 +177,7 @@ const EditBudgets = () => {
               <iframe
                 src={
                   typeof file === "string"
-                    ? `http://localhost:8080/api/files/${file}`
+                    ? `https://brgy360-be.onrender.com/api/files/${file}`
                     : URL.createObjectURL(file)
                 }
                 title="PDF Preview"

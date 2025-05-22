@@ -59,7 +59,8 @@ const AddUser = () => {
   const registerUser = async () => {
     if (password === rePassword) {
       try {
-        let url = "http://localhost:8080/api/users";
+        let url = "https://brgy360-be.onrender.com/api/users";
+        // let url = "http://localhost:8080/api/users";
 
         const formData = new FormData();
         formData.append("firstName", firstName);

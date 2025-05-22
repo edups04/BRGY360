@@ -56,7 +56,7 @@ const Achievements = () => {
                     style={{
                       backgroundImage:
                         recentAchievement.image !== "N/A"
-                          ? `url(http://localhost:8080/api/images/${encodeURIComponent(
+                          ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
                               recentAchievement.image
                             )})`
                           : "",

@@ -12,9 +12,10 @@ const Home = () => {
 
     let CURRENT_USER = JSON.parse(localStorage.getItem("user"));
 
+    // @ts-ignore
     window.chtlConfig = {
       // chatbotId: "6153291475", // prev bot
-      chatbotId: "6382343746", // new 
+      chatbotId: "6382343746", // new
       variables: {
         userId: CURRENT_USER._id || "",
         baseUrl: baseUrl,

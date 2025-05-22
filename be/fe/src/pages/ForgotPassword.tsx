@@ -23,7 +23,7 @@ const ForgotPassword = () => {
     const verifyToken = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/users/verify-reset-token",
+          "https://brgy360-be.onrender.com/api/users/verify-reset-token",
           {
             token,
           }
@@ -54,7 +54,8 @@ const ForgotPassword = () => {
 
   const onChangePassword = async () => {
     try {
-      let url = "http://localhost:8080/api/users/reset-password";
+      let url = "https://brgy360-be.onrender.com/api/users/reset-password";
+      // let url = "http://localhost:8080/api/users/reset-password";
 
       let response = await axios.post(url, {
         token,

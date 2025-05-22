@@ -58,7 +58,7 @@ const AllNews = () => {
                       style={{
                         backgroundImage:
                           latestNews.image !== "N/A"
-                            ? `url(http://localhost:8080/api/images/${encodeURIComponent(
+                            ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
                                 latestNews.image
                               )})`
                             : "",

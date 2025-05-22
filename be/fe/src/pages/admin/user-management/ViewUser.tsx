@@ -71,7 +71,8 @@ const ViewUser = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        let url = `http://localhost:8080/api/users/${state}`;
+        let url = `https://brgy360-be.onrender.com/api/users/${state}`;
+        // let url = `http://localhost:8080/api/users/${state}`;
 
         let response = await axios.get(url);
 
@@ -394,7 +395,7 @@ const ViewUser = () => {
                   className="w-full lg:w-1/2 bg-black/10 h-[220px] rounded-xl gap-2 flex flex-col items-center justify-center"
                   style={{
                     backgroundImage: front
-                      ? `url("http://localhost:8080/api/images/${front}")`
+                      ? `url("https://brgy360-be.onrender.com/api/images/${front}")`
                       : "",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
@@ -416,7 +417,7 @@ const ViewUser = () => {
                   className="w-full lg:w-1/2 bg-black/10 h-[220px] rounded-xl gap-2 flex flex-col items-center justify-center"
                   style={{
                     backgroundImage: front
-                      ? `url("http://localhost:8080/api/images/${back}")`
+                      ? `url("https://brgy360-be.onrender.com/api/images/${back}")`
                       : "",
                     backgroundSize: "cover",
                     backgroundPosition: "center",

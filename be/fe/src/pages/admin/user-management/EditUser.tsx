@@ -75,7 +75,8 @@ const EditUser = () => {
 
   const getData = async () => {
     try {
-      let url = `http://localhost:8080/api/users/${state}`;
+      let url = `https://brgy360-be.onrender.com/api/users/${state}`;
+      // let url = `http://localhost:8080/api/users/${state}`;
 
       let response = await axios.get(url);
 
@@ -115,7 +116,8 @@ const EditUser = () => {
       (frontPreview !== null && backPreview !== null)
     ) {
       try {
-        let url = `http://localhost:8080/api/users/${userId}`;
+        let url = `https://brgy360-be.onrender.com/api/users/${userId}`;
+        // let url = `http://localhost:8080/api/users/${userId}`;
 
         const formData = new FormData();
         formData.append("firstName", firstName);
@@ -435,7 +437,7 @@ const EditUser = () => {
                     backgroundImage: frontPreview
                       ? `url(${frontPreview})`
                       : front
-                      ? `url("http://localhost:8080/api/images/${front}")`
+                      ? `url("https://brgy360-be.onrender.com/api/images/${front}")`
                       : "",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
@@ -459,7 +461,7 @@ const EditUser = () => {
                     backgroundImage: backPreview
                       ? `url(${backPreview})`
                       : back
-                      ? `url("http://localhost:8080/api/images/${back}")`
+                      ? `url("https://brgy360-be.onrender.com/api/images/${back}")`
                       : "",
                     backgroundSize: "cover",
                     backgroundPosition: "center",

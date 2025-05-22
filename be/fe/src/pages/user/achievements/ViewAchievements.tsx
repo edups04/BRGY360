@@ -13,7 +13,8 @@ const ViewAchievements = () => {
     const getData = async () => {
       if (state) {
         try {
-          let url = `http://localhost:8080/api/accomplishments-achievements/${state}`;
+          let url = `https://brgy360-be.onrender.com/api/accomplishments-achievements/${state}`;
+          // let url = `http://localhost:8080/api/accomplishments-achievements/${state}`;
 
           let response = await axios.get(url);
 
@@ -54,7 +55,7 @@ const ViewAchievements = () => {
             style={{
               backgroundImage:
                 data.image !== "N/A"
-                  ? `url(http://localhost:8080/api/images/${encodeURIComponent(
+                  ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
                       data.image
                     )})`
                   : "",

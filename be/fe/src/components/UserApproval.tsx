@@ -23,7 +23,8 @@ const UserApproval = ({
 
   const declineUser = async () => {
     try {
-      let url = `http://localhost:8080/api/users/${userId}`;
+      let url = `https://brgy360-be.onrender.com/api/users/${userId}`;
+      // let url = `http://localhost:8080/api/users/${userId}`;
 
       const formData = new FormData();
       back && formData.append("back", back);
@@ -51,7 +52,8 @@ const UserApproval = ({
 
   const approveUser = async () => {
     try {
-      let url = `http://localhost:8080/api/users/${userId}`;
+      let url = `https://brgy360-be.onrender.com/api/users/${userId}`;
+      // let url = `http://localhost:8080/api/users/${userId}`;
 
       const formData = new FormData();
       back && formData.append("back", back);
@@ -81,7 +83,8 @@ const UserApproval = ({
     const getData = async () => {
       if (userId) {
         try {
-          let url = `http://localhost:8080/api/users/${userId}`;
+          let url = `https://brgy360-be.onrender.com/api/users/${userId}`;
+          // let url = `http://localhost:8080/api/users/${userId}`;
 
           let response = await axios.get(url);
 
@@ -124,7 +127,7 @@ const UserApproval = ({
               className="w-full h-[220px] lg:h-[320px] flex items-center justify-center bg-gray-200 rounded-xl overflow-hidden"
               style={{
                 backgroundImage: front
-                  ? `url("http://localhost:8080/api/images/${front}")`
+                  ? `url("https://brgy360-be.onrender.com/api/images/${front}")`
                   : "",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -135,7 +138,7 @@ const UserApproval = ({
               className="w-full h-[220px] lg:h-[320px] flex items-center justify-center bg-gray-200 rounded-xl overflow-hidden"
               style={{
                 backgroundImage: back
-                  ? `url("http://localhost:8080/api/images/${back}")`
+                  ? `url("https://brgy360-be.onrender.com/api/images/${back}")`
                   : "",
                 backgroundSize: "cover",
                 backgroundPosition: "center",

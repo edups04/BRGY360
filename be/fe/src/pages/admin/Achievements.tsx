@@ -38,7 +38,8 @@ const Achievements = () => {
   const deleteAchievement = async (updateId: string) => {
     if (updateId) {
       try {
-        let url = `http://localhost:8080/api/accomplishments-achievements/${updateId}`;
+        let url = `https://brgy360-be.onrender.com/api/accomplishments-achievements/${updateId}`;
+        // let url = `http://localhost:8080/api/accomplishments-achievements/${updateId}`;
 
         let response = await axios.delete(url);
 
@@ -64,7 +65,8 @@ const Achievements = () => {
 
       if (currUser) {
         try {
-          let url = `http://localhost:8080/api/users/${currUser._id}`;
+          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
 
@@ -146,7 +148,7 @@ const Achievements = () => {
                         style={{
                           backgroundImage:
                             achievement.image !== "N/A"
-                              ? `url(http://localhost:8080/api/images/${encodeURIComponent(
+                              ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
                                   achievement.image
                                 )})`
                               : "",

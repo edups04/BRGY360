@@ -129,6 +129,7 @@ const CompletionForm = ({
 
         if (imageField) {
           // Set the image in the field
+          // @ts-ignore
           imageField.setImage(embeddedImage);
         } else {
           console.error("Image field 'image' not found in the PDF.");
@@ -255,6 +256,7 @@ const CompletionForm = ({
 
         if (imageField) {
           // Set the image in the field
+          // @ts-ignore
           imageField.setImage(embeddedImage);
         } else {
           console.error("Image field 'image' not found in the PDF.");
@@ -275,7 +277,8 @@ const CompletionForm = ({
 
   const printRequest = async () => {
     try {
-      let url = `http://localhost:8080/api/file-requests/${data._id}`;
+      let url = `https://brgy360-be.onrender.com/api/file-requests/${data._id}`;
+      // let url = `http://localhost:8080/api/file-requests/${data._id}`;
 
       const today = new Date();
       const formatted = today.toISOString().split("T")[0];
@@ -350,7 +353,10 @@ const CompletionForm = ({
                   type="number"
                   min={0}
                   value={residentCertificateNumber}
-                  onChange={(e) => setResidentCertificateNumber(e.target.value)}
+                  onChange={(e) => {
+                    // @ts-ignore
+                    setResidentCertificateNumber(e.target.value);
+                  }}
                   placeholder="place of issuance"
                   className="text-xs font-normal outline-none border border-green-700 p-3 rounded-xl w-full"
                 />

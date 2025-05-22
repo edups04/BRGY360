@@ -44,7 +44,8 @@ const Budgets = () => {
 
       if (currUser) {
         try {
-          let url = `http://localhost:8080/api/users/${currUser._id}`;
+          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
 
@@ -64,7 +65,8 @@ const Budgets = () => {
   }, [year]);
 
   const handleDownload = (file: string) => {
-    const url = `http://localhost:8080/api/files/${file}`;
+    const url = `https://brgy360-be.onrender.com/api/files/${file}`;
+    // const url = `http://localhost:8080/api/files/${file}`;
     window.open(url, "_blank");
   };
 

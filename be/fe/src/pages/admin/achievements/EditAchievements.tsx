@@ -49,7 +49,8 @@ const EditAchievements = () => {
 
       if (currUser) {
         try {
-          let url = `http://localhost:8080/api/users/${currUser._id}`;
+          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
 
@@ -59,7 +60,8 @@ const EditAchievements = () => {
             const currentDate = new Date().toISOString();
 
             try {
-              let url = `http://localhost:8080/api/accomplishments-achievements/${state}`;
+              let url = `https://brgy360-be.onrender.com/api/accomplishments-achievements/${state}`;
+              // let url = `http://localhost:8080/api/accomplishments-achievements/${state}`;
 
               const formData = new FormData();
               formData.append("title", title);
@@ -68,7 +70,7 @@ const EditAchievements = () => {
               formData.append("date", currentDate);
 
               if (!imageChanged) {
-                let url = `http://localhost:8080/api/images/${encodeURIComponent(
+                let url = `https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
                   image
                 )}`;
 
@@ -106,7 +108,8 @@ const EditAchievements = () => {
 
   const deleteAchievement = async () => {
     try {
-      let url = `http://localhost:8080/api/accomplishments-achievements/${state}`;
+      let url = `https://brgy360-be.onrender.com/api/accomplishments-achievements/${state}`;
+      // let url = `http://localhost:8080/api/accomplishments-achievements/${state}`;
 
       let response = await axios.delete(url);
 
@@ -126,7 +129,8 @@ const EditAchievements = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        let url = `http://localhost:8080/api/accomplishments-achievements/${state}`;
+        let url = `https://brgy360-be.onrender.com/api/accomplishments-achievements/${state}`;
+        // let url = `http://localhost:8080/api/accomplishments-achievements/${state}`;
 
         let response = await axios.get(url);
 
@@ -167,7 +171,7 @@ const EditAchievements = () => {
               <img
                 src={
                   typeof image === "string"
-                    ? `http://localhost:8080/api/images/${image}` // e.g., http://localhost:3000/uploads/${image}
+                    ? `https://brgy360-be.onrender.com/api/images/${image}` // e.g., http://localhost:3000/uploads/${image}
                     : URL.createObjectURL(image)
                 }
                 alt="preview"
