@@ -103,7 +103,7 @@ const CompletionForm = ({
       ) {
         // Fetch the image from the server
         const response = await axios.get(
-          `http://localhost:8080/api/images/${data.data.image}`,
+          `https://brgy360-be.onrender.com/api/images/${data.data.image}`,
           { responseType: "arraybuffer" } // Ensure response is an array buffer
         );
 
@@ -230,7 +230,7 @@ const CompletionForm = ({
       ) {
         // Fetch the image from the server
         const response = await axios.get(
-          `http://localhost:8080/api/images/${data.data.image}`,
+          `https://brgy360-be.onrender.com/api/images/${data.data.image}`,
           { responseType: "arraybuffer" } // Ensure response is an array buffer
         );
 
