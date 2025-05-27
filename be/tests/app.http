@@ -2,3 +2,6 @@
 @baseUrl = http://localhost:{{port}}
 
 GET {{baseUrl}}/
+
+###
+https://brgy360-be.onrender.com/api/images/1748366514359-s-l1200.jpg

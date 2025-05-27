@@ -94,6 +94,7 @@ const ProjectUpdates = () => {
               )}
             </div>
           </div>
+          {/* MORE NEWS */}
           <div className="w-full lg:w-1/4 flex flex-col items-center justify-center gap-4">
             {/* header */}
             <div className="w-full flex items-center justify-start bg-green-700 p-3 text-sm font-normal text-white rounded-xl">
