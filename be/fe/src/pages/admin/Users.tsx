@@ -310,6 +310,7 @@ const Users = () => {
             getUsers(search, barangayId, page, limit, status, role);
             showApprovalForm(false);
           }}
+          isForFileRequest={false}
         />
       )}
     </>

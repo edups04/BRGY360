@@ -249,14 +249,16 @@ const Chatbot = () => {
                           }}
                         ></div>
                         <p className="text-xs font-normal">{`${chat.user.firstName} ${chat.user.lastName}`}</p>
-                        {(chat.unreadCount && selectedUser !== chat.user?._id) >
-                          0 && (
-                          <div className="ml-auto rounded-full px-2 py-1 min-w-8 text-center bg-red-500">
-                            <span className="font-bold text-sm text-white">
-                              {chat.unreadCount > 99 ? "99+" : chat.unreadCount}
-                            </span>
-                          </div>
-                        )}
+                        {chat.unreadCount > 0 &&
+                          selectedUser !== chat.user?._id && (
+                            <div className="ml-auto rounded-full px-2 py-1 min-w-8 text-center bg-red-500">
+                              <span className="font-bold text-sm text-white">
+                                {chat.unreadCount > 99
+                                  ? "99+"
+                                  : chat.unreadCount}
+                              </span>
+                            </div>
+                          )}
                       </div>
                     );
                   })}

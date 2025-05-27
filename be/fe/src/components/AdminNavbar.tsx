@@ -39,7 +39,7 @@ const AdminNavbar = () => {
     const socket = new WebSocket(WEBSOCKET_URL); // Update with your WebSocket URL
 
     //  *Event listener for when the connection is opened
-    socket.addEventListener("open", (event) => {
+    socket.addEventListener("open", () => {
       console.log("WebSocket connection established");
       socket.send(JSON.stringify({ message: "Hello from client!" }));
     });
@@ -69,7 +69,7 @@ const AdminNavbar = () => {
     });
 
     // * Event listener for when the connection is closed
-    socket.addEventListener("close", (event) => {
+    socket.addEventListener("close", () => {
       console.log("WebSocket connection closed");
     });
 
