@@ -12,11 +12,11 @@ import { fileRequestRoutes } from "./src/routes/fileRequestRoutes.js";
 import { chatBotRoutes } from "./src/routes/chatBotRoutes.js";
 
 // ! FOR WEB HOSTING
-// import path from "path";
-// import { fileURLToPath } from "url";
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
-// console.log(__dirname);
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+console.log(__dirname);
 
 let app = express();
 dotenv.config();
@@ -84,14 +84,14 @@ app.use("/api/file-requests", fileRequestRoutes);
 app.use("/api/chat-bot-messages", chatBotRoutes);
 
 // ! TO RENDER FRONTEND ON WEB HOSTING
-// // app.use(express.static(path.join(__dirname, "/fe/build/")));
-// app.use(express.static(path.join(__dirname, "/fe/dist/")));
+// app.use(express.static(path.join(__dirname, "/fe/build/")));
+app.use(express.static(path.join(__dirname, "/fe/dist/")));
 
-// // ! RENDER FRONTEND ON ANY PATH
-// app.get("*", (req, res) =>
-//   res.sendFile(path.join(__dirname, "/fe/dist/index.html"))
-//   // res.sendFile(path.join(__dirname, "/fe/build/index.html"))
-// );
+// ! RENDER FRONTEND ON ANY PATH
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "/fe/dist/index.html"))
+  // res.sendFile(path.join(__dirname, "/fe/build/index.html"))
+);
 
 // * start server
 app.get("/", async (req, res) => {
