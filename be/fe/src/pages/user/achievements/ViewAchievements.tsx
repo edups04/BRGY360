@@ -3,6 +3,7 @@ import { RiArrowLeftSLine, RiCalendarLine } from "react-icons/ri";
 import UserNavbar from "../../../components/UserNavbar";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import BACKEND_API from "../../../utils/API";
 
 const ViewAchievements = () => {
   const { state } = useLocation();
@@ -13,7 +14,7 @@ const ViewAchievements = () => {
     const getData = async () => {
       if (state) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/accomplishments-achievements/${state}`;
+          let url = `${BACKEND_API}/accomplishments-achievements/${state}`;
           // let url = `http://localhost:8080/api/accomplishments-achievements/${state}`;
 
           let response = await axios.get(url);
@@ -55,7 +56,7 @@ const ViewAchievements = () => {
             style={{
               backgroundImage:
                 data.image !== "N/A"
-                  ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
+                  ? `url(${BACKEND_API}/images/${encodeURIComponent(
                       data.image
                     )})`
                   : "",

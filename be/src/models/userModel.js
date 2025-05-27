@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
+  middleName: { type: String, required: true },
   lastName: { type: String, required: true },
   sex: { type: String, required: true },
   birthdate: { type: Date, required: true },
@@ -22,9 +23,9 @@ const userSchema = new mongoose.Schema({
   address: { type: String, required: true },
   profile: { type: String, default: "N/A" },
   validId: {
-    type: { type: String, default: "N/A" },
-    front: { type: String, default: "N/A" },
-    back: { type: String, default: "N/A" },
+    type: { type: String },
+    front: { type: String, required: true },
+    back: { type: String, required: true },
   },
   barangayId: {
     type: mongoose.Schema.Types.ObjectId,

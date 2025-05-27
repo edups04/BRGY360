@@ -12,9 +12,11 @@ import {
 import Modal from "../../components/Modal";
 import DeleteModal from "../../components/DeleteModal";
 import UserNavbar from "../../components/UserNavbar";
+import BACKEND_API from "../../utils/API";
 
 const Profile = () => {
   const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -48,7 +50,7 @@ const Profile = () => {
   const deleteUser = async () => {
     if (userId) {
       try {
-        let url = `https://brgy360-be.onrender.com/api/users/${userId}`;
+        let url = `${BACKEND_API}/users/${userId}`;
         // let url = `http://localhost:8080/api/users/${userId}`;
 
         let response = await axios.delete(url);
@@ -65,11 +67,12 @@ const Profile = () => {
 
   const updateUser = async () => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/users/${userId}`;
+      let url = `${BACKEND_API}/users/${userId}`;
       // let url = `http://localhost:8080/api/users/${userId}`;
 
       const formData = new FormData();
       formData.append("firstName", firstName);
+      formData.append("middleName", middleName);
       formData.append("lastName", lastName);
       formData.append("sex", sex);
       formData.append("birthdate", birthDate);
@@ -117,13 +120,14 @@ const Profile = () => {
         if (currUser) {
           console.log(currUser);
           try {
-            let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+            let url = `${BACKEND_API}/users/${currUser._id}`;
             // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
             let response = await axios.get(url);
 
             if (response.data.success === true) {
               setFirstName(response.data.data.firstName);
+              setMiddleName(response.data.data.middleName);
               setLastName(response.data.data.lastName);
               setMobileNumber(response.data.data.phoneNumber);
               setEmail(response.data.data.email);
@@ -210,7 +214,7 @@ const Profile = () => {
                         preview
                           ? preview
                           : profile
-                          ? `https://brgy360-be.onrender.com/api/images/${profile}`
+                          ? `${BACKEND_API}/images/${profile}`
                           : ""
                       }
                       alt=""
@@ -255,6 +259,18 @@ const Profile = () => {
                   placeholder="first name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
+                  disabled={true}
+                />
+              </div>
+              {/* middle name */}
+              <div className="w-full flex flex-col items-start justify-center gap-2">
+                <p className="text-xs font-normal">Middle Name</p>
+                <input
+                  type="text"
+                  className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
+                  placeholder="middle name"
+                  value={middleName}
+                  onChange={(e) => setMiddleName(e.target.value)}
                   disabled={true}
                 />
               </div>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useContext, useState } from "react";
+import BACKEND_API from "../utils/API";
 
 const RequestsContext = createContext<any>(null);
 
@@ -18,7 +19,7 @@ export const RequestsProvider = ({ children }: any) => {
     limit: number
   ) => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/file-requests?search=${search}&barangayId=${barangayId}&status=${status}&requestedDocumentType=${requestedDocumentType}&page=${page}&limit=${limit}`;
+      let url = `${BACKEND_API}/file-requests?search=${search}&barangayId=${barangayId}&status=${status}&requestedDocumentType=${requestedDocumentType}&page=${page}&limit=${limit}`;
       // let url = `http://localhost:8080/api/file-requests?search=${search}&barangayId=${barangayId}&status=${status}&requestedDocumentType=${requestedDocumentType}&page=${page}&limit=${limit}`;
 
       let response = await axios.get(url);
@@ -40,7 +41,7 @@ export const RequestsProvider = ({ children }: any) => {
     limit: number
   ) => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/file-requests?requestedBy=${userId}&status=${status}&requestedDocumentType=${requestedDocumentType}&page=${page}&limit=${limit}`;
+      let url = `${BACKEND_API}/file-requests?requestedBy=${userId}&status=${status}&requestedDocumentType=${requestedDocumentType}&page=${page}&limit=${limit}`;
       // let url = `http://localhost:8080/api/file-requests?requestedBy=${userId}&status=${status}&requestedDocumentType=${requestedDocumentType}&page=${page}&limit=${limit}`;
 
       let response = await axios.get(url);

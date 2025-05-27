@@ -4,6 +4,31 @@ import mongoose from "mongoose";
 import { nullChecker } from "../utils/nullChecker.js";
 import { checkDuplicate } from "../utils/duplicateChecker.js";
 
+// * import wss object exported from server.js
+import { wss } from "../../app.js";
+import WebSocket from "ws";
+
+// * STEP 4.1 WS - once post request received from nodemcu,
+// * notify clients (frontend) connected on web socket
+const realtime = async (data) => {
+  console.log("Data received:", data);
+
+  // * Send the data to all connected clients
+  // * return the data to the client (frontend)
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(
+        JSON.stringify({
+          realTimeType: "chat",
+          message: "New chat received",
+          data: data,
+          success: true,
+        })
+      );
+    }
+  });
+};
+
 const createChatBotMessage = async (req, res) => {
   try {
     console.log(req.body);
@@ -20,6 +45,9 @@ const createChatBotMessage = async (req, res) => {
     let chatBot = new ChatBot(req.body);
 
     await chatBot.save();
+
+    // * STEP 4.2 WS - notify clients (frontend) connected on web socket
+    realtime(req.body); // * Call monitor with the received data
 
     res.status(201).json({
       success: true,
@@ -185,11 +213,12 @@ const getChatBotMessage = async (req, res) => {
 //   }
 // };
 
+// ! PREV
 const getChatBotMessages = async (req, res) => {
   try {
     const {
       page = 1,
-      limit = 10,
+      limit = 9999,
       dateFrom,
       dateTo,
       search,
@@ -269,6 +298,21 @@ const getChatBotMessages = async (req, res) => {
                 message: "$message",
                 from: "$from",
                 date: "$date",
+                status: "$status",
+              },
+            },
+            unreadCount: {
+              $sum: {
+                $cond: [
+                  {
+                    $and: [
+                      { $eq: ["$status", "unread"] },
+                      { $eq: ["$from", "user"] },
+                    ],
+                  },
+                  1,
+                  0,
+                ],
               },
             },
           },
@@ -358,10 +402,27 @@ const getChatBotMessages = async (req, res) => {
 
     const total = await ChatBot.countDocuments(match);
 
+    // * COUNT UNREAD MESSAGES OF ADMIN TO USER
+    let unreadMessagesCount = 0;
+
+    if (userId) {
+      const unreadMessages = await ChatBot.find({
+        userId: userId,
+      }).populate("userId", "firstName lastName email role barangayId");
+      if (!grouped) {
+        unreadMessages.forEach((message) => {
+          if (message.from === "chatbot" && message.status === "unread") {
+            unreadMessagesCount++;
+          }
+        });
+      }
+    }
+
     res.json({
       success: true,
       message: "Chat Bot Messages retrieved",
       data: chatBotMessages,
+      unreadMessagesCount,
       meta: {
         total,
         page: pageNumber,
@@ -380,26 +441,46 @@ const getChatBotMessages = async (req, res) => {
 
 const updateChatBotMessage = async (req, res) => {
   try {
-    const chatBotMessageId = req.params.id;
+    let chatBotMessageId = req.params.id;
     console.log(req.body, chatBotMessageId);
 
-    const { message, userId } = req.body;
+    const { message, userId, status, from } = req.body;
 
-    const hasMissingFields = nullChecker(res, {
-      message,
-      userId,
-    });
-    console.log(hasMissingFields);
-    if (hasMissingFields) return;
+    if (!status) {
+      const hasMissingFields = nullChecker(res, {
+        message,
+        userId,
+      });
+      console.log(hasMissingFields);
+      if (hasMissingFields) return;
+    }
 
-    const updatedChatBotMessage = await ChatBot.findByIdAndUpdate(
-      chatBotMessageId,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    let updatedChatBotMessage = null;
+
+    if (!status) {
+      updatedChatBotMessage = await ChatBot.findByIdAndUpdate(
+        chatBotMessageId,
+        req.body,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    } else {
+      updatedChatBotMessage = await ChatBot.updateMany(
+        {
+          userId,
+          from: from,
+        },
+        {
+          $set: { status: status },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+    }
 
     if (!updatedChatBotMessage) {
       return res

@@ -6,6 +6,7 @@ import Modal from "../../../components/Modal";
 import PostModal from "../../../components/PostModal";
 import { RiAddLine, RiArrowLeftSLine } from "react-icons/ri";
 import AdminNavbar from "../../../components/AdminNavbar";
+import BACKEND_API from "../../../utils/API";
 
 const EditBudgets = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const EditBudgets = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        let url = `https://brgy360-be.onrender.com/api/budgets/${state}`;
+        let url = `${BACKEND_API}/budgets/${state}`;
         // let url = `http://localhost:8080/api/budgets/${state}`;
 
         let response = await axios.get(url);
@@ -58,7 +59,7 @@ const EditBudgets = () => {
 
         if (currUser) {
           try {
-            let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+            let url = `${BACKEND_API}/users/${currUser._id}`;
             // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
             let response = await axios.get(url);
@@ -95,7 +96,7 @@ const EditBudgets = () => {
 
       if (currUser) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          let url = `${BACKEND_API}/users/${currUser._id}`;
           // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
@@ -104,7 +105,7 @@ const EditBudgets = () => {
             const barangayId = response.data.data.barangayId;
 
             try {
-              let url = `https://brgy360-be.onrender.com/api/budgets/${state}`;
+              let url = `${BACKEND_API}/budgets/${state}`;
               // let url = `http://localhost:8080/api/budgets/${state}`;
 
               const formData = new FormData();
@@ -114,7 +115,7 @@ const EditBudgets = () => {
 
               if (!fileChanged) {
                 if (file !== "N/A") {
-                  let url = `https://brgy360-be.onrender.com/api/files/${encodeURIComponent(
+                  let url = `${BACKEND_API}/files/${encodeURIComponent(
                     file
                   )}`;
 
@@ -177,7 +178,7 @@ const EditBudgets = () => {
               <iframe
                 src={
                   typeof file === "string"
-                    ? `https://brgy360-be.onrender.com/api/files/${file}`
+                    ? `${BACKEND_API}/files/${file}`
                     : URL.createObjectURL(file)
                 }
                 title="PDF Preview"

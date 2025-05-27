@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useContext, useState } from "react";
+import BACKEND_API from "../utils/API";
 
 const BarangayContext = createContext<any | null>(null);
 
@@ -8,7 +9,7 @@ export const BarangayProvider = ({ children }: any) => {
 
   const getBarangays = async () => {
     try {
-      let url = "https://brgy360-be.onrender.com/api/barangays";
+      let url = `${BACKEND_API}/barangays`;
       // let url = "http://localhost:8080/api/barangays";
 
       let response = await axios.get(url);

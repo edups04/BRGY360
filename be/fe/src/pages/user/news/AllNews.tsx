@@ -2,10 +2,19 @@ import React, { useEffect, useState } from "react";
 import UserNavbar from "../../../components/UserNavbar";
 import { useNews } from "../../../providers/NewsProvider";
 import { RiArrowLeftSLine, RiCalendarLine } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import BACKEND_API from "../../../utils/API";
 
 const AllNews = () => {
-  const { latestNews, getLatestNews, news, getNews, totalPages } = useNews();
+  const { state } = useLocation();
+  const {
+    latestNews,
+    getLatestNews,
+    news,
+    getNews,
+    totalPages,
+    setLatestNews,
+  } = useNews();
   const limit = 5;
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
@@ -19,7 +28,11 @@ const AllNews = () => {
 
         if (currUser) {
           await getNews("", currUser.barangayId, page, limit);
-          await getLatestNews(currUser.barangayId);
+          if (!state) {
+            await getLatestNews(currUser.barangayId);
+          } else {
+            setLatestNews([state]);
+          }
         }
       }
     };
@@ -43,38 +56,42 @@ const AllNews = () => {
                 onClick={() => navigate("/user/news")}
               />
               <p className="text-sm font-semibold text-green-700">
-                Latest News
+                News and Announcements
               </p>
             </div>
             {latestNews
-              ? latestNews.map((latestNews: any) => (
-                  <div
-                    className="w-full flex flex-col items-center justify-center gap-6"
-                    key={latestNews._id}
-                  >
-                    {/* image */}
-                    <div
-                      className="w-full max-w-[75%] h-[220px] lg:h-[620px] bg-gray-200 rounded-xl bg-cover bg-center"
-                      style={{
-                        backgroundImage:
-                          latestNews.image !== "N/A"
-                            ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
-                                latestNews.image
-                              )})`
-                            : "",
-                      }}
-                    ></div>
-                    {/* content */}
-                    <div className="w-full flex flex-col items-start justify-center gap-2">
-                      <p className="text-sm font-semibold text-green-700">
-                        {latestNews.title}
-                      </p>
-                      <pre className="text-xs font-normal whitespace-pre-wrap break-words font-sans">
-                        {latestNews.contents}
-                      </pre>
-                    </div>
-                  </div>
-                ))
+              ? latestNews.map((selectedNews) => {
+                  return (
+                    <>
+                      <div
+                        className="w-full flex flex-col items-center justify-center gap-6"
+                        key={selectedNews._id}
+                      >
+                        {/* image */}
+                        <div
+                          className="w-full max-w-[75%] h-[220px] lg:h-[620px] bg-gray-200 rounded-xl bg-cover bg-center"
+                          style={{
+                            backgroundImage:
+                              selectedNews.image !== "N/A"
+                                ? `url(${BACKEND_API}/images/${encodeURIComponent(
+                                    selectedNews.image
+                                  )})`
+                                : "",
+                          }}
+                        ></div>
+                        {/* content */}
+                        <div className="w-full flex flex-col items-start justify-center gap-2">
+                          <p className="text-sm font-semibold text-green-700">
+                            {selectedNews.title}
+                          </p>
+                          <pre className="text-xs font-normal whitespace-pre-wrap break-words font-sans">
+                            {selectedNews.contents}
+                          </pre>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })
               : null}
           </div>
           <div className="w-full lg:w-1/4 flex flex-col items-center justify-center gap-4">
@@ -86,16 +103,31 @@ const AllNews = () => {
             {news.length > 0
               ? news.map((news: any) => (
                   <div
-                    className="w-full flex flex-col items-start justify-center p-3 gap-2 cursor-pointer border-b border-black/5"
-                    onClick={() =>
-                      navigate("/user/news/view", { state: news._id })
-                    }
+                    className={`w-full flex flex-col items-start justify-center p-3 gap-2 cursor-pointer border-b border-black/5 rounded-xl ${
+                      latestNews[0]?._id === news._id ? "bg-green-700/60" : ""
+                    }`}
+                    onClick={() => {
+                      setLatestNews([news]);
+                      // navigate("/user/news/all", { state: news._id })
+                    }}
                     key={news._id}
                   >
-                    <p className="text-xs font-semibold line-clamp-1 text-green-700">
+                    <p
+                      className={`text-xs font-semibold line-clamp-1 ${
+                        latestNews[0]?._id === news._id
+                          ? "text-white"
+                          : "text-green-700"
+                      } `}
+                    >
                       {news.title}
                     </p>
-                    <div className="w-full flex flex-row items-center justify-start text-green-700 gap-1">
+                    <div
+                      className={`w-full flex flex-row items-center justify-start ${
+                        latestNews[0]?._id === news._id
+                          ? "text-white"
+                          : "text-green-700"
+                      } gap-1`}
+                    >
                       <RiCalendarLine size={16} />
                       <p className="text-xs font-normal ">
                         {new Date(news.date).toLocaleDateString("en-US", {

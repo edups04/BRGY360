@@ -6,6 +6,7 @@ import axios from "axios";
 import PostModa from "../../../components/PostModal";
 import Modal from "../../../components/Modal";
 import PostModal from "../../../components/PostModal";
+import BACKEND_API from "../../../utils/API";
 
 const AddNews = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const AddNews = () => {
 
       if (currUser) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          let url = `${BACKEND_API}/users/${currUser._id}`;
           // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
@@ -53,7 +54,7 @@ const AddNews = () => {
 
             try {
               let url =
-                "https://brgy360-be.onrender.com/api/news-announcements";
+                `${BACKEND_API}/news-announcements`;
               // let url = "http://localhost:8080/api/news-announcements";
 
               const formData = new FormData();

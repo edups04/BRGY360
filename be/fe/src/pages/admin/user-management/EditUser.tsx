@@ -10,11 +10,14 @@ import {
 import AdminNavbar from "../../../components/AdminNavbar";
 import axios from "axios";
 import Modal from "../../../components/Modal";
+import BACKEND_API from "../../../utils/API";
+import calculateAge from "../../../utils/Age";
 
 const EditUser = () => {
   const { state } = useLocation();
 
   const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -49,6 +52,14 @@ const EditUser = () => {
     getBarangays();
   }, []);
 
+  useEffect(() => {
+    if (birthDate) {
+      setAge(calculateAge(birthDate).toString());
+    } else {
+      setAge("");
+    }
+  }, [birthDate]);
+
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -75,7 +86,7 @@ const EditUser = () => {
 
   const getData = async () => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/users/${state}`;
+      let url = `${BACKEND_API}/users/${state}`;
       // let url = `http://localhost:8080/api/users/${state}`;
 
       let response = await axios.get(url);
@@ -83,6 +94,7 @@ const EditUser = () => {
       if (response.data.success === true) {
         console.log(response.data.data);
         setFirstName(response.data.data.firstName);
+        setMiddleName(response.data.data.middleName);
         setLastName(response.data.data.lastName);
         setMobileNumber(response.data.data.phoneNumber);
         setEmail(response.data.data.email);
@@ -116,11 +128,12 @@ const EditUser = () => {
       (frontPreview !== null && backPreview !== null)
     ) {
       try {
-        let url = `https://brgy360-be.onrender.com/api/users/${userId}`;
+        let url = `${BACKEND_API}/users/${userId}`;
         // let url = `http://localhost:8080/api/users/${userId}`;
 
         const formData = new FormData();
         formData.append("firstName", firstName);
+        formData.append("middleName", middleName);
         formData.append("lastName", lastName);
         formData.append("sex", sex);
         formData.append("birthdate", birthDate);
@@ -203,7 +216,7 @@ const EditUser = () => {
                         profilePreview
                           ? profilePreview
                           : profile
-                          ? `https://brgy360-be.onrender.com/api/images/${profile}`
+                          ? `${BACKEND_API}/images/${profile}`
                           : ""
                       }
                       alt=""
@@ -248,6 +261,18 @@ const EditUser = () => {
                   placeholder="first name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
+                  disabled={edit ? false : true}
+                />
+              </div>
+              {/* middle name */}
+              <div className="w-full flex flex-col items-start justify-center gap-2">
+                <p className="text-xs font-normal">Middle Name</p>
+                <input
+                  type="text"
+                  className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
+                  placeholder="middle name"
+                  value={middleName}
+                  onChange={(e) => setMiddleName(e.target.value)}
                   disabled={edit ? false : true}
                 />
               </div>
@@ -341,11 +366,11 @@ const EditUser = () => {
                   className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
                   placeholder="age"
                   value={age}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/\D/g, "");
-                    setAge(value.slice(0, 2));
-                  }}
-                  disabled={edit ? false : true}
+                  // onChange={(e) => {
+                  //   const value = e.target.value.replace(/\D/g, "");
+                  //   setAge(value.slice(0, 2));
+                  // }}
+                  disabled={true}
                 />
               </div>
               {/* sex */}
@@ -437,7 +462,7 @@ const EditUser = () => {
                     backgroundImage: frontPreview
                       ? `url(${frontPreview})`
                       : front
-                      ? `url("https://brgy360-be.onrender.com/api/images/${front}")`
+                      ? `url("${BACKEND_API}/images/${front}")`
                       : "",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
@@ -450,7 +475,7 @@ const EditUser = () => {
                       accept="image/*"
                       onChange={handleFrontChange}
                       className="hidden"
-                      disabled={edit ? false : true}
+                      disabled={edit && idType ? false : true}
                     />
                   </label>
                   <p className="text-xs font-normal text-white">Front</p>
@@ -461,7 +486,7 @@ const EditUser = () => {
                     backgroundImage: backPreview
                       ? `url(${backPreview})`
                       : back
-                      ? `url("https://brgy360-be.onrender.com/api/images/${back}")`
+                      ? `url("${BACKEND_API}/images/${back}")`
                       : "",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
@@ -474,7 +499,7 @@ const EditUser = () => {
                       accept="image/*"
                       onChange={handleBackChange}
                       className="hidden"
-                      disabled={edit ? false : true}
+                      disabled={edit && idType ? false : true}
                     />
                   </label>
 

@@ -7,6 +7,8 @@ import Modal from "../../components/Modal";
 import { PDFDocument } from "pdf-lib";
 import DeleteModal from "../../components/DeleteModal";
 import CompletionForm from "../../components/CompletionForm";
+import BACKEND_API from "../../utils/API";
+import UserApproval from "../../components/UserApproval";
 
 const FileRequests = () => {
   const [search, setSearch] = useState("");
@@ -24,6 +26,8 @@ const FileRequests = () => {
   const [selectedRequest, setSelectedRequest] = useState("");
   const [completionForm, showCompletionForm] = useState(false);
   const [data, setData] = useState<any>(null);
+  const [approvalForm, showApprovalForm] = useState(false);
+  const [selectedUser, setSelectedUser] = useState("");
 
   useEffect(() => {
     if (page > totalPages && totalPages !== 0) {
@@ -52,7 +56,7 @@ const FileRequests = () => {
 
   const approveRequest = async (requestId: string) => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/file-requests/${requestId}`;
+      let url = `${BACKEND_API}/file-requests/${requestId}`;
 
       let response = await axios.put(url, {
         status: "approved",
@@ -117,6 +121,9 @@ const FileRequests = () => {
       form.getTextField("purpose")?.setText(data.data.purpose);
       form.getTextField("dateRequested")?.setText(formattedDate);
       form
+        .getTextField("noDerogatoryRecord")
+        ?.setText(data.data.noDerogatoryRecord);
+      form
         .getTextField("requestNumber")
         ?.setText(data.residentCertificateNumber.toString());
       data.issuanceDate === "N/A"
@@ -154,7 +161,7 @@ const FileRequests = () => {
       ) {
         // Fetch the image from the server
         const response = await axios.get(
-          `https://brgy360-be.onrender.com/api/images/${data.data.image}`,
+          `${BACKEND_API}/images/${data.data.image}`,
           { responseType: "arraybuffer" } // Ensure response is an array buffer
         );
 
@@ -202,7 +209,7 @@ const FileRequests = () => {
 
   const deleteRequest = async (requestId: string) => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/file-requests/${requestId}`;
+      let url = `${BACKEND_API}/file-requests/${requestId}`;
       // let url = `http://localhost:8080/api/file-requests/${requestId}`;
 
       let response = await axios.delete(url);
@@ -221,7 +228,7 @@ const FileRequests = () => {
 
   const declineRequest = async (requestId: string) => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/file-requests/${requestId}`;
+      let url = `${BACKEND_API}/file-requests/${requestId}`;
       // let url = `http://localhost:8080/api/file-requests/${requestId}`;
 
       let response = await axios.put(url, {
@@ -310,7 +317,7 @@ const FileRequests = () => {
                   Document Type
                 </th>
                 <th className="border border-black/10 text-left text-sm font-semibold p-2">
-                  File
+                  Document and ID
                 </th>
                 <th className="border border-black/10 text-left text-sm font-semibold p-2">
                   Status
@@ -351,13 +358,24 @@ const FileRequests = () => {
                         ? "First Time Job Seeker"
                         : ""}
                     </td>
-                    <td className="border border-black/10 text-left p-3">
-                      <p
-                        className="text-green-700 text-xs font-semibold cursor-pointer"
-                        onClick={() => generateAndPreviewPdf(request)}
-                      >
-                        View File
-                      </p>
+                    <td className="h-16 p-3">
+                      <div className="flex flex-row gap-1 justify-between items-center h-full">
+                        <p
+                          className="text-green-700 text-xs font-semibold cursor-pointer"
+                          onClick={() => generateAndPreviewPdf(request)}
+                        >
+                          View File
+                        </p>
+                        <p
+                          className="text-green-700 text-xs font-semibold cursor-pointer"
+                          onClick={() => {
+                            setSelectedUser(request.requestedBy._id);
+                            showApprovalForm(true);
+                          }}
+                        >
+                          View ID
+                        </p>
+                      </div>
                     </td>
                     <td className="border border-black/10 text-left text-xs font-normal p-3">
                       {request.status === "pending" ? (
@@ -459,6 +477,15 @@ const FileRequests = () => {
         </div>
       </div>
 
+      {approvalForm && (
+        <UserApproval
+          userId={selectedUser}
+          isForFileRequest={true}
+          onClose={() => {
+            showApprovalForm(false);
+          }}
+        />
+      )}
       {deleteModal && (
         <DeleteModal
           onClose={() => {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useContext, useState } from "react";
+import BACKEND_API from "../utils/API";
 
 const UsersContext = createContext<any | null>(null);
 
@@ -17,7 +18,7 @@ export const UsersProvider = ({ children }: any) => {
   ) => {
     if (barangayId) {
       try {
-        let url = `https://brgy360-be.onrender.com/api/users?search=${search}&barangayId=${barangayId}&page=${page}&limit=${limit}&status=${status}&role=${role}`;
+        let url = `${BACKEND_API}/users?search=${search}&barangayId=${barangayId}&page=${page}&limit=${limit}&status=${status}&role=${role}`;
         // let url = `http://localhost:8080/api/users?search=${search}&barangayId=${barangayId}&page=${page}&limit=${limit}&status=${status}&role=${role}`;
 
         let response = await axios.get(url);

@@ -16,6 +16,7 @@ import {
 } from "react-icons/ri";
 import AdminTransparency from "../../components/AdminTransparency";
 import AdminNavbar from "../../components/AdminNavbar";
+import BACKEND_API from "../../utils/API";
 
 const Budget = () => {
   const { budgets, years, getBudgets } = useBudget();
@@ -43,7 +44,7 @@ const Budget = () => {
   const deleteBudget = async (updateId: string) => {
     if (updateId) {
       try {
-        let url = `https://brgy360-be.onrender.com/api/budgets/${updateId}`;
+        let url = `${BACKEND_API}/budgets/${updateId}`;
         // let url = `http://localhost:8080/api/budgets/${updateId}`;
 
         let response = await axios.delete(url);
@@ -71,7 +72,7 @@ const Budget = () => {
 
       if (currUser) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          let url = `${BACKEND_API}/users/${currUser._id}`;
           // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);

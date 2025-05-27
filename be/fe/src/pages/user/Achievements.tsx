@@ -5,6 +5,7 @@ import { useUpdates } from "../../providers/UpdatesProvider";
 import { useNavigate } from "react-router-dom";
 import { RiCalendarLine, RiEmotionUnhappyLine } from "react-icons/ri";
 import { useAchievements } from "../../providers/AchievementsProvider";
+import BACKEND_API from "../../utils/API";
 
 const Achievements = () => {
   const {
@@ -56,7 +57,7 @@ const Achievements = () => {
                     style={{
                       backgroundImage:
                         recentAchievement.image !== "N/A"
-                          ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
+                          ? `url(${BACKEND_API}/images/${encodeURIComponent(
                               recentAchievement.image
                             )})`
                           : "",

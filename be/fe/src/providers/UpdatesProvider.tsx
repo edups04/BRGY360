@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import BACKEND_API from "../utils/API";
 
 const UpdatesContext = createContext<any>(null);
 
@@ -15,7 +16,7 @@ export const UpdatesProvider = ({ children }: any) => {
     limit: number
   ) => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/projects?title=${title}&barangayId=${barangayId}&page=${page}&limit=${limit}`;
+      let url = `${BACKEND_API}/projects?title=${title}&barangayId=${barangayId}&page=${page}&limit=${limit}`;
       // let url = `http://localhost:8080/api/projects?title=${title}&barangayId=${barangayId}&page=${page}&limit=${limit}`;
 
       let response = await axios.get(url);
@@ -31,7 +32,7 @@ export const UpdatesProvider = ({ children }: any) => {
 
   const getRecentUpdates = async (barangayId: string, limit: number) => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/projects?limit=${limit}&barangayId=${barangayId}`;
+      let url = `${BACKEND_API}/projects?limit=${limit}&barangayId=${barangayId}`;
       // let url = `http://localhost:8080/api/projects?limit=${limit}&barangayId=${barangayId}`;
 
       let response = await axios.get(url);

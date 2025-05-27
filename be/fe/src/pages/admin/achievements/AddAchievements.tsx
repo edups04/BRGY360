@@ -5,6 +5,7 @@ import Modal from "../../../components/Modal";
 import PostModal from "../../../components/PostModal";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import BACKEND_API from "../../../utils/API";
 
 const AddAchievements = () => {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const AddAchievements = () => {
 
       if (currUser) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          let url = `${BACKEND_API}/users/${currUser._id}`;
           // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
@@ -52,7 +53,7 @@ const AddAchievements = () => {
 
             try {
               let url =
-                "https://brgy360-be.onrender.com/api/accomplishments-achievements";
+                `${BACKEND_API}/accomplishments-achievements`;
               // let url =
               //   "http://localhost:8080/api/accomplishments-achievements";
 

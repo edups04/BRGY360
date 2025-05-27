@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useContext, useState } from "react";
+import BACKEND_API from "../utils/API";
 
 const NewsContext = createContext<any | null>(null);
 
@@ -16,7 +17,7 @@ export const NewsProvider = ({ children }: any) => {
     limit: number
   ) => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/news-announcements?title=${title}&page=${page}&limit=${limit}&barangayId=${barangayId}`;
+      let url = `${BACKEND_API}/news-announcements?title=${title}&page=${page}&limit=${limit}&barangayId=${barangayId}`;
       // let url = `http://localhost:8080/api/news-announcements?title=${title}&page=${page}&limit=${limit}&barangayId=${barangayId}`;
 
       let response = await axios.get(url);
@@ -34,7 +35,7 @@ export const NewsProvider = ({ children }: any) => {
 
   const getRecentNews = async (barangayId: string, limit: number) => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/news-announcements?limit=${limit}&barangayId=${barangayId}`;
+      let url = `${BACKEND_API}/news-announcements?limit=${limit}&barangayId=${barangayId}`;
       // let url = `http://localhost:8080/api/news-announcements?limit=${limit}&barangayId=${barangayId}`;
 
       let response = await axios.get(url);
@@ -49,7 +50,7 @@ export const NewsProvider = ({ children }: any) => {
 
   const getLatestNews = async (barangayId: string) => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/news-announcements?limit=1&barangayId=${barangayId}`;
+      let url = `${BACKEND_API}/news-announcements?limit=1&barangayId=${barangayId}`;
       // let url = `http://localhost:8080/api/news-announcements?limit=1&barangayId=${barangayId}`;
 
       let response = await axios.get(url);
@@ -72,6 +73,7 @@ export const NewsProvider = ({ children }: any) => {
         getRecentNews,
         latestNews,
         getLatestNews,
+        setLatestNews,
       }}
     >
       {children}

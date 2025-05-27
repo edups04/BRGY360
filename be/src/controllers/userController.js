@@ -8,6 +8,7 @@ import { nullChecker } from "../utils/nullChecker.js";
 import { checkDuplicate } from "../utils/duplicateChecker.js";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
+import mongoose from "mongoose";
 
 // Get the directory name of the current module
 const __filename = fileURLToPath(import.meta.url);
@@ -181,6 +182,7 @@ const registerUser = async (req, res) => {
     // * nulls
     const {
       firstName,
+      middleName,
       lastName,
       sex,
       birthdate,
@@ -189,11 +191,13 @@ const registerUser = async (req, res) => {
       phoneNumber,
       password,
       address,
+      barangayId,
     } = req.body;
 
     // * Check for missing required fields
     const hasMissingFields = nullChecker(res, {
       firstName,
+      middleName,
       lastName,
       sex,
       birthdate,
@@ -202,6 +206,7 @@ const registerUser = async (req, res) => {
       phoneNumber,
       password,
       address,
+      barangayId,
     });
 
     if (hasMissingFields) return;
@@ -220,25 +225,47 @@ const registerUser = async (req, res) => {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_+=~{}\[\]:;"'<>,.?/\\]).{8,}$/;
 
     if (!passwordRegex.test(password)) {
-      return res.status(400).json({
+      return res.status(409).json({
         success: false,
         message:
           "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.",
       });
     }
 
+    // * checking of valid id files
+    const files = req.files;
+    const front = files["front"]?.[0]?.filename;
+    const back = files["back"]?.[0]?.filename;
+    const type = req.body.type;
+
+    if (!type || !files || !front || !back) {
+      return res.status(400).json({
+        success: false,
+        message: "Valid ID Type, Front, and Back images are required!",
+      });
+    }
+
+    // * check age, it should be >= 15 years old
+    if (age < 15) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Age should be greater than or equal to 15 years old to register!",
+      });
+    }
+
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-    const files = req.files || {};
-    const front = files["front"]?.[0]?.filename || "N/A";
-    const back = files["back"]?.[0]?.filename || "N/A";
+    // * profile picture is the only one valid to be n/a or null
     const profile = files["profile"]?.[0]?.filename || "N/A";
+
+    console.log(req.body.validId);
 
     const user = new User({
       ...req.body,
       password: hashedPassword,
       validId: {
-        ...req.body.validId,
+        type,
         front,
         back,
       },
@@ -330,7 +357,7 @@ const getUsers = async (req, res) => {
     if (role) filter.role = role;
     if (status) filter.status = status;
     if (sex) filter.sex = sex;
-    if (barangayId) filter.barangayId = barangayId;
+    if (barangayId) filter.barangayId = new mongoose.Types.ObjectId(barangayId);
 
     // * name search
     if (search) {
@@ -378,6 +405,7 @@ const updateUser = async (req, res) => {
     // * nulls
     const {
       firstName,
+      middleName,
       lastName,
       sex,
       birthdate,
@@ -385,14 +413,14 @@ const updateUser = async (req, res) => {
       email,
       phoneNumber,
       address,
+      barangayId,
     } = updates;
-
-    console.log(updates);
 
     // * Check for missing required fields
     if (!req.body.status) {
       const hasMissingFields = nullChecker(res, {
         firstName,
+        middleName,
         lastName,
         sex,
         birthdate,
@@ -400,6 +428,7 @@ const updateUser = async (req, res) => {
         email,
         phoneNumber,
         address,
+        barangayId,
       });
 
       if (hasMissingFields) return;
@@ -442,6 +471,15 @@ const updateUser = async (req, res) => {
       updates.password = await bcrypt.hash(updates.password, 10);
     }
 
+    // * check age, it should be >= 15 years old
+    if (age < 15) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Age should be greater than or equal to 15 years old to register!",
+      });
+    }
+
     const existingUser = await User.findById(userId);
     if (!existingUser) {
       return res
@@ -463,6 +501,7 @@ const updateUser = async (req, res) => {
             if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
           }
           updates.profile = file.filename;
+          console.log("IT GOES HERE ON PROFILE!");
         } else {
           // * front or back (nested in validId)
           const oldFile = existingUser.validId?.[field];
@@ -473,39 +512,64 @@ const updateUser = async (req, res) => {
 
           if (!updates.validId) updates.validId = {};
           updates.validId[field] = file.filename;
-        }
-      } else if (!req.body[field] || req.body[field] === "N/A") {
-        // * no file uploaded and client wants to remove the image
-        if (
-          field === "profile" &&
-          existingUser.profile &&
-          existingUser.profile !== "N/A"
-        ) {
-          const oldPath = path.join("public/images", existingUser.profile);
-          if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
-          updates.profile = "N/A";
-        } else if (
-          (field === "front" || field === "back") &&
-          existingUser.validId?.[field] &&
-          existingUser.validId[field] !== "N/A"
-        ) {
-          const oldPath = path.join(
-            "public/images",
-            existingUser.validId[field]
-          );
-          if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
-          if (!updates.validId) updates.validId = {};
-          updates.validId[field] = "N/A";
+          console.log("IT GOES HERE ON!", field);
         }
       }
+      // else if (!req.body[field] || req.body[field] === "N/A") {
+      // // * no file uploaded and client wants to remove the image
+      // if (
+      //   field === "profile" &&
+      //   existingUser.profile &&
+      //   existingUser.profile !== "N/A"
+      // ) {
+      //   const oldPath = path.join("public/images", existingUser.profile);
+      //   if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+      //   updates.profile = "N/A";
+      // }
+      // else if (
+      //   (field === "front" || field === "back") &&
+      //   existingUser.validId?.[field] &&
+      //   existingUser.validId[field] !== "N/A"
+      // ) {
+      //   const oldPath = path.join(
+      //     "public/images",
+      //     existingUser.validId[field]
+      //   );
+      //   if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+      //   if (!updates.validId) updates.validId = {};
+      //   updates.validId[field] = "N/A";
+      // }
+      // }
     }
 
-    if (req.body.validId?.type) {
+    // * checking of valid id files
+    const files = req.files;
+    const front = files["front"]?.[0]?.filename;
+    const back = files["back"]?.[0]?.filename;
+    const type = req.body.type;
+
+    if (!req.body.status && !type) {
+      return res.status(400).json({
+        success: false,
+        message: "Valid ID Type is required!",
+      });
+    }
+
+    // * IF NO NEW FILES UPLOADED, RETAIN THE PREV ONE
+    if (!req.body.status && (!front || !back)) {
+      updates.validId = {
+        front: existingUser.validId.front,
+        back: existingUser.validId.back,
+      };
+    }
+
+    if (!req.body.status && req.body.type) {
       if (!updates.validId) updates.validId = {};
-      updates.validId.type = req.body.validId.type;
+      // updates.validId.type = req.body.validId.type;
+      updates.validId.type = req.body.type;
     }
 
-    console.log("UPDATES", updates);
+    console.log("VALID ID: ", updates.validId);
 
     const updatedUser = await User.findByIdAndUpdate(userId, updates, {
       new: true,

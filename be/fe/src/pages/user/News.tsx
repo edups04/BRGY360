@@ -3,6 +3,7 @@ import UserNavbar from "../../components/UserNavbar";
 import { RiCalendarLine, RiEmotionUnhappyLine } from "react-icons/ri";
 import { useNews } from "../../providers/NewsProvider";
 import { useNavigate } from "react-router-dom";
+import BACKEND_API from "../../utils/API";
 
 const News = () => {
   const { recentNews, getRecentNews } = useNews();
@@ -47,13 +48,14 @@ const News = () => {
               recentNews.map((recentNews: any) => (
                 <div
                   className="w-full bg-gray-200 h-[320px] lg:h-[620px] rounded-xl flex items-end justify-center overflow-hidden cursor-pointer bg-cover bg-center"
-                  onClick={() =>
-                    navigate("/user/news/view", { state: recentNews._id })
+                  onClick={
+                    () => navigate("/user/news/all", { state: recentNews })
+                    // navigate("/user/news/view", { state: recentNews._id })
                   }
                   style={{
                     backgroundImage:
                       recentNews.image !== "N/A"
-                        ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
+                        ? `url(${BACKEND_API}/images/${encodeURIComponent(
                             recentNews.image
                           )})`
                         : "",

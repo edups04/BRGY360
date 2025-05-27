@@ -7,6 +7,7 @@ import PostModa from "../../../components/PostModal";
 import Modal from "../../../components/Modal";
 import PostModal from "../../../components/PostModal";
 import DeleteModal from "../../../components/DeleteModal";
+import BACKEND_API from "../../../utils/API";
 
 const EditNews = () => {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ const EditNews = () => {
 
       if (currUser) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          let url = `${BACKEND_API}/users/${currUser._id}`;
           // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
@@ -61,7 +62,7 @@ const EditNews = () => {
             const currentDate = new Date().toISOString(); 
 
             try {
-              let url = `https://brgy360-be.onrender.com/api/news-announcements/${state}`;
+              let url = `${BACKEND_API}/news-announcements/${state}`;
               // let url = `http://localhost:8080/api/news-announcements/${state}`;
 
               const formData = new FormData();
@@ -71,7 +72,7 @@ const EditNews = () => {
               formData.append("date", currentDate);
 
               if (!imageChanged) {
-                let url = `https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
+                let url = `${BACKEND_API}/images/${encodeURIComponent(
                   image
                 )}`;
 
@@ -109,7 +110,7 @@ const EditNews = () => {
 
   const deleteNews = async () => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/news-announcements/${state}`;
+      let url = `${BACKEND_API}/news-announcements/${state}`;
       // let url = `http://localhost:8080/api/news-announcements/${state}`;
 
       let response = await axios.delete(url);
@@ -130,7 +131,7 @@ const EditNews = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        let url = `https://brgy360-be.onrender.com/api/news-announcements/${state}`;
+        let url = `${BACKEND_API}/news-announcements/${state}`;
         // let url = `http://localhost:8080/api/news-announcements/${state}`;
 
         let response = await axios.get(url);
@@ -172,7 +173,7 @@ const EditNews = () => {
               <img
                 src={
                   typeof image === "string"
-                    ? `https://brgy360-be.onrender.com/api/images/${image}` // e.g., http://localhost:3000/uploads/${image}
+                    ? `${BACKEND_API}/images/${image}` // e.g., http://localhost:3000/uploads/${image}
                     : URL.createObjectURL(image)
                 }
                 alt="preview"

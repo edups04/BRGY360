@@ -3,13 +3,16 @@ import React, { useEffect, useState } from "react";
 import { RiCheckFill, RiCloseFill, RiCloseLine } from "react-icons/ri";
 import Modal from "./Modal";
 import { useNavigate } from "react-router-dom";
+import BACKEND_API from "../utils/API";
 
 const UserApproval = ({
   onClose,
   userId,
+  isForFileRequest,
 }: {
   onClose: () => void;
   userId: string;
+  isForFileRequest: boolean;
 }) => {
   const [front, setFront] = useState<File | null>(null);
   const [back, setBack] = useState<File | null>(null);
@@ -23,7 +26,7 @@ const UserApproval = ({
 
   const declineUser = async () => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/users/${userId}`;
+      let url = `${BACKEND_API}/users/${userId}`;
       // let url = `http://localhost:8080/api/users/${userId}`;
 
       const formData = new FormData();
@@ -52,7 +55,7 @@ const UserApproval = ({
 
   const approveUser = async () => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/users/${userId}`;
+      let url = `${BACKEND_API}/users/${userId}`;
       // let url = `http://localhost:8080/api/users/${userId}`;
 
       const formData = new FormData();
@@ -83,7 +86,7 @@ const UserApproval = ({
     const getData = async () => {
       if (userId) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/users/${userId}`;
+          let url = `${BACKEND_API}/users/${userId}`;
           // let url = `http://localhost:8080/api/users/${userId}`;
 
           let response = await axios.get(url);
@@ -127,7 +130,7 @@ const UserApproval = ({
               className="w-full h-[220px] lg:h-[320px] flex items-center justify-center bg-gray-200 rounded-xl overflow-hidden"
               style={{
                 backgroundImage: front
-                  ? `url("https://brgy360-be.onrender.com/api/images/${front}")`
+                  ? `url("${BACKEND_API}/images/${front}")`
                   : "",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -138,7 +141,7 @@ const UserApproval = ({
               className="w-full h-[220px] lg:h-[320px] flex items-center justify-center bg-gray-200 rounded-xl overflow-hidden"
               style={{
                 backgroundImage: back
-                  ? `url("https://brgy360-be.onrender.com/api/images/${back}")`
+                  ? `url("${BACKEND_API}/images/${back}")`
                   : "",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -194,20 +197,22 @@ const UserApproval = ({
             </div>
           </div>
           {/* buttons */}
-          <div className="w-full flex flex-row items-center justify-end gap-2">
-            <div
-              className="p-2 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer"
-              onClick={approveUser}
-            >
-              Approve
+          {!isForFileRequest && (
+            <div className="w-full flex flex-row items-center justify-end gap-2">
+              <div
+                className="p-2 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer"
+                onClick={approveUser}
+              >
+                Approve
+              </div>
+              <div
+                className="p-2 rounded-xl bg-red-700 text-xs font-normal text-white cursor-pointer"
+                onClick={declineUser}
+              >
+                Decline
+              </div>
             </div>
-            <div
-              className="p-2 rounded-xl bg-red-700 text-xs font-normal text-white cursor-pointer"
-              onClick={declineUser}
-            >
-              Decline
-            </div>
-          </div>
+          )}
         </div>
         <div className="w-full min-h-[10vh]"></div>
       </div>

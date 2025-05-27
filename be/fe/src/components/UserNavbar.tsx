@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../providers/AuthProvider";
 import {
@@ -24,6 +24,10 @@ import {
 } from "react-icons/ri";
 import Logo from "../assets/Logo.png";
 import Chatbot from "../pages/user/Chatbot";
+import WEBSOCKET_URL from "../utils/Realtime";
+import axios from "axios";
+import BACKEND_API from "../utils/API";
+import { useChats } from "../providers/ChatsProvider";
 
 const UserNavbar = () => {
   const [expand, setExpand] = useState(false);
@@ -32,6 +36,74 @@ const UserNavbar = () => {
   const location = useLocation();
   const [activeRoute, setActiveRoute] = useState("dashboard");
   const [chatBot, showChatBot] = useState(false);
+
+  // * REAL TIME UPDATES
+  const { unreadMessageCount, setUnreadMessageCount, getUserChats } =
+    useChats();
+  const chatBotRef = useRef(chatBot);
+
+  const realTime = async () => {
+    // * Create a new WebSocket connection
+    const socket = new WebSocket(WEBSOCKET_URL); // * Update with your WebSocket URL
+
+    //  *Event listener for when the connection is opened
+    socket.addEventListener("open", (event) => {
+      console.log("WebSocket connection established");
+      socket.send(JSON.stringify({ message: "Hello from client!" }));
+    });
+
+    // * Event listener for incoming messages
+    socket.addEventListener("message", async (event) => {
+      const receivedData = JSON.parse(event.data); // * Parse the incoming JSON data
+      // console.log("New data received:", receivedData);
+
+      // * to differentiate real-time updates
+      switch (receivedData.realTimeType) {
+        case "ws connection":
+          break;
+          case "chat":
+          console.log(receivedData.data);
+          let user = JSON.parse(localStorage.getItem("user"));
+          console.log("FOR USER: ", receivedData.data.userId);
+          console.log("FROM USER: ", user._id);
+          if (
+            user &&
+            receivedData.data.from === "chatbot" &&
+            receivedData.data.userId === user._id
+          ) {
+            await getUserChats(user._id);
+            if (!chatBotRef.current) {
+              setUnreadMessageCount((prevCount) => prevCount + 1);
+            }
+          }
+          break;
+      }
+    });
+
+    // * Event listener for errors
+    socket.addEventListener("error", (event) => {
+      console.error("WebSocket error:", event);
+    });
+
+    // * Event listener for when the connection is closed
+    socket.addEventListener("close", (event) => {
+      console.log("WebSocket connection closed");
+    });
+
+    // * Clean up the WebSocket connection on component unmount
+    return () => {
+      socket.close();
+    };
+  };
+
+  useEffect(() => {
+    realTime();
+  }, []);
+
+  useEffect(() => {
+    chatBotRef.current = chatBot;
+  }, [chatBot]);
+  // * END OF REAL TIME UPDATES
 
   useEffect(() => {
     if (location.pathname.includes("/user/home")) {
@@ -176,7 +248,14 @@ const UserNavbar = () => {
             </div>
           </div>
 
-          <div className="w-auto lg:w-full flex flex-row lg:flex-col items-center justify-center gap-4 lg:gap-6">
+          <div className="w-auto lg:w-full flex flex-row lg:flex-col items-center justify-center gap-4 lg:gap-6 relative">
+            {unreadMessageCount > 0 && (
+              <div className="absolute top-[-1.5rem] left-1 rounded-full px-2 py-1 min-w-8 text-center bg-red-500">
+                <span className="font-bold text-sm">
+                  {unreadMessageCount > 99 ? "99+" : unreadMessageCount}
+                </span>
+              </div>
+            )}
             <div className="w-full flex flex-row items-center justify-start gap-2 cursor-pointer">
               {activeRoute === "chatbot" ? (
                 <RiChat4Fill

@@ -21,6 +21,8 @@ import {
 import Logo from "../assets/Logo.png";
 import { useAuth } from "../providers/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useChats } from "../providers/ChatsProvider";
+import WEBSOCKET_URL from "../utils/Realtime";
 
 const AdminNavbar = () => {
   const [expand, setExpand] = useState(false);
@@ -28,6 +30,58 @@ const AdminNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeRoute, setActiveRoute] = useState("dashboard");
+
+  // * REAL TIME
+  const { allUnreadMessageCountAdmin, getAdminChats } = useChats();
+
+  const realTime = async () => {
+    // Create a new WebSocket connection
+    const socket = new WebSocket(WEBSOCKET_URL); // Update with your WebSocket URL
+
+    //  *Event listener for when the connection is opened
+    socket.addEventListener("open", (event) => {
+      console.log("WebSocket connection established");
+      socket.send(JSON.stringify({ message: "Hello from client!" }));
+    });
+
+    // * Event listener for incoming messages
+    socket.addEventListener("message", async (event) => {
+      const receivedData = JSON.parse(event.data); // * Parse the incoming JSON data
+      // console.log("New data received:", receivedData);
+
+      // * to differentiate real-time updates
+      switch (receivedData.realTimeType) {
+        case "ws connection":
+          // console.log(receivedData);
+          break;
+        case "chat":
+          let user = localStorage.getItem("user");
+          if (user) {
+            await getAdminChats(JSON.parse(user).barangayId);
+          }
+          break;
+      }
+    });
+
+    // * Event listener for errors
+    socket.addEventListener("error", (event) => {
+      console.error("WebSocket error:", event);
+    });
+
+    // * Event listener for when the connection is closed
+    socket.addEventListener("close", (event) => {
+      console.log("WebSocket connection closed");
+    });
+
+    // * Clean up the WebSocket connection on component unmount
+    return () => {
+      socket.close();
+    };
+  };
+
+  useEffect(() => {
+    realTime();
+  }, []);
 
   useEffect(() => {
     if (location.pathname.includes("/admin/dashboard")) {
@@ -191,7 +245,16 @@ const AdminNavbar = () => {
             </div>
           </div>
 
-          <div className="w-auto lg:w-full flex flex-row lg:flex-col items-center justify-center gap-4 lg:gap-6">
+          <div className="w-auto lg:w-full flex flex-row lg:flex-col items-center justify-center gap-4 lg:gap-6 relative">
+            {allUnreadMessageCountAdmin > 0 && (
+              <div className="absolute top-[-1.5rem] left-1 rounded-full px-2 py-1 min-w-8 text-center bg-red-500">
+                <span className="font-bold text-sm">
+                  {allUnreadMessageCountAdmin > 99
+                    ? "99+"
+                    : allUnreadMessageCountAdmin}
+                </span>
+              </div>
+            )}
             <div
               className="w-full flex flex-row items-center justify-start gap-2 cursor-pointer"
               onClick={() => navigate("/admin/chatbot")}

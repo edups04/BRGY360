@@ -4,6 +4,7 @@ import UserTransparency from "../../components/UserTransparency";
 import { useUpdates } from "../../providers/UpdatesProvider";
 import { useNavigate } from "react-router-dom";
 import { RiCalendarLine, RiEmotionUnhappyLine } from "react-icons/ri";
+import BACKEND_API from "../../utils/API";
 
 const ProjectUpdates = () => {
   const { getUpdates, updates, totalPages, recentUpdates, getRecentUpdates } =
@@ -50,7 +51,7 @@ const ProjectUpdates = () => {
                     style={{
                       backgroundImage:
                         recentUpdate.image !== "N/A"
-                          ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
+                          ? `url(${BACKEND_API}/images/${encodeURIComponent(
                               recentUpdate.image
                             )})`
                           : "",

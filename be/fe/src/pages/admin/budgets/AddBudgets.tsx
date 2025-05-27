@@ -6,6 +6,7 @@ import Modal from "../../../components/Modal";
 import { RiAddLine, RiArrowLeftSLine } from "react-icons/ri";
 import AdminNavbar from "../../../components/AdminNavbar";
 import { useBudget } from "../../../providers/BudgetProvider";
+import BACKEND_API from "../../../utils/API";
 
 const AddBudgets = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const AddBudgets = () => {
 
       if (currUser) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          let url = `${BACKEND_API}/users/${currUser._id}`;
           // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
@@ -70,7 +71,7 @@ const AddBudgets = () => {
 
       if (currUser) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          let url = `${BACKEND_API}/users/${currUser._id}`;
           // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
@@ -79,7 +80,7 @@ const AddBudgets = () => {
             const barangayId = response.data.data.barangayId;
 
             try {
-              let url = "https://brgy360-be.onrender.com/api/budgets";
+              let url = `${BACKEND_API}/budgets`;
               // let url = "http://localhost:8080/api/budgets";
 
               console.log(budgetYear);

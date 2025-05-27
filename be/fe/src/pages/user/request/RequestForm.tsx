@@ -10,6 +10,7 @@ import axios from "axios";
 import PostModal from "../../../components/PostModal";
 import Modal from "../../../components/Modal";
 import RequestModal from "../../../components/RequestModal";
+import BACKEND_API from "../../../utils/API";
 
 const RequestForm = () => {
   const { state } = useLocation();
@@ -23,6 +24,7 @@ const RequestForm = () => {
     birthdate: "",
     purpose: "",
   });
+  const [noDerogatoryRecord, setNoDerogatoryRecord] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -83,8 +85,72 @@ const RequestForm = () => {
 
     if (state) {
       setFormType(state);
+      autoFillUserFields(state);
     }
   }, []);
+
+  const handleCheckboxChange = (e) => {
+    setNoDerogatoryRecord(e.target.checked);
+    // console.log("No Derogatory Record checked:", e.target.checked);
+  };
+
+  const autoFillUserFields = async (state) => {
+    // * SET AUTO FILL DATA ONCE THE USER CLICKS THE FORM
+    const response = await axios.get(
+      `${BACKEND_API}/users/${JSON.parse(localStorage.getItem("user"))._id}`
+    );
+
+    if (response.data.success) {
+      let userData = response.data.data;
+
+      const userProfile = await axios.get(
+        `${BACKEND_API}/images/${userData.profile}`,
+        { responseType: "blob" }
+      );
+      console.log("USER PROFILE : ", userProfile);
+
+      switch (state) {
+        case "barangay-clearance":
+          setClearanceData({
+            fullName: `${userData.firstName} ${userData.middleName} ${userData.lastName}`,
+            address: userData.address,
+            purok: "",
+            // const purok = (userData.address.match(/Purok\s+[A-Za-z]+(?:\s+[A-Za-z]+)*/i) || [null])[0]?.replace(/[.,]$/, "");
+            birthdate: new Date(userData.birthdate).toISOString().split("T")[0],
+            purpose: "",
+          });
+          // * get image from user profile if available
+          const imageBlob = userProfile.data;
+          const imageFile = new File([imageBlob], userData.profile, {
+            type: imageBlob.type,
+          });
+          setImage(imageFile);
+          break;
+        case "barangay-indigency":
+          setIndigencyData({
+            fullName: `${userData.firstName} ${userData.middleName} ${userData.lastName}`,
+            address: userData.address,
+            purpose: "",
+          });
+          break;
+        case "certificate-of-residency":
+          setResidencyData({
+            fullName: `${userData.firstName} ${userData.middleName} ${userData.lastName}`,
+            address: userData.address,
+            purpose: "",
+          });
+          break;
+        case "first-time-job-seeker":
+          setJobseekerData({
+            fullName: `${userData.firstName} ${userData.middleName} ${userData.lastName}`,
+            address: userData.address,
+            schoolName: "",
+            honorifics: userData.sex === "male" ? "Mr" : "Ms",
+          });
+          break;
+      }
+    }
+  };
 
   const generateAndPreviewPdf = async () => {
     let res;
@@ -119,6 +185,9 @@ const RequestForm = () => {
       form.getTextField("purok")?.setText(clearanceData.purok);
       form.getTextField("birthdate")?.setText(clearanceData.birthdate);
       form.getTextField("purpose")?.setText(clearanceData.purpose);
+      form
+        .getTextField("noDerogatoryRecord")
+        ?.setText(noDerogatoryRecord ? "NO DEROGATORY RECORD" : "");
     } else if (formType === "barangay-indigency") {
       form.getTextField("fullName")?.setText(indigencyData.fullName);
       form.getTextField("address")?.setText(indigencyData.address);
@@ -230,7 +299,7 @@ const RequestForm = () => {
 
   const submitRequest = async () => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/file-requests`;
+      let url = `${BACKEND_API}/file-requests`;
       // let url = `http://localhost:8080/api/file-requests`;
 
       let response;
@@ -244,7 +313,12 @@ const RequestForm = () => {
         clearanceFormData.append("purok", clearanceData.purok);
         clearanceFormData.append("birthdate", clearanceData.birthdate);
         clearanceFormData.append("purpose", clearanceData.purpose);
+        clearanceFormData.append(
+          "noDerogatoryRecord",
+          noDerogatoryRecord ? "NO DEROGATORY RECORD" : ""
+        );
         if (image) {
+          console.log("SAVING IMAGE: ", image);
           clearanceFormData.append("image", image);
         } else {
           console.error("No image selected for barangay clearance");
@@ -308,6 +382,11 @@ const RequestForm = () => {
     }
   };
 
+  const handleFormTypeChange = (e) => {
+    setFormType(e.target.value);
+    autoFillUserFields(e.target.value);
+  };
+
   return (
     <>
       <UserNavbar />
@@ -328,7 +407,7 @@ const RequestForm = () => {
             {/* type */}
             <select
               value={formType}
-              onChange={(e) => setFormType(e.target.value)}
+              onChange={handleFormTypeChange}
               className="text-xs font-normal outline-none border border-green-700 p-3 rounded-xl"
             >
               <option value="barangay-clearance">Barangay Clearance</option>
@@ -421,6 +500,21 @@ const RequestForm = () => {
                     }
                     className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
                     placeholder="purpose"
+                  />
+                </div>
+                <div className="w-max flex flex-row items-center gap-2 border border-green-700 p-2 py-3 rounded-xl">
+                  <label
+                    htmlFor="noDerogatoryRecord"
+                    className="text-xs font-bold text-green-700"
+                  >
+                    No Derogatory Record
+                  </label>
+                  <input
+                    id="noDerogatoryRecord"
+                    type="checkbox"
+                    name="noDerogatoryRecord"
+                    checked={noDerogatoryRecord}
+                    onChange={handleCheckboxChange}
                   />
                 </div>
                 <div className="w-full max-w-[350px] h-[150px] lg:h-[350px] bg-gray-200 flex items-center justify-center rounded-xl overflow-hidden relative">

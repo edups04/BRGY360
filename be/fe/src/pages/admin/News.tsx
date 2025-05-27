@@ -12,6 +12,7 @@ import axios from "axios";
 import DeleteModal from "../../components/DeleteModal";
 import Modal from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
+import BACKEND_API from "../../utils/API";
 
 const News = () => {
   const { news, getNews, totalPages } = useNews();
@@ -36,7 +37,7 @@ const News = () => {
   const deleteNews = async (newsId: string) => {
     if (newsId) {
       try {
-        let url = `https://brgy360-be.onrender.com/api/news-announcements/${newsId}`;
+        let url = `${BACKEND_API}/news-announcements/${newsId}`;
         // let url = `http://localhost:8080/api/news-announcements/${newsId}`;
 
         let response = await axios.delete(url);
@@ -63,7 +64,7 @@ const News = () => {
 
       if (currUser) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          let url = `${BACKEND_API}/users/${currUser._id}`;
           // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
@@ -138,7 +139,7 @@ const News = () => {
                         style={{
                           backgroundImage:
                             news.image !== "N/A"
-                              ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
+                              ? `url(${BACKEND_API}/images/${encodeURIComponent(
                                   news.image
                                 )})`
                               : "",

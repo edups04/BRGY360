@@ -5,6 +5,7 @@ import PostModal from "../../../components/PostModal";
 import { RiAddLine, RiArrowLeftSLine } from "react-icons/ri";
 import AdminNavbar from "../../../components/AdminNavbar";
 import Modal from "../../../components/Modal";
+import BACKEND_API from "../../../utils/API";
 
 const AddUpdates = () => {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const AddUpdates = () => {
 
       if (currUser) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          let url = `${BACKEND_API}/users/${currUser._id}`;
           // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
@@ -51,7 +52,7 @@ const AddUpdates = () => {
             const currentDate = new Date().toISOString();
 
             try {
-              let url = "https://brgy360-be.onrender.com/api/projects";
+              let url = `${BACKEND_API}/projects`;
               // let url = "http://localhost:8080/api/projects";
 
               const formData = new FormData();

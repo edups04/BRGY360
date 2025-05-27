@@ -3,6 +3,7 @@ import AdminNavbar from "../../components/AdminNavbar";
 import AdminTransparency from "../../components/AdminTransparency";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import BACKEND_API from "../../utils/API";
 
 const TransparencyDashboard = () => {
   const [barangayName, setBarangayName] = useState("");
@@ -17,7 +18,7 @@ const TransparencyDashboard = () => {
 
         if (currUser) {
           try {
-            let url = `https://brgy360-be.onrender.com/api/barangays/${currUser.barangayId}`;
+            let url = `${BACKEND_API}/barangays/${currUser.barangayId}`;
             // let url = `http://localhost:8080/api/barangays/${currUser.barangayId}`;
 
             let response = await axios.get(url);

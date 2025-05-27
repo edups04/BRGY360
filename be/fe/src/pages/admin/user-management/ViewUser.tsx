@@ -9,11 +9,13 @@ import {
 } from "react-icons/ri";
 import AdminNavbar from "../../../components/AdminNavbar";
 import axios from "axios";
+import BACKEND_API from "../../../utils/API";
 
 const ViewUser = () => {
   const { state } = useLocation();
 
   const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -71,7 +73,7 @@ const ViewUser = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        let url = `https://brgy360-be.onrender.com/api/users/${state}`;
+        let url = `${BACKEND_API}/users/${state}`;
         // let url = `http://localhost:8080/api/users/${state}`;
 
         let response = await axios.get(url);
@@ -79,6 +81,7 @@ const ViewUser = () => {
         if (response.data.success === true) {
           console.log(response.data.data);
           setFirstName(response.data.data.firstName);
+          setMiddleName(response.data.data.middleName);
           setLastName(response.data.data.lastName);
           setMobileNumber(response.data.data.phoneNumber);
           setEmail(response.data.data.email);
@@ -163,7 +166,7 @@ const ViewUser = () => {
                         preview
                           ? preview
                           : profile
-                          ? `https://brgy360-be.onrender.com/api/images/${profile}`
+                          ? `${BACKEND_API}/images/${profile}`
                           : ""
                       }
                       alt=""
@@ -208,6 +211,18 @@ const ViewUser = () => {
                   placeholder="first name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
+                  disabled={edit ? false : true}
+                />
+              </div>
+              {/* middle name */}
+              <div className="w-full flex flex-col items-start justify-center gap-2">
+                <p className="text-xs font-normal">Middle Name</p>
+                <input
+                  type="text"
+                  className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
+                  placeholder="middle name"
+                  value={middleName}
+                  onChange={(e) => setMiddleName(e.target.value)}
                   disabled={edit ? false : true}
                 />
               </div>
@@ -379,6 +394,7 @@ const ViewUser = () => {
                   value={idType}
                   onChange={(e) => setIdType(e.target.value)}
                   className="text-xs font-normal outline-none border border-green-700 p-3 rounded-xl"
+                  disabled
                 >
                   <option value="" disabled>
                     select option
@@ -395,7 +411,7 @@ const ViewUser = () => {
                   className="w-full lg:w-1/2 bg-black/10 h-[220px] rounded-xl gap-2 flex flex-col items-center justify-center"
                   style={{
                     backgroundImage: front
-                      ? `url("https://brgy360-be.onrender.com/api/images/${front}")`
+                      ? `url("${BACKEND_API}/images/${front}")`
                       : "",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
@@ -417,7 +433,7 @@ const ViewUser = () => {
                   className="w-full lg:w-1/2 bg-black/10 h-[220px] rounded-xl gap-2 flex flex-col items-center justify-center"
                   style={{
                     backgroundImage: front
-                      ? `url("https://brgy360-be.onrender.com/api/images/${back}")`
+                      ? `url("${BACKEND_API}/images/${back}")`
                       : "",
                     backgroundSize: "cover",
                     backgroundPosition: "center",

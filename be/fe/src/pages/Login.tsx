@@ -4,6 +4,7 @@ import { RiCheckLine, RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
 import axios from "axios";
+import BACKEND_API from "../utils/API";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ const Login = () => {
 
   const onLogin = async () => {
     try {
-      let url = "https://brgy360-be.onrender.com/api/users/login";
+      let url = `${BACKEND_API}/users/login`;
       // let url = "http://localhost:8080/api/users/login";
 
       let response = await axios.post(url, {
@@ -53,7 +54,7 @@ const Login = () => {
 
   const onForgotPassword = async () => {
     try {
-      let url = "https://brgy360-be.onrender.com/api/users/forgot-password";
+      let url = `${BACKEND_API}/users/forgot-password`;
       // let url = "http://localhost:8080/api/users/forgot-password";
 
       let response = await axios.post(url, {

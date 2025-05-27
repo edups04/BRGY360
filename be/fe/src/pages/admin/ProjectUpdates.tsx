@@ -13,6 +13,7 @@ import {
 } from "react-icons/ri";
 import DeleteModal from "../../components/DeleteModal";
 import Modal from "../../components/Modal";
+import BACKEND_API from "../../utils/API";
 
 const ProjectUpdates = () => {
   const { updates, getUpdates, totalPages } = useUpdates();
@@ -37,7 +38,7 @@ const ProjectUpdates = () => {
   const deleteUpdates = async (updateId: string) => {
     if (updateId) {
       try {
-        let url = `https://brgy360-be.onrender.com/api/projects/${updateId}`;
+        let url = `${BACKEND_API}/projects/${updateId}`;
         // let url = `http://localhost:8080/api/projects/${updateId}`;
 
         let response = await axios.delete(url);
@@ -64,7 +65,7 @@ const ProjectUpdates = () => {
 
       if (currUser) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          let url = `${BACKEND_API}/users/${currUser._id}`;
           // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
@@ -145,7 +146,7 @@ const ProjectUpdates = () => {
                         style={{
                           backgroundImage:
                             update.image !== "N/A"
-                              ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
+                              ? `url(${BACKEND_API}/images/${encodeURIComponent(
                                   update.image
                                 )})`
                               : "",

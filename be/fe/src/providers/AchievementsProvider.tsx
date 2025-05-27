@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useContext, useState } from "react";
+import BACKEND_API from "../utils/API";
 
 const AchievementsContext = createContext<any>(null);
 
@@ -15,7 +16,7 @@ export const AchievementsProvider = ({ children }: any) => {
     limit: number
   ) => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/accomplishments-achievements?title=${title}&barangayId=${barangayId}&page=${page}&limit=${limit}`;
+      let url = `${BACKEND_API}/accomplishments-achievements?title=${title}&barangayId=${barangayId}&page=${page}&limit=${limit}`;
       // let url = `http://localhost:8080/api/accomplishments-achievements?title=${title}&barangayId=${barangayId}&page=${page}&limit=${limit}`;
 
       let response = await axios.get(url);
@@ -31,7 +32,7 @@ export const AchievementsProvider = ({ children }: any) => {
 
   const getRecentAchievements = async (barangayId: string, limit: number) => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/accomplishments-achievements?limit=${limit}&barangayId=${barangayId}`;
+      let url = `${BACKEND_API}/accomplishments-achievements?limit=${limit}&barangayId=${barangayId}`;
       // let url = `http://localhost:8080/api/accomplishments-achievements?limit=${limit}&barangayId=${barangayId}`;
 
       let response = await axios.get(url);

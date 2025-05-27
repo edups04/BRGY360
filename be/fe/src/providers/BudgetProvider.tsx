@@ -1,5 +1,6 @@
 import axios, { mergeConfig } from "axios";
 import React, { createContext, useContext, useState } from "react";
+import BACKEND_API from "../utils/API";
 
 const BudgetContext = createContext<any>(null);
 
@@ -10,7 +11,7 @@ export const BudgetProvider = ({ children }: any) => {
   const getBudgets = async (year: string, barangayId: string) => {
     if (barangayId) {
       try {
-        let url = `https://brgy360-be.onrender.com/api/budgets?barangayId=${barangayId}&date=${year}`;
+        let url = `${BACKEND_API}/budgets?barangayId=${barangayId}&date=${year}`;
         // let url = `http://localhost:8080/api/budgets?barangayId=${barangayId}&date=${year}`;
 
         let response = await axios.get(url);

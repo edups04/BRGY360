@@ -5,9 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { useBarangay } from "../../../providers/BarangayProvider";
 import axios from "axios";
 import Modal from "../../../components/Modal";
+import BACKEND_API from "../../../utils/API";
+import calculateAge from "../../../utils/Age";
 
 const AddAdmin = () => {
   const [firstName, setFirstName] = useState("");
+  const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [email, setEmail] = useState("");
@@ -36,14 +39,23 @@ const AddAdmin = () => {
     getBarangays();
   }, []);
 
+  useEffect(() => {
+    if (birthDate) {
+      setAge(calculateAge(birthDate).toString());
+    } else {
+      setAge("");
+    }
+  }, [birthDate]);
+
   const registerAdmin = async () => {
     if (password === rePassword) {
       try {
-        let url = "https://brgy360-be.onrender.com/api/users";
+        let url = `${BACKEND_API}/users`;
         // let url = "http://localhost:8080/api/users";
 
         const formData = new FormData();
         formData.append("firstName", firstName);
+        formData.append("middleName", middleName);
         formData.append("lastName", lastName);
         formData.append("sex", sex);
         formData.append("birthdate", birthDate);
@@ -155,6 +167,16 @@ const AddAdmin = () => {
                   />
                 </div>
                 <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
+                  <p className="text-xs font-normal">Middle Name</p>
+                  <input
+                    type="text"
+                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                    placeholder="enter middle name"
+                    value={middleName}
+                    onChange={(e) => setMiddleName(e.target.value)}
+                  />
+                </div>
+                <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
                   <p className="text-xs font-normal">Last Name</p>
                   <input
                     type="text"
@@ -240,10 +262,11 @@ const AddAdmin = () => {
                     className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
                     placeholder="enter age"
                     value={age}
-                    onChange={(e) => {
-                      const value = e.target.value.replace(/\D/g, "");
-                      setAge(value.slice(0, 2));
-                    }}
+                    disabled
+                    // onChange={(e) => {
+                    //   const value = e.target.value.replace(/\D/g, "");
+                    //   setAge(value.slice(0, 2));
+                    // }}
                   />
                 </div>
                 <div className="w-full lg:w-1/4 flex flex-col items-start justify-center gap-2">
@@ -375,6 +398,7 @@ const AddAdmin = () => {
                       accept="image/*"
                       onChange={handleFrontChange}
                       className="hidden"
+                      disabled={idType ? false : true}
                     />
                   </label>
                   <p className="text-xs font-normal">Front</p>
@@ -396,6 +420,7 @@ const AddAdmin = () => {
                       accept="image/*"
                       onChange={handleBackChange}
                       className="hidden"
+                      disabled={idType ? false : true}
                     />
                   </label>
                   <p className="text-xs font-normal">Back</p>

@@ -3,6 +3,7 @@ import { PDFDocument } from "pdf-lib";
 import React, { useEffect, useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import Modal from "./Modal";
+import BACKEND_API from "../utils/API";
 
 const CompletionForm = ({
   data,
@@ -62,6 +63,9 @@ const CompletionForm = ({
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("purok")?.setText(data.data.purok);
       form.getTextField("birthdate")?.setText(data.data.birthdate);
+      form
+        .getTextField("noDerogatoryRecord")
+        ?.setText(data.data.noDerogatoryRecord);
       form.getTextField("purpose")?.setText(data.data.purpose);
       form.getTextField("dateRequested")?.setText(formattedDate);
       // form
@@ -103,7 +107,7 @@ const CompletionForm = ({
       ) {
         // Fetch the image from the server
         const response = await axios.get(
-          `https://brgy360-be.onrender.com/api/images/${data.data.image}`,
+          `${BACKEND_API}/images/${data.data.image}`,
           { responseType: "arraybuffer" } // Ensure response is an array buffer
         );
 
@@ -189,6 +193,9 @@ const CompletionForm = ({
       form.getTextField("purok")?.setText(data.data.purok);
       form.getTextField("birthdate")?.setText(data.data.birthdate);
       form.getTextField("purpose")?.setText(data.data.purpose);
+      form
+        .getTextField("noDerogatoryRecord")
+        ?.setText(data.data.noDerogatoryRecord);
       form.getTextField("dateRequested")?.setText(formattedDate);
       form
         .getTextField("requestNumber")
@@ -230,7 +237,7 @@ const CompletionForm = ({
       ) {
         // Fetch the image from the server
         const response = await axios.get(
-          `https://brgy360-be.onrender.com/api/images/${data.data.image}`,
+          `${BACKEND_API}/images/${data.data.image}`,
           { responseType: "arraybuffer" } // Ensure response is an array buffer
         );
 
@@ -277,7 +284,7 @@ const CompletionForm = ({
 
   const printRequest = async () => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/file-requests/${data._id}`;
+      let url = `${BACKEND_API}/file-requests/${data._id}`;
       // let url = `http://localhost:8080/api/file-requests/${data._id}`;
 
       const today = new Date();

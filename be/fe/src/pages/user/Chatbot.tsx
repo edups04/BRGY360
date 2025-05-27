@@ -2,12 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import { RiCloseLine, RiSendPlaneFill } from "react-icons/ri";
 import { useChats } from "../../providers/ChatsProvider";
 import axios from "axios";
+import BACKEND_API from "../../utils/API";
 
 const Chatbot = ({ onClose }: { onClose: () => void }) => {
   const { userChats, getUserChats } = useChats();
   const [userId, setUserId] = useState("");
   const [message, setMessage] = useState("");
   const chatEndRef = useRef<HTMLDivElement | null>(null);
+
+  // * REAL TIME UPDATES
+  const { unreadMessageCount, setUnreadMessageCount, getUnreadMessageCount } =
+    useChats();
 
   useEffect(() => {
     if (chatEndRef.current) {
@@ -16,14 +21,41 @@ const Chatbot = ({ onClose }: { onClose: () => void }) => {
   }, [userChats]);
 
   useEffect(() => {
+    updateMessageStatus();
     getData();
 
-    const interval = setInterval(() => {
-      getData();
-    }, 10000);
+    // const interval = setInterval(() => {
+    //   getData();
+    // }, 10000);
 
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    console.log("NEW MESSAGE RECEIVED UPDATE READ STATUS OF THE OPEN MESSAGE!");
+    updateMessageStatus();
+  }, [userChats]);
+
+  const updateMessageStatus = async () => {
+    try {
+      let user = JSON.parse(localStorage.getItem("user"));
+      let url = `${BACKEND_API}/chat-bot-messages/1`;
+
+      let response = await axios.put(url, {
+        status: "read",
+        from: "chatbot",
+        userId: user._id,
+      });
+
+      if (response.data.success === true) {
+        console.log(response.data);
+        await getUnreadMessageCount();
+        setUnreadMessageCount(0);
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
 
   const getData = async () => {
     const user = localStorage.getItem("user");
@@ -41,7 +73,7 @@ const Chatbot = ({ onClose }: { onClose: () => void }) => {
 
   const sendMessage = async () => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/chat-bot-messages`;
+      let url = `${BACKEND_API}/chat-bot-messages`;
       // let url = `http://localhost:8080/api/chat-bot-messages`;
 
       let response = await axios.post(url, {

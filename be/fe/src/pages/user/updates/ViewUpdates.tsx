@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { RiArrowLeftSLine, RiCalendarLine } from "react-icons/ri";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserNavbar from "../../../components/UserNavbar";
+import BACKEND_API from "../../../utils/API";
 
 const ViewUpdates = () => {
   const { state } = useLocation();
@@ -13,7 +14,7 @@ const ViewUpdates = () => {
     const getData = async () => {
       if (state) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/projects/${state}`;
+          let url = `${BACKEND_API}/projects/${state}`;
           // let url = `http://localhost:8080/api/projects/${state}`;
 
           let response = await axios.get(url);
@@ -55,7 +56,7 @@ const ViewUpdates = () => {
             style={{
               backgroundImage:
                 data.image !== "N/A"
-                  ? `url(https://brgy360-be.onrender.com/api/images/${encodeURIComponent(
+                  ? `url(${BACKEND_API}/images/${encodeURIComponent(
                       data.image
                     )})`
                   : "",

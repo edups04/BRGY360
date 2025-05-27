@@ -7,6 +7,7 @@ import DeleteModal from "../../components/DeleteModal";
 import Modal from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
 import UserApproval from "../../components/UserApproval";
+import BACKEND_API from "../../utils/API";
 
 const Users = () => {
   const { users, getUsers, totalPages } = useUsers();
@@ -30,7 +31,7 @@ const Users = () => {
   const deleteUser = async (userId: string) => {
     if (userId) {
       try {
-        let url = `https://brgy360-be.onrender.com/api/users/${userId}`;
+        let url = `${BACKEND_API}/users/${userId}`;
         // let url = `http://localhost:8080/api/users/${userId}`;
 
         let response = await axios.delete(url);
@@ -39,7 +40,9 @@ const Users = () => {
           showModal(true);
           setError(false);
           setMessage("Account has been successfully deleted!");
-          getUsers(barangayId, page, limit, status, role);
+          console.log(barangayId, page, limit, status, role);
+          getUsers("", barangayId, page, limit, status, role);
+          console.log("NAG REFRESH!!");
         }
       } catch (error: any) {
         showModal(true);
@@ -58,7 +61,7 @@ const Users = () => {
 
         if (currUser) {
           try {
-            let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+            let url = `${BACKEND_API}/users/${currUser._id}`;
             // let url = `http://localhost:8080/api/users/${currUser._id}`;
             setCurrentUser(currUser._id);
 
@@ -178,7 +181,7 @@ const Users = () => {
                         <div
                           className="w-[40px] h-[40px] rounded-full overflow-hidden bg-gray-200 bg-cover bg-center"
                           style={{
-                            backgroundImage: `url("https://brgy360-be.onrender.com/api/images/${user.profile}")`,
+                            backgroundImage: `url("${BACKEND_API}/images/${user.profile}")`,
                           }}
                         ></div>
                         <p className="text-xs font-normal">{`${user.firstName} ${user.lastName}`}</p>

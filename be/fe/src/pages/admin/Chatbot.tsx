@@ -4,6 +4,7 @@ import { useChats } from "../../providers/ChatsProvider";
 import { RiSendPlaneFill, RiSearchLine } from "react-icons/ri";
 import axios from "axios";
 import { useUsers } from "../../providers/UsersProvider";
+import BACKEND_API from "../../utils/API";
 const Chatbot = () => {
   const { users, getUsers, totalPages } = useUsers();
   const { adminChats, getAdminChats } = useChats();
@@ -26,7 +27,8 @@ const Chatbot = () => {
       messages: [], // no messages yet
     });
 
-  const handleUserClick = (user: any) => {
+  const handleUserClick = async (user: any) => {
+    await updateMessageStatus(user._id);
     setSelectedUser(user._id);
     setSelectedUserObject(user); // Store full user object
   };
@@ -39,7 +41,7 @@ const Chatbot = () => {
 
       if (currUser) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          let url = `${BACKEND_API}/users/${currUser._id}`;
           // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
@@ -73,31 +75,38 @@ const Chatbot = () => {
     }
   }, [selectedChat]);
 
-  const getData = async () => {
-    const user = localStorage.getItem("user");
-
-    if (user) {
-      const currUser = JSON.parse(user);
-
-      if (currUser) {
-        await getAdminChats(currUser.barangayId);
-      }
-    }
-  };
-
   useEffect(() => {
-    getData();
+    console.log("NEW MESSAGE RECEIVED UPDATE READ STATUS OF THE OPEN MESSAGE!");
+    if (selectedUser) {
+      updateMessageStatus(selectedUser);
+    }
+  }, [selectedChat && selectedChat.messages?.length]);
 
-    const interval = setInterval(() => {
-      getData();
-    }, 10000);
+  // const getData = async () => {
+  //   const user = localStorage.getItem("user");
 
-    return () => clearInterval(interval);
-  }, []);
+  //   if (user) {
+  //     const currUser = JSON.parse(user);
+
+  //     if (currUser) {
+  //       await getAdminChats(currUser.barangayId);
+  //     }
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getData();
+
+  //   // const interval = setInterval(() => {
+  //   //   getData();
+  //   // }, 10000);
+
+  //   // return () => clearInterval(interval);
+  // }, []);
 
   const sendMessage = async () => {
     try {
-      let url = `https://brgy360-be.onrender.com/api/chat-bot-messages`;
+      let url = `${BACKEND_API}/chat-bot-messages`;
       // let url = `http://localhost:8080/api/chat-bot-messages`;
 
       let response = await axios.post(url, {
@@ -108,9 +117,32 @@ const Chatbot = () => {
 
       if (response.data.success === true) {
         console.log(response.data);
-        await getData();
+        // await getData();
         setMessage("");
         setSearch("");
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  const updateMessageStatus = async (userId) => {
+    try {
+      if (userId) {
+        let url = `${BACKEND_API}/chat-bot-messages/1`;
+        let response = await axios.put(url, {
+          status: "read",
+          from: "user",
+          userId: userId,
+        });
+
+        if (response.data.success === true) {
+          console.log(response.data);
+          let user = localStorage.getItem("user");
+          if (user) {
+            await getAdminChats(JSON.parse(user).barangayId);
+          }
+        }
       }
     } catch (error: any) {
       console.log(error);
@@ -164,7 +196,7 @@ const Chatbot = () => {
                         <div
                           className="shrink-0 bg-cover bg-center h-[40px] w-[40px] bg-white rounded-full"
                           style={{
-                            backgroundImage: `url("https://brgy360-be.onrender.com/api/images/${user.profile}")`,
+                            backgroundImage: `url("${BACKEND_API}/images/${user.profile}")`,
                           }}
                         ></div>
                         {user.firstName} {user.lastName}
@@ -190,6 +222,14 @@ const Chatbot = () => {
                       chat.user._id !==
                       JSON.parse(localStorage.getItem("user"))._id
                   )
+                  .sort((a, b) => {
+                    const lastA = a.messages[a.messages.length - 1];
+                    const lastB = b.messages[b.messages.length - 1];
+                    return (
+                      new Date(lastB.date).getTime() -
+                      new Date(lastA.date).getTime()
+                    );
+                  })
                   .map((chat: any) => {
                     const isSelected = selectedUser === chat.user._id;
 
@@ -205,10 +245,18 @@ const Chatbot = () => {
                         <div
                           className="shrink-0 bg-cover bg-center h-[40px] w-[40px] bg-white rounded-full"
                           style={{
-                            backgroundImage: `url("https://brgy360-be.onrender.com/api/images/${chat.user.profile}")`,
+                            backgroundImage: `url("${BACKEND_API}/images/${chat.user.profile}")`,
                           }}
                         ></div>
                         <p className="text-xs font-normal">{`${chat.user.firstName} ${chat.user.lastName}`}</p>
+                        {(chat.unreadCount && selectedUser !== chat.user?._id) >
+                          0 && (
+                          <div className="ml-auto rounded-full px-2 py-1 min-w-8 text-center bg-red-500">
+                            <span className="font-bold text-sm text-white">
+                              {chat.unreadCount > 99 ? "99+" : chat.unreadCount}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     );
                   })}
@@ -229,7 +277,7 @@ const Chatbot = () => {
                     className="shrink-0 bg-cover bg-center h-[40px] w-[40px] bg-gray-200 rounded-full"
                     style={{
                       backgroundImage: selectedChat
-                        ? `url("https://brgy360-be.onrender.com/api/images/${selectedChat.user.profile}")`
+                        ? `url("${BACKEND_API}/images/${selectedChat.user.profile}")`
                         : "",
                     }}
                   ></div>

@@ -12,6 +12,7 @@ import {
   RiFilePdf2Line,
 } from "react-icons/ri";
 import axios from "axios";
+import BACKEND_API from "../../utils/API";
 
 const Budgets = () => {
   const { budgets, years, getBudgets } = useBudget();
@@ -44,7 +45,7 @@ const Budgets = () => {
 
       if (currUser) {
         try {
-          let url = `https://brgy360-be.onrender.com/api/users/${currUser._id}`;
+          let url = `${BACKEND_API}/users/${currUser._id}`;
           // let url = `http://localhost:8080/api/users/${currUser._id}`;
 
           let response = await axios.get(url);
@@ -65,7 +66,7 @@ const Budgets = () => {
   }, [year]);
 
   const handleDownload = (file: string) => {
-    const url = `https://brgy360-be.onrender.com/api/files/${file}`;
+    const url = `${BACKEND_API}/files/${file}`;
     // const url = `http://localhost:8080/api/files/${file}`;
     window.open(url, "_blank");
   };
