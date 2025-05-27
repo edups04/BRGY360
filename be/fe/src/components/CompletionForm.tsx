@@ -14,10 +14,16 @@ const CompletionForm = ({
 }) => {
   const [placeOfIssuance, setPlaceOfIssuance] = useState("");
   const [residentCertificateNumber, setResidentCertificateNumber] = useState(0);
+  const [noDerogatoryRecord, setNoDerogatoryRecord] = useState(false);
 
   const [modal, showModal] = useState(false);
   const [error, setError] = useState(true);
   const [message, setMessage] = useState("");
+
+  const handleCheckboxChange = (e) => {
+    setNoDerogatoryRecord(e.target.checked);
+    // console.log("No Derogatory Record checked:", e.target.checked);
+  };
 
   useEffect(() => {
     console.log("DATA", data);
@@ -65,7 +71,7 @@ const CompletionForm = ({
       form.getTextField("birthdate")?.setText(data.data.birthdate);
       form
         .getTextField("noDerogatoryRecord")
-        ?.setText(data.data.noDerogatoryRecord);
+        ?.setText(noDerogatoryRecord ? "NO DEROGATORY RECORD" : "");
       form.getTextField("purpose")?.setText(data.data.purpose);
       form.getTextField("dateRequested")?.setText(formattedDate);
       // form
@@ -195,7 +201,7 @@ const CompletionForm = ({
       form.getTextField("purpose")?.setText(data.data.purpose);
       form
         .getTextField("noDerogatoryRecord")
-        ?.setText(data.data.noDerogatoryRecord);
+        ?.setText(noDerogatoryRecord ? "NO DEROGATORY RECORD" : "");
       form.getTextField("dateRequested")?.setText(formattedDate);
       form
         .getTextField("requestNumber")
@@ -302,6 +308,7 @@ const CompletionForm = ({
       let updatedData = {
         ...data.data,
         validUntil: validUntil,
+        noDerogatoryRecord: noDerogatoryRecord ? "NO DEROGATORY RECORD" : "",
       };
 
       let response = await axios.put(url, {
@@ -366,6 +373,21 @@ const CompletionForm = ({
                   }}
                   placeholder="place of issuance"
                   className="text-xs font-normal outline-none border border-green-700 p-3 rounded-xl w-full"
+                />
+              </div>
+              <div className="w-max flex flex-row items-center gap-2 border border-green-700 p-2 py-3 rounded-xl self-start">
+                <label
+                  htmlFor="noDerogatoryRecord"
+                  className="text-xs font-bold text-green-700"
+                >
+                  No Derogatory Record
+                </label>
+                <input
+                  id="noDerogatoryRecord"
+                  type="checkbox"
+                  name="noDerogatoryRecord"
+                  checked={noDerogatoryRecord}
+                  onChange={handleCheckboxChange}
                 />
               </div>
             </>

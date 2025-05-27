@@ -24,7 +24,6 @@ const RequestForm = () => {
     birthdate: "",
     purpose: "",
   });
-  const [noDerogatoryRecord, setNoDerogatoryRecord] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -88,11 +87,6 @@ const RequestForm = () => {
       autoFillUserFields(state);
     }
   }, []);
-
-  const handleCheckboxChange = (e) => {
-    setNoDerogatoryRecord(e.target.checked);
-    // console.log("No Derogatory Record checked:", e.target.checked);
-  };
 
   const autoFillUserFields = async (state) => {
     // * SET AUTO FILL DATA ONCE THE USER CLICKS THE FORM
@@ -185,9 +179,6 @@ const RequestForm = () => {
       form.getTextField("purok")?.setText(clearanceData.purok);
       form.getTextField("birthdate")?.setText(clearanceData.birthdate);
       form.getTextField("purpose")?.setText(clearanceData.purpose);
-      form
-        .getTextField("noDerogatoryRecord")
-        ?.setText(noDerogatoryRecord ? "NO DEROGATORY RECORD" : "");
     } else if (formType === "barangay-indigency") {
       form.getTextField("fullName")?.setText(indigencyData.fullName);
       form.getTextField("address")?.setText(indigencyData.address);
@@ -313,10 +304,6 @@ const RequestForm = () => {
         clearanceFormData.append("purok", clearanceData.purok);
         clearanceFormData.append("birthdate", clearanceData.birthdate);
         clearanceFormData.append("purpose", clearanceData.purpose);
-        clearanceFormData.append(
-          "noDerogatoryRecord",
-          noDerogatoryRecord ? "NO DEROGATORY RECORD" : ""
-        );
         if (image) {
           console.log("SAVING IMAGE: ", image);
           clearanceFormData.append("image", image);
@@ -500,21 +487,6 @@ const RequestForm = () => {
                     }
                     className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
                     placeholder="purpose"
-                  />
-                </div>
-                <div className="w-max flex flex-row items-center gap-2 border border-green-700 p-2 py-3 rounded-xl">
-                  <label
-                    htmlFor="noDerogatoryRecord"
-                    className="text-xs font-bold text-green-700"
-                  >
-                    No Derogatory Record
-                  </label>
-                  <input
-                    id="noDerogatoryRecord"
-                    type="checkbox"
-                    name="noDerogatoryRecord"
-                    checked={noDerogatoryRecord}
-                    onChange={handleCheckboxChange}
                   />
                 </div>
                 <div className="w-full max-w-[350px] h-[150px] lg:h-[350px] bg-gray-200 flex items-center justify-center rounded-xl overflow-hidden relative">
@@ -749,7 +721,9 @@ const RequestForm = () => {
       </div>
       {requestModal && (
         <RequestModal
-          onClose={() => showPostModal(false)}
+          onClose={() => {
+            showRequestModal(false);
+          }}
           onPost={submitRequest}
         />
       )}
@@ -761,7 +735,6 @@ const RequestForm = () => {
           onClose={() => {
             showModal(false);
             showPostModal(false);
-
             if (!error) {
               navigate("/user/request");
             }

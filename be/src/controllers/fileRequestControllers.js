@@ -71,7 +71,7 @@ const createFileRequest = async (req, res) => {
         birthdate: req.body.birthdate,
         purpose: req.body.purpose,
         image: req.file?.filename || null,
-        noDerogatoryRecord: req.body.noDerogatoryRecord,
+        // noDerogatoryRecord: req.body.noDerogatoryRecord,
       };
     } else {
       data = req.body.data; // For other form types, assume data is a JSON object
