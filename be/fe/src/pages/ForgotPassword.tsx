@@ -24,7 +24,7 @@ const ForgotPassword = () => {
     const verifyToken = async () => {
       try {
         const response = await axios.post(
-          `${BACKEND_API}/users/verify-reset-token"`,
+          `${BACKEND_API}/users/verify-reset-token`,
           {
             token,
           }
