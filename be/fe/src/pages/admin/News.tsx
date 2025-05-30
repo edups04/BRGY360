@@ -93,7 +93,7 @@ const News = () => {
           {/* header */}
           <div className="w-full flex flex-col items-start justify-center">
             <p className="text-sm font-semibold">News and Announcements</p>
-            <p className="text-xs font-normal">
+            <p className="text-sm font-normal">
               manage news and announcements for your barangay
             </p>
           </div>
@@ -102,7 +102,7 @@ const News = () => {
             <div className="w-3/4 lg:w-2/4 relative flex items-center justify-center">
               <input
                 type="text"
-                className="outline-none border border-green-700 text-xs font-normal w-full pl-10 pr-3 py-3 rounded-xl"
+                className="outline-none border border-green-700 text-sm font-normal w-full pl-10 pr-3 py-3 rounded-xl"
                 placeholder="search for news and announcements"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -114,7 +114,7 @@ const News = () => {
               />
             </div>
             <div
-              className="flex items-center justify-center cursor-pointer text-xs font-normal text-white bg-green-700 p-3 rounded-xl"
+              className="flex items-center justify-center cursor-pointer text-sm font-normal text-white bg-green-700 p-3 rounded-xl"
               onClick={() => navigate("/admin/news/add")}
             >
               Add New
@@ -122,7 +122,7 @@ const News = () => {
           </div>
           {/* count */}
           <div className="w-full flex items-center justify-start">
-            <p className="text-xs font-normal">Count: {news.length}</p>
+            <p className="text-sm font-normal">Count: {news.length}</p>
           </div>
           {/* data */}
           <div className="w-full flex flex-col items-center justify-center gap-4">
@@ -151,7 +151,7 @@ const News = () => {
                         </p>
                         <div className="w-full flex flex-row items-center justify-start gap-1">
                           <RiCalendarLine size={14} color="black" />
-                          <p className="text-xs font-normal">
+                          <p className="text-sm font-normal">
                             {new Date(news.date).toLocaleDateString("en-US", {
                               year: "numeric",
                               month: "long",
@@ -187,7 +187,7 @@ const News = () => {
               <div className="w-full flex flex-row items-center justify-center h-[60vh]">
                 <div className="flex flex-col items-center justify-center text-green-700 gap-4">
                   <RiEmotionUnhappyLine size={46} />
-                  <p className="text-xs font-semibold">No Results Found</p>
+                  <p className="text-sm font-semibold">No Results Found</p>
                 </div>
               </div>
             )}
@@ -207,7 +207,7 @@ const News = () => {
                   className={`cursor-pointer ${
                     page === pageNumber
                       ? "font-semibold text-sm text-green-700"
-                      : "font-normal text-xs text-green-700"
+                      : "font-normal text-sm text-green-700"
                   }`}
                   onClick={() => setPage(pageNumber)}
                 >

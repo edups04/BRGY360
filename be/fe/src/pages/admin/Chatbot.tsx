@@ -164,7 +164,7 @@ const Chatbot = () => {
             <div className="relative flex items-center justify-center">
               <input
                 type="text"
-                className="outline-none border border-green-700 text-xs font-normal w-full pl-10 pr-3 py-3 rounded-xl"
+                className="outline-none border border-green-700 text-sm font-normal w-full pl-10 pr-3 py-3 rounded-xl"
                 placeholder="search for users"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -248,7 +248,7 @@ const Chatbot = () => {
                             backgroundImage: `url("${BACKEND_API}/images/${chat.user.profile}")`,
                           }}
                         ></div>
-                        <p className="text-xs font-normal">{`${chat.user.firstName} ${chat.user.lastName}`}</p>
+                        <p className="text-sm font-normal">{`${chat.user.firstName} ${chat.user.lastName}`}</p>
                         {chat.unreadCount > 0 &&
                           selectedUser !== chat.user?._id && (
                             <div className="ml-auto rounded-full px-2 py-1 min-w-8 text-center bg-red-500">
@@ -266,7 +266,7 @@ const Chatbot = () => {
             ) : (
               <div className="w-full lg:w-1/4 flex flex-col items-center justify-center bg-gray-200 rounded-xl overflow-hidden overflow-y-auto max-h-[20vh] lg:max-h-[60vh]">
                 <div className="w-full flex items-center justify-center p-6">
-                  <p className="text-xs font-normal">No Messages Found</p>
+                  <p className="text-sm font-normal">No Messages Found</p>
                 </div>
               </div>
             )}
@@ -283,7 +283,7 @@ const Chatbot = () => {
                         : "",
                     }}
                   ></div>
-                  <p className="text-xs font-normal">
+                  <p className="text-sm font-normal">
                     {selectedChat
                       ? `${selectedChat.user.firstName} ${selectedChat.user.lastName}`
                       : "User Name"}
@@ -311,7 +311,7 @@ const Chatbot = () => {
                 <div className="w-full flex flex-row items-center justify-between gap-4 p-6 bg-white">
                   <input
                     type="text"
-                    className="text-xs font-normal outline-none border border-green-700 p-3 rounded-xl w-full"
+                    className="text-sm font-normal outline-none border border-green-700 p-3 rounded-xl w-full"
                     placeholder="message"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}

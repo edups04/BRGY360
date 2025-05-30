@@ -174,13 +174,13 @@ const Profile = () => {
               {edit ? (
                 <>
                   <div
-                    className="p-2 rounded-xl bg-red-700 text-xs font-normal text-white cursor-pointer mr-2"
+                    className="p-2 rounded-xl bg-red-700 text-sm font-normal text-white cursor-pointer mr-2"
                     onClick={() => showDeleteModal(true)}
                   >
                     Delete
                   </div>
                   <div
-                    className="p-2 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer mr-2"
+                    className="p-2 rounded-xl bg-green-700 text-sm font-normal text-white cursor-pointer mr-2"
                     onClick={() => {
                       setEdit(false);
                       window.location.reload();
@@ -189,7 +189,7 @@ const Profile = () => {
                     Cancel
                   </div>
                   <div
-                    className="p-2 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer"
+                    className="p-2 rounded-xl bg-green-700 text-sm font-normal text-white cursor-pointer"
                     onClick={() => updateUser()}
                   >
                     Save
@@ -197,7 +197,7 @@ const Profile = () => {
                 </>
               ) : (
                 <div
-                  className="p-2 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer"
+                  className="p-2 rounded-xl bg-green-700 text-sm font-normal text-white cursor-pointer"
                   onClick={() => setEdit(true)}
                 >
                   Edit Profile
@@ -242,9 +242,9 @@ const Profile = () => {
               </div>
               <div className="flex flex-col items-start justify-center">
                 <p className="text-sm font-semibold">{firstName}</p>
-                <p className="text-xs font-normal">{email}</p>
+                <p className="text-sm font-normal">{email}</p>
                 <div className="p-2 rounded-xl bg-yellow-500 mt-2">
-                  <p className="text-xs font-normal">User</p>
+                  <p className="text-sm font-normal">User</p>
                 </div>
               </div>
             </div>
@@ -252,10 +252,10 @@ const Profile = () => {
             <div className="w-full flex flex-col items-center justify-center gap-4">
               {/* first name */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">First Name</p>
+                <p className="text-sm font-normal">First Name</p>
                 <input
                   type="text"
-                  className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
+                  className="w-full text-sm font-normal outline-none border border-green-700 rounded-xl p-3"
                   placeholder="first name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
@@ -264,10 +264,10 @@ const Profile = () => {
               </div>
               {/* middle name */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Middle Name</p>
+                <p className="text-sm font-normal">Middle Name</p>
                 <input
                   type="text"
-                  className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
+                  className="w-full text-sm font-normal outline-none border border-green-700 rounded-xl p-3"
                   placeholder="middle name"
                   value={middleName}
                   onChange={(e) => setMiddleName(e.target.value)}
@@ -276,10 +276,10 @@ const Profile = () => {
               </div>
               {/* last name */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Last Name</p>
+                <p className="text-sm font-normal">Last Name</p>
                 <input
                   type="text"
-                  className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
+                  className="w-full text-sm font-normal outline-none border border-green-700 rounded-xl p-3"
                   placeholder="last name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
@@ -288,10 +288,10 @@ const Profile = () => {
               </div>
               {/* mobile num */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Mobile Number</p>
+                <p className="text-sm font-normal">Mobile Number</p>
                 <input
                   type="text"
-                  className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
+                  className="w-full text-sm font-normal outline-none border border-green-700 rounded-xl p-3"
                   placeholder="mobile number"
                   value={mobileNumber}
                   onChange={(e) => {
@@ -303,10 +303,10 @@ const Profile = () => {
               </div>
               {/* email */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Email</p>
+                <p className="text-sm font-normal">Email</p>
                 <input
                   type="text"
-                  className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
+                  className="w-full text-sm font-normal outline-none border border-green-700 rounded-xl p-3"
                   placeholder="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -315,10 +315,10 @@ const Profile = () => {
               </div>
               {/* street */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Address</p>
+                <p className="text-sm font-normal">Address</p>
                 <input
                   type="text"
-                  className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
+                  className="w-full text-sm font-normal outline-none border border-green-700 rounded-xl p-3"
                   placeholder="address"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
@@ -327,11 +327,11 @@ const Profile = () => {
               </div>
               {/* barangay */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Barangay</p>
+                <p className="text-sm font-normal">Barangay</p>
                 <select
                   value={barangay}
                   onChange={(e) => setBarangay(e.target.value)}
-                  className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-xs font-normal"
+                  className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-sm font-normal"
                   disabled={edit ? false : true}
                 >
                   <option value="" disabled>
@@ -347,10 +347,10 @@ const Profile = () => {
               </div>
               {/* birthdate */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Birth Date</p>
+                <p className="text-sm font-normal">Birth Date</p>
                 <input
                   type="date"
-                  className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
+                  className="w-full text-sm font-normal outline-none border border-green-700 rounded-xl p-3"
                   value={birthDate}
                   onChange={(e) => setBirthDate(e.target.value)}
                   disabled={true}
@@ -358,10 +358,10 @@ const Profile = () => {
               </div>
               {/* age */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Age</p>
+                <p className="text-sm font-normal">Age</p>
                 <input
                   type="text"
-                  className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
+                  className="w-full text-sm font-normal outline-none border border-green-700 rounded-xl p-3"
                   placeholder="age"
                   value={age}
                   onChange={(e) => {
@@ -373,11 +373,11 @@ const Profile = () => {
               </div>
               {/* sex */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Sex</p>
+                <p className="text-sm font-normal">Sex</p>
                 <select
                   value={sex}
                   onChange={(e) => setSex(e.target.value)}
-                  className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-xs font-normal"
+                  className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-sm font-normal"
                   // disabled={edit ? false : true}
                   disabled={true}
                 >
@@ -390,11 +390,11 @@ const Profile = () => {
               </div>
               {/* password */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Password</p>
+                <p className="text-sm font-normal">Password</p>
                 <div className="w-full flex flex-row relative items-center">
                   <input
                     type={showPassword ? "text" : "password"}
-                    className="w-full text-xs font-normal outline-none border border-green-700 rounded-xl p-3"
+                    className="w-full text-sm font-normal outline-none border border-green-700 rounded-xl p-3"
                     placeholder="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -419,7 +419,7 @@ const Profile = () => {
               </div>
               <div className="w-full flex flex-row items-center justify-end gap-2">
                 <button
-                  className="flex flex-row gap-2 text-xs font-normal text-white bg-green-700 p-3 rounded-xl"
+                  className="flex flex-row gap-2 text-sm font-normal text-white bg-green-700 p-3 rounded-xl"
                   onClick={() =>
                     navigate("/user/request/history", { state: "completed" })
                   }

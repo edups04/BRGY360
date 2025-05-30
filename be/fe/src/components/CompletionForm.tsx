@@ -65,7 +65,11 @@ const CompletionForm = ({
 
     // Fill in form fields based on form type
     if (data.requestedDocumentType === "barangay-clearance") {
-      form.getTextField("fullName")?.setText(data.data.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${data.data.firstName} ${data.data.middleName} ${data.data.lastName}`
+        );
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("purok")?.setText(data.data.purok);
       form.getTextField("birthdate")?.setText(data.data.birthdate);
@@ -87,17 +91,29 @@ const CompletionForm = ({
         ? form.getTextField("placeOfIssuance")?.setText("")
         : form.getTextField("placeOfIssuance")?.setText(data.placeOfIssuance);
     } else if (data.requestedDocumentType === "barangay-indigency") {
-      form.getTextField("fullName")?.setText(data.data.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${data.data.firstName} ${data.data.middleName} ${data.data.lastName}`
+        );
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("purpose")?.setText(data.data.purpose);
       form.getTextField("dateRequested")?.setText(formattedDate);
     } else if (data.requestedDocumentType === "certificate-of-residency") {
-      form.getTextField("fullName")?.setText(data.data.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${data.data.firstName} ${data.data.middleName} ${data.data.lastName}`
+        );
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("purpose")?.setText(data.data.purpose);
       form.getTextField("dateRequested")?.setText(formattedDate);
     } else if (data.requestedDocumentType === "first-time-job-seeker") {
-      form.getTextField("fullName")?.setText(data.data.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${data.data.firstName} ${data.data.middleName} ${data.data.lastName}`
+        );
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("honorifics")?.setText(data.data.honorifics);
       form.getTextField("schoolName")?.setText(data.data.schoolName);
@@ -194,7 +210,11 @@ const CompletionForm = ({
 
     // Fill in form fields based on form type
     if (data.requestedDocumentType === "barangay-clearance") {
-      form.getTextField("fullName")?.setText(data.data.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${data.data.firstName} ${data.data.middleName} ${data.data.lastName}`
+        );
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("purok")?.setText(data.data.purok);
       form.getTextField("birthdate")?.setText(data.data.birthdate);
@@ -216,18 +236,30 @@ const CompletionForm = ({
         ? form.getTextField("placeOfIssuance")?.setText("")
         : form.getTextField("placeOfIssuance")?.setText(data.placeOfIssuance);
     } else if (data.requestedDocumentType === "barangay-indigency") {
-      form.getTextField("fullName")?.setText(data.data.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${data.data.firstName} ${data.data.middleName} ${data.data.lastName}`
+        );
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("purpose")?.setText(data.data.purpose);
       form.getTextField("dateRequested")?.setText(formattedDate);
       form.getTextField("validUntil")?.setText(data.data.validUntil);
     } else if (data.requestedDocumentType === "certificate-of-residency") {
-      form.getTextField("fullName")?.setText(data.data.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${data.data.firstName} ${data.data.middleName} ${data.data.lastName}`
+        );
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("purpose")?.setText(data.data.purpose);
       form.getTextField("dateRequested")?.setText(formattedDate);
     } else if (data.requestedDocumentType === "first-time-job-seeker") {
-      form.getTextField("fullName")?.setText(data.data.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${data.data.firstName} ${data.data.middleName} ${data.data.lastName}`
+        );
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("honorifics")?.setText(data.data.honorifics);
       form.getTextField("schoolName")?.setText(data.data.schoolName);
@@ -338,7 +370,7 @@ const CompletionForm = ({
         <div className="w-full lg:w-2/5 bg-white p-6 rounded-2xl flex flex-col items-center justify-center gap-6">
           {/* top */}
           <div className="w-full flex flex-row items-center justify-between">
-            <p className="text-xs font-semibold w-1/2 text-left truncate">
+            <p className="text-sm font-semibold w-1/2 text-left truncate">
               Completion Form
             </p>
             <RiCloseLine
@@ -352,17 +384,17 @@ const CompletionForm = ({
           {data.requestedDocumentType === "barangay-clearance" && (
             <>
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Place of Issuance</p>
+                <p className="text-sm font-normal">Place of Issuance</p>
                 <input
                   type="text"
                   value={placeOfIssuance}
                   onChange={(e) => setPlaceOfIssuance(e.target.value)}
                   placeholder="place of issuance"
-                  className="text-xs font-normal outline-none border border-green-700 p-3 rounded-xl w-full"
+                  className="text-sm font-normal outline-none border border-green-700 p-3 rounded-xl w-full"
                 />
               </div>
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Resident Certificate No</p>
+                <p className="text-sm font-normal">Resident Certificate No</p>
                 <input
                   type="number"
                   min={0}
@@ -372,13 +404,13 @@ const CompletionForm = ({
                     setResidentCertificateNumber(e.target.value);
                   }}
                   placeholder="place of issuance"
-                  className="text-xs font-normal outline-none border border-green-700 p-3 rounded-xl w-full"
+                  className="text-sm font-normal outline-none border border-green-700 p-3 rounded-xl w-full"
                 />
               </div>
               <div className="w-max flex flex-row items-center gap-2 border border-green-700 p-2 py-3 rounded-xl self-start">
                 <label
                   htmlFor="noDerogatoryRecord"
-                  className="text-xs font-bold text-green-700"
+                  className="text-sm font-bold text-green-700"
                 >
                   No Derogatory Record
                 </label>
@@ -396,7 +428,7 @@ const CompletionForm = ({
           {/* buttons */}
           <div className="w-full flex flex-row items-center justify-end gap-2">
             <button
-              className="text-xs font-normal text-white bg-green-700 p-3 rounded-xl"
+              className="text-sm font-normal text-white bg-green-700 p-3 rounded-xl"
               onClick={() => generateAndPreviewPdf()}
             >
               Preview
@@ -404,13 +436,13 @@ const CompletionForm = ({
             {(placeOfIssuance && residentCertificateNumber > 0) ||
             data.requestedDocumentType !== "barangay-clearance" ? (
               <button
-                className="text-xs font-normal text-white bg-green-700 p-3 rounded-xl"
+                className="text-sm font-normal text-white bg-green-700 p-3 rounded-xl"
                 onClick={() => printRequest()}
               >
                 Print
               </button>
             ) : (
-              <button className="text-xs font-normal text-white bg-green-700/10 p-3 rounded-xl">
+              <button className="text-sm font-normal text-white bg-green-700/10 p-3 rounded-xl">
                 Print
               </button>
             )}

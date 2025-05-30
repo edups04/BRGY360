@@ -98,19 +98,19 @@ const Users = () => {
           <div className="w-full flex flex-row items-center justify-between">
             <div className="w-1/2 flex flex-col items-start justify-center">
               <p className="text-sm font-semibold">Manage Users</p>
-              <p className="text-xs font-normal w-full truncate">
+              <p className="text-sm font-normal w-full truncate">
                 Approve or delete users and admins
               </p>
             </div>
             <div className="flex items-center justify-center gap-2">
               <div
-                className="p-3 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer"
+                className="p-3 rounded-xl bg-green-700 text-sm font-normal text-white cursor-pointer"
                 onClick={() => navigate("/admin/users/add/user")}
               >
                 Add User
               </div>
               <div
-                className="p-3 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer"
+                className="p-3 rounded-xl bg-green-700 text-sm font-normal text-white cursor-pointer"
                 onClick={() => navigate("/admin/users/add/admin")}
               >
                 Add Admin
@@ -122,7 +122,7 @@ const Users = () => {
             <div className="relative w-2/5 lg:w-3/5 flex items-center justify-center">
               <input
                 type="text"
-                className="w-full outline-none border border-green-700 pl-10 pr-3 py-3 rounded-xl text-xs font-normal truncate"
+                className="w-full outline-none border border-green-700 pl-10 pr-3 py-3 rounded-xl text-sm font-normal truncate"
                 placeholder="search for users"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -134,7 +134,7 @@ const Users = () => {
               />
             </div>
             <select
-              className="outline-none bg-green-700 text-white p-3 rounded-xl text-xs font-normal"
+              className="outline-none bg-green-700 text-white p-3 rounded-xl text-sm font-normal"
               value={role}
               onChange={(e) => setRole(e.target.value)}
             >
@@ -142,7 +142,7 @@ const Users = () => {
               <option value="user">User</option>
             </select>
             <select
-              className="outline-none bg-green-700 text-white p-3 rounded-xl text-xs font-normal"
+              className="outline-none bg-green-700 text-white p-3 rounded-xl text-sm font-normal"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
@@ -176,7 +176,7 @@ const Users = () => {
               {users.length > 0 ? (
                 users.map((user: any) => (
                   <tr key={user._id}>
-                    <td className="border border-black/10 text-left text-xs font-normal p-3">
+                    <td className="border border-black/10 text-left text-sm font-normal p-3">
                       <div className="w-full flex flex-wrap items-center justify-start gap-2">
                         <div
                           className="w-[40px] h-[40px] rounded-full overflow-hidden bg-gray-200 bg-cover bg-center"
@@ -184,15 +184,15 @@ const Users = () => {
                             backgroundImage: `url("${BACKEND_API}/images/${user.profile}")`,
                           }}
                         ></div>
-                        <p className="text-xs font-normal">{`${user.firstName} ${user.lastName}`}</p>
+                        <p className="text-sm font-normal">{`${user.firstName} ${user.lastName}`}</p>
                       </div>
                     </td>
-                    <td className="hidden lg:table-cell border border-black/10 text-left text-xs font-normal p-3">
+                    <td className="hidden lg:table-cell border border-black/10 text-left text-sm font-normal p-3">
                       {user.email}
                     </td>
                     <td className="border border-black/10 text-left p-3">
                       <p
-                        className="text-green-700 text-xs font-semibold cursor-pointer"
+                        className="text-green-700 text-sm font-semibold cursor-pointer"
                         onClick={() => {
                           setSelectedUser(user._id);
                           showApprovalForm(true);
@@ -201,22 +201,22 @@ const Users = () => {
                         View File
                       </p>
                     </td>
-                    <td className="border border-black/10 text-left text-xs font-normal p-3">
+                    <td className="border border-black/10 text-left text-sm font-normal p-3">
                       {user.status === "pending" ? (
-                        <div className="inline-flex p-2 rounded-xl bg-yellow-500 text-white text-xs font-normal">
+                        <div className="inline-flex p-2 rounded-xl bg-yellow-500 text-white text-sm font-normal">
                           Pending
                         </div>
                       ) : user.status === "active" ? (
-                        <div className="inline-flex p-2 rounded-xl bg-green-700 text-white text-xs font-normal">
+                        <div className="inline-flex p-2 rounded-xl bg-green-700 text-white text-sm font-normal">
                           Approved
                         </div>
                       ) : user.status === "inactive" ? (
-                        <div className="inline-flex p-2 rounded-xl bg-red-700 text-white text-xs font-normal">
+                        <div className="inline-flex p-2 rounded-xl bg-red-700 text-white text-sm font-normal">
                           Declined
                         </div>
                       ) : null}
                     </td>
-                    <td className="border border-black/10 text-left text-xs font-normal p-3">
+                    <td className="border border-black/10 text-left text-sm font-normal p-3">
                       <div className="flex flex-wrap items-center justify-start gap-2">
                         <div
                           className="p-3 rounded-xl bg-green-700 text-white cursor-pointer"
@@ -224,7 +224,7 @@ const Users = () => {
                             navigate("/admin/users/view", { state: user._id })
                           }
                         >
-                          <p className="text-xs font-normal">View</p>
+                          <p className="text-sm font-normal">View</p>
                         </div>
                         <div
                           className="p-3 rounded-xl bg-green-700 text-white cursor-pointer"
@@ -232,7 +232,7 @@ const Users = () => {
                             navigate("/admin/users/edit", { state: user._id })
                           }
                         >
-                          <p className="text-xs font-normal">Edit</p>
+                          <p className="text-sm font-normal">Edit</p>
                         </div>
                         {currentUser !== user._id ? (
                           <div
@@ -242,7 +242,7 @@ const Users = () => {
                               showDeleteModal(true);
                             }}
                           >
-                            <p className="text-xs font-normal">Delete</p>
+                            <p className="text-sm font-normal">Delete</p>
                           </div>
                         ) : null}
                       </div>
@@ -252,7 +252,7 @@ const Users = () => {
               ) : (
                 <tr className="">
                   <td
-                    className="text-center p-6 text-xs font-normal"
+                    className="text-center p-6 text-sm font-normal"
                     colSpan={5}
                   >
                     No Results Found
@@ -275,7 +275,7 @@ const Users = () => {
                   className={`cursor-pointer ${
                     page === pageNumber
                       ? "font-semibold text-sm"
-                      : "font-normal text-xs text-[#6E6E6E]"
+                      : "font-normal text-sm text-[#6E6E6E]"
                   }`}
                   onClick={() => setPage(pageNumber)}
                 >

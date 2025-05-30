@@ -47,7 +47,7 @@ const TransparencyDashboard = () => {
             <p className="text-xl font-bold text-green-700 uppercase">
               {barangayName}
             </p>
-            <p className="text-xs font-normal w-[80vw] lg:w-[50vw] text-center">
+            <p className="text-sm font-normal w-[80vw] lg:w-[50vw] text-center">
               One of the largest barangays in Olongapo City is committed to
               transparency, accountability, and community development. Through
               open governance, it ensures residents have access to essential
@@ -57,7 +57,7 @@ const TransparencyDashboard = () => {
             </p>
 
             <div
-              className="flex p-3 rounded-xl bg-green-700 text-white font-normal text-xs mt-6 cursor-pointer"
+              className="flex p-3 rounded-xl bg-green-700 text-white font-normal text-sm mt-6 cursor-pointer"
               onClick={() => navigate("/user/transparency/updates")}
             >
               View More

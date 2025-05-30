@@ -16,7 +16,7 @@ const FileRequest = () => {
           {/* title */}
           <div className="w-full flex flex-col items-start justify-center">
             <p className="text-sm font-semibold">File Request</p>
-            <p className="text-xs font-normal">
+            <p className="text-sm font-normal">
               choose from the available documents
             </p>
           </div>
@@ -96,7 +96,7 @@ const FileRequest = () => {
           </div>
           <div className="w-full flex flex-row items-center justify-end gap-2">
             <button
-              className="flex flex-row gap-2 text-xs font-normal text-white bg-green-700 p-3 rounded-xl"
+              className="flex flex-row gap-2 text-sm font-normal text-white bg-green-700 p-3 rounded-xl"
               onClick={() => navigate("/user/request/history")}
             >
               <RiTimelineView size={16} />

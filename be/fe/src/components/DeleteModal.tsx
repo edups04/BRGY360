@@ -29,12 +29,12 @@ const DeleteModal = ({
           <p className="text-sm font-bold text-red-700">Warning!</p>
         </div>
 
-        <p className="text-xs font-normal text-center">
+        <p className="text-sm font-normal text-center">
           Are you sure about deleting? You cant revert this process if you
           proceed
         </p>
         <div
-          className="p-3 rounded-xl bg-red-500 text-xs font-normal text-white cursor-pointer"
+          className="p-3 rounded-xl bg-red-500 text-sm font-normal text-white cursor-pointer"
           onClick={onDelete}
         >
           Delete

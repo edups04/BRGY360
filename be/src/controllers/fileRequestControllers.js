@@ -65,7 +65,9 @@ const createFileRequest = async (req, res) => {
     let data = {};
     if (requestedDocumentType === "barangay-clearance") {
       data = {
-        fullName: req.body.fullName,
+        firstName: req.body.firstName,
+        middleName: req.body.middleName,
+        lastName: req.body.lastName,
         address: req.body.address,
         purok: req.body.purok,
         birthdate: req.body.birthdate,

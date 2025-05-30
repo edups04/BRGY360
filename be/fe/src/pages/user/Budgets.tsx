@@ -88,8 +88,8 @@ const Budgets = () => {
                   <div
                     className={`${
                       isActive
-                        ? "p-3 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer"
-                        : "p-3 rounded-xl text-xs font-normal cursor-pointer"
+                        ? "p-3 rounded-xl bg-green-700 text-sm font-normal text-white cursor-pointer"
+                        : "p-3 rounded-xl text-sm font-normal cursor-pointer"
                     }`}
                     key={budgetYear}
                     onClick={() => setYear(value)}
@@ -118,7 +118,7 @@ const Budgets = () => {
                         </p>
                         <div className="w-full flex flex-row items-center justify-start gap-1">
                           <RiCalendarLine size={14} color="black" />
-                          <p className="text-xs font-normal">
+                          <p className="text-sm font-normal">
                             {new Date(budget.date).toLocaleDateString("en-US", {
                               year: "numeric",
                             })}
@@ -147,7 +147,7 @@ const Budgets = () => {
               <div className="w-full flex flex-row items-center justify-center h-[60vh]">
                 <div className="flex flex-col items-center justify-center text-green-700 gap-4">
                   <RiEmotionUnhappyLine size={46} />
-                  <p className="text-xs font-semibold">No Results Found</p>
+                  <p className="text-sm font-semibold">No Results Found</p>
                 </div>
               </div>
             )}

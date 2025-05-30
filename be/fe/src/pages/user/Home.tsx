@@ -55,7 +55,7 @@ const Home = () => {
               transparency reports all in one place
             </p>
             <div
-              className="p-3 rounded-xl bg-green-700 text-xs font-normal text-white mt-4 cursor-pointer"
+              className="p-3 rounded-xl bg-green-700 text-sm font-normal text-white mt-4 cursor-pointer"
               onClick={() => navigate("/user/news")}
             >
               View More

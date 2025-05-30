@@ -156,30 +156,30 @@ const AddUser = () => {
               {/* name */}
               <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
                 <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">First Name</p>
+                  <p className="text-sm font-normal">First Name</p>
                   <input
                     type="text"
-                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                     placeholder="enter first name"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                   />
                 </div>
                 <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Middle Name</p>
+                  <p className="text-sm font-normal">Middle Name</p>
                   <input
                     type="text"
-                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                     placeholder="enter middle name"
                     value={middleName}
                     onChange={(e) => setMiddleName(e.target.value)}
                   />
                 </div>
                 <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Last Name</p>
+                  <p className="text-sm font-normal">Last Name</p>
                   <input
                     type="text"
-                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                     placeholder="enter last name"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
@@ -189,10 +189,10 @@ const AddUser = () => {
               {/* mobile, email */}
               <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
                 <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Mobile Number</p>
+                  <p className="text-sm font-normal">Mobile Number</p>
                   <input
                     type="text"
-                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                     placeholder="enter mobile number"
                     value={mobileNumber}
                     onChange={(e) => {
@@ -202,10 +202,10 @@ const AddUser = () => {
                   />
                 </div>
                 <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Email</p>
+                  <p className="text-sm font-normal">Email</p>
                   <input
                     type="text"
-                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                     placeholder="enter email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -215,11 +215,11 @@ const AddUser = () => {
               {/* address */}
               <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
                 <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Barangay</p>
+                  <p className="text-sm font-normal">Barangay</p>
                   <select
                     value={barangay}
                     onChange={(e) => setBarangay(e.target.value)}
-                    className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-xs font-normal"
+                    className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-sm font-normal"
                   >
                     <option value="" disabled>
                       Select an option
@@ -233,10 +233,10 @@ const AddUser = () => {
                   </select>
                 </div>
                 <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Street No.</p>
+                  <p className="text-sm font-normal">Street No.</p>
                   <input
                     type="text"
-                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                     placeholder="enter street number"
                     value={street}
                     onChange={(e) => setStreet(e.target.value)}
@@ -246,19 +246,19 @@ const AddUser = () => {
               {/* birthday, age, sex */}
               <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
                 <div className="w-full lg:w-2/4 flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Birthday</p>
+                  <p className="text-sm font-normal">Birthday</p>
                   <input
                     type="date"
-                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                     value={birthDate}
                     onChange={(e) => setBirthDate(e.target.value)}
                   />
                 </div>
                 <div className="w-full lg:w-1/4 flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Age</p>
+                  <p className="text-sm font-normal">Age</p>
                   <input
                     type="text"
-                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                    className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                     placeholder="enter age"
                     value={age}
                     disabled
@@ -269,11 +269,11 @@ const AddUser = () => {
                   />
                 </div>
                 <div className="w-full lg:w-1/4 flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Sex</p>
+                  <p className="text-sm font-normal">Sex</p>
                   <select
                     value={sex}
                     onChange={(e) => setSex(e.target.value)}
-                    className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-xs font-normal"
+                    className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-sm font-normal"
                   >
                     <option value="" disabled>
                       Select an option
@@ -286,11 +286,11 @@ const AddUser = () => {
               {/* passwords */}
               <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
                 <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Password</p>
+                  <p className="text-sm font-normal">Password</p>
                   <div className="w-full flex flex-row relative items-center">
                     <input
                       type={showPassword ? "text" : "password"}
-                      className="text-xs font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
+                      className="text-sm font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="enter your password"
@@ -313,11 +313,11 @@ const AddUser = () => {
                   </div>
                 </div>
                 <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Confirm Password</p>
+                  <p className="text-sm font-normal">Confirm Password</p>
                   <div className="w-full flex flex-row relative items-center">
                     <input
                       type={showRePassword ? "text" : "password"}
-                      className="text-xs font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
+                      className="text-sm font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
                       value={rePassword}
                       onChange={(e) => setRePassword(e.target.value)}
                       placeholder="re-enter your password"
@@ -345,11 +345,11 @@ const AddUser = () => {
             <div className="w-full flex flex-col items-center justify-center gap-4">
               {/* id type */}
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Choose Valid ID</p>
+                <p className="text-sm font-normal">Choose Valid ID</p>
                 <select
                   value={idType}
                   onChange={(e) => setIdType(e.target.value)}
-                  className="text-xs font-normal outline-none border border-[#008A3D] p-3 rounded-xl"
+                  className="text-sm font-normal outline-none border border-[#008A3D] p-3 rounded-xl"
                 >
                   <option value="" disabled>
                     Select ID
@@ -384,7 +384,7 @@ const AddUser = () => {
                       disabled={idType ? false : true}
                     />
                   </label>
-                  <p className="text-xs font-normal">Front</p>
+                  <p className="text-sm font-normal">Front</p>
                 </div>
                 <div
                   className="w-full lg:w-1/2 bg-black/10 h-[220px] rounded-xl gap-2 flex flex-col items-center justify-center"
@@ -406,20 +406,20 @@ const AddUser = () => {
                       disabled={idType ? false : true}
                     />
                   </label>
-                  <p className="text-xs font-normal">Back</p>
+                  <p className="text-sm font-normal">Back</p>
                 </div>
               </div>
             </div>
             {/* buttons */}
             <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
               <div
-                className="w-full lg:w-1/2 flex items-center justify-center truncate bg-black/10 p-3 rounded-xl text-xs font-normal cursor-pointer"
+                className="w-full lg:w-1/2 flex items-center justify-center truncate bg-black/10 p-3 rounded-xl text-sm font-normal cursor-pointer"
                 onClick={() => navigate("/admin/users")}
               >
                 Cancel
               </div>
               <div
-                className="w-full lg:w-1/2 flex items-center justify-center truncate bg-black p-3 rounded-xl text-xs font-normal text-white cursor-pointer"
+                className="w-full lg:w-1/2 flex items-center justify-center truncate bg-black p-3 rounded-xl text-sm font-normal text-white cursor-pointer"
                 onClick={registerUser}
               >
                 Create Account

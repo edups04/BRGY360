@@ -114,7 +114,11 @@ const FileRequests = () => {
 
     // Fill in form fields based on form type
     if (data.requestedDocumentType === "barangay-clearance") {
-      form.getTextField("fullName")?.setText(data.data.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${data.data.firstName} ${data.data.middleName} ${data.data.lastName}`
+        );
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("purok")?.setText(data.data.purok);
       form.getTextField("birthdate")?.setText(data.data.birthdate);
@@ -133,19 +137,31 @@ const FileRequests = () => {
         ? form.getTextField("placeOfIssuance")?.setText("")
         : form.getTextField("placeOfIssuance")?.setText(data.placeOfIssuance);
     } else if (data.requestedDocumentType === "barangay-indigency") {
-      form.getTextField("fullName")?.setText(data.data.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${data.data.firstName} ${data.data.middleName} ${data.data.lastName}`
+        );
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("purpose")?.setText(data.data.purpose);
       form.getTextField("dateRequested")?.setText(formattedDate);
       data.data.validUntil &&
         form.getTextField("validUntil")?.setText(data.data.validUntil);
     } else if (data.requestedDocumentType === "certificate-of-residency") {
-      form.getTextField("fullName")?.setText(data.data.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${data.data.firstName} ${data.data.middleName} ${data.data.lastName}`
+        );
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("purpose")?.setText(data.data.purpose);
       form.getTextField("dateRequested")?.setText(formattedDate);
     } else if (data.requestedDocumentType === "first-time-job-seeker") {
-      form.getTextField("fullName")?.setText(data.data.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${data.data.firstName} ${data.data.middleName} ${data.data.lastName}`
+        );
       form.getTextField("address")?.setText(data.data.address);
       form.getTextField("honorifics")?.setText(data.data.honorifics);
       form.getTextField("schoolName")?.setText(data.data.schoolName);
@@ -257,12 +273,12 @@ const FileRequests = () => {
           <div className="w-full flex flex-row items-center justify-between">
             <div className="w-1/2 flex flex-col items-start justify-center">
               <p className="text-sm font-semibold">File Requests</p>
-              <p className="text-xs font-normal w-full truncate">
+              <p className="text-sm font-normal w-full truncate">
                 Update, approve and monitor file requests
               </p>
             </div>
             <select
-              className="outline-none bg-green-700 text-white p-3 rounded-xl text-xs font-normal"
+              className="outline-none bg-green-700 text-white p-3 rounded-xl text-sm font-normal"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
@@ -277,7 +293,7 @@ const FileRequests = () => {
             <div className="relative w-3/5 lg:w-3/5 flex items-center justify-center">
               <input
                 type="text"
-                className="w-full outline-none border border-green-700 pl-10 pr-3 py-3 rounded-xl text-xs font-normal truncate"
+                className="w-full outline-none border border-green-700 pl-10 pr-3 py-3 rounded-xl text-sm font-normal truncate"
                 placeholder="search for requests"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -289,7 +305,7 @@ const FileRequests = () => {
               />
             </div>
             <select
-              className="outline-none bg-green-700 text-white p-3 rounded-xl text-xs font-normal"
+              className="outline-none bg-green-700 text-white p-3 rounded-xl text-sm font-normal"
               value={formType}
               onChange={(e) => setFormType(e.target.value)}
             >
@@ -331,21 +347,21 @@ const FileRequests = () => {
               {requests.length > 0 ? (
                 requests.map((request: any) => (
                   <tr key={request._id}>
-                    <td className="border border-black/10 text-left text-xs font-normal p-3">
+                    <td className="border border-black/10 text-left text-sm font-normal p-3">
                       <div className="w-full flex flex-wrap items-center justify-start gap-2">
-                        <p className="text-xs font-normal">
+                        <p className="text-sm font-normal">
                           {request.requestNumber}
                         </p>
                       </div>
                     </td>
-                    <td className="hidden lg:table-cell border border-black/10 text-left text-xs font-normal p-3">
-                      <p className="text-xs font-normal capitalize">
+                    <td className="hidden lg:table-cell border border-black/10 text-left text-sm font-normal p-3">
+                      <p className="text-sm font-normal capitalize">
                         {request.requestedBy
                           ? `${request.requestedBy.firstName} ${request.requestedBy.lastName}`
                           : "Not Found"}
                       </p>
                     </td>
-                    <td className="hidden lg:table-cell border border-black/10 text-left text-xs font-normal p-3">
+                    <td className="hidden lg:table-cell border border-black/10 text-left text-sm font-normal p-3">
                       {request.requestedDocumentType === "barangay-clearance"
                         ? "Barangay Clearance"
                         : request.requestedDocumentType === "barangay-indigency"
@@ -361,13 +377,13 @@ const FileRequests = () => {
                     <td className="h-16 p-3">
                       <div className="flex flex-row gap-1 justify-between items-center h-full">
                         <p
-                          className="text-green-700 text-xs font-semibold cursor-pointer"
+                          className="text-green-700 text-sm font-semibold cursor-pointer"
                           onClick={() => generateAndPreviewPdf(request)}
                         >
                           View File
                         </p>
                         <p
-                          className="text-green-700 text-xs font-semibold cursor-pointer"
+                          className="text-green-700 text-sm font-semibold cursor-pointer"
                           onClick={() => {
                             setSelectedUser(request.requestedBy._id);
                             showApprovalForm(true);
@@ -377,39 +393,39 @@ const FileRequests = () => {
                         </p>
                       </div>
                     </td>
-                    <td className="border border-black/10 text-left text-xs font-normal p-3">
+                    <td className="border border-black/10 text-left text-sm font-normal p-3">
                       {request.status === "pending" ? (
-                        <div className="inline-flex p-2 rounded-xl bg-yellow-500 text-white text-xs font-normal">
+                        <div className="inline-flex p-2 rounded-xl bg-yellow-500 text-white text-sm font-normal">
                           Pending
                         </div>
                       ) : request.status === "approved" ? (
-                        <div className="inline-flex p-2 rounded-xl bg-green-700 text-white text-xs font-normal">
+                        <div className="inline-flex p-2 rounded-xl bg-green-700 text-white text-sm font-normal">
                           Approved
                         </div>
                       ) : request.status === "declined" ? (
-                        <div className="inline-flex p-2 rounded-xl bg-red-700 text-white text-xs font-normal">
+                        <div className="inline-flex p-2 rounded-xl bg-red-700 text-white text-sm font-normal">
                           Declined
                         </div>
                       ) : request.status === "completed" ? (
-                        <div className="inline-flex p-2 rounded-xl bg-yellow-500 text-white text-xs font-normal">
+                        <div className="inline-flex p-2 rounded-xl bg-yellow-500 text-white text-sm font-normal">
                           Completed
                         </div>
                       ) : null}
                     </td>
-                    <td className="border border-black/10 text-left text-xs font-normal p-3">
+                    <td className="border border-black/10 text-left text-sm font-normal p-3">
                       {request.status === "pending" ? (
                         <div className="flex flex-wrap items-center justify-start gap-2">
                           <div
                             className="p-3 rounded-xl bg-green-700 text-white cursor-pointer"
                             onClick={() => approveRequest(request._id)}
                           >
-                            <p className="text-xs font-normal">Approve</p>
+                            <p className="text-sm font-normal">Approve</p>
                           </div>
                           <div
                             className="p-3 rounded-xl bg-red-700 text-white cursor-pointer"
                             onClick={() => declineRequest(request._id)}
                           >
-                            <p className="text-xs font-normal">Decline</p>
+                            <p className="text-sm font-normal">Decline</p>
                           </div>
                         </div>
                       ) : request.status === "approved" ? (
@@ -421,7 +437,7 @@ const FileRequests = () => {
                               setData(request);
                             }}
                           >
-                            <p className="text-xs font-normal">Print</p>
+                            <p className="text-sm font-normal">Print</p>
                           </div>
                         </div>
                       ) : request.status === "declined" ||
@@ -433,7 +449,7 @@ const FileRequests = () => {
                               generateAndPreviewPdf(request);
                             }}
                           >
-                            <p className="text-xs font-normal">Print</p>
+                            <p className="text-sm font-normal">Print</p>
                           </div>
                         </div>
                       ) : null}
@@ -443,7 +459,7 @@ const FileRequests = () => {
               ) : (
                 <tr className="">
                   <td
-                    className="text-center p-6 text-xs font-normal"
+                    className="text-center p-6 text-sm font-normal"
                     colSpan={5}
                   >
                     No Results Found
@@ -466,7 +482,7 @@ const FileRequests = () => {
                   className={`cursor-pointer ${
                     page === pageNumber
                       ? "font-semibold text-sm"
-                      : "font-normal text-xs text-[#6E6E6E]"
+                      : "font-normal text-sm text-[#6E6E6E]"
                   }`}
                   onClick={() => setPage(pageNumber)}
                 >

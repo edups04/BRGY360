@@ -89,18 +89,18 @@ const ForgotPassword = () => {
             <img src={Logo} alt="/" className="w-[60px]" />
             <div className="flex flex-col items-center justify-center">
               <p className="font-bold text-[#008A3D]">BRGY 360</p>
-              <p className="text-xs font-normal">Forgot Password</p>
+              <p className="text-sm font-normal">Forgot Password</p>
             </div>
           </div>
           {/* fields */}
           <div className="w-full flex flex-col items-center justify-center gap-4">
             {/* password */}
             <div className="w-full flex flex-col items-start justify-center gap-2">
-              <p className="text-xs font-normal">Password</p>
+              <p className="text-sm font-normal">Password</p>
               <div className="w-full flex flex-row relative items-center">
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="text-xs font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
+                  className="text-sm font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="enter your password"
@@ -125,7 +125,7 @@ const ForgotPassword = () => {
           </div>
           {/* button */}
           <div
-            className="w-full flex items-center justify-center bg-[#008A3D] py-3 rounded-xl text-white text-xs font-normal cursor-pointer"
+            className="w-full flex items-center justify-center bg-[#008A3D] py-3 rounded-xl text-white text-sm font-normal cursor-pointer"
             onClick={onChangePassword}
           >
             Confirm Change Password

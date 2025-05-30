@@ -15,7 +15,7 @@ const Modal = ({
   onClose: () => void;
 }) => {
   return (
-    <div className="fixed top-0 left-0 bg-black/20 w-full h-screen flex items-center justify-center">
+    <div className="fixed top-0 left-0 bg-black/20 w-full h-screen flex items-center justify-center z-20">
       <div className="w-3/4 lg:w-1/6 bg-white p-6 rounded-2xl flex flex-col items-center justify-center gap-6">
         <div className="w-full flex flex-row items-center justify-end">
           <RiCloseFill
@@ -36,7 +36,7 @@ const Modal = ({
             <p className="text-sm font-bold text-red-700">Error!</p>
           </div>
         )}
-        <p className="text-xs font-normal text-center">{message}</p>
+        <p className="text-sm font-normal text-center">{message}</p>
       </div>
     </div>
   );

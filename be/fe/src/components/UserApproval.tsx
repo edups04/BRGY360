@@ -114,7 +114,7 @@ const UserApproval = ({
         <div className="w-full lg:w-2/5 bg-white p-6 rounded-2xl flex flex-col items-center justify-center gap-6">
           {/* top */}
           <div className="w-full flex flex-row items-center justify-between">
-            <p className="text-xs font-semibold w-1/2 text-left truncate">
+            <p className="text-sm font-semibold w-1/2 text-left truncate">
               {`${name}'s ID Card:`}
             </p>
             <RiCloseLine
@@ -152,7 +152,7 @@ const UserApproval = ({
           {/* guidelines */}
           <div className="w-full flex flex-col items-center justify-center">
             <div className="w-full flex flex-col items-start justify-center gap-4">
-              <p className="text-xs font-semibold">
+              <p className="text-sm font-semibold">
                 Guideline for Identity Verification:
               </p>
               <div className="w-full flex flex-col items-start justify-center gap-4">
@@ -160,19 +160,19 @@ const UserApproval = ({
                   <div className="p-1 rounded-full bg-green-700">
                     <RiCheckFill size={16} color="white" />
                   </div>
-                  <p className="text-xs font-normal">Government issued</p>
+                  <p className="text-sm font-normal">Government issued</p>
                 </div>
                 <div className="w-full flex flex-row items-center justify-start gap-2">
                   <div className="p-1 rounded-full bg-green-700">
                     <RiCheckFill size={16} color="white" />
                   </div>
-                  <p className="text-xs font-normal">Original and unedited</p>
+                  <p className="text-sm font-normal">Original and unedited</p>
                 </div>
                 <div className="w-full flex flex-row items-center justify-start gap-2">
                   <div className="p-1 rounded-full bg-green-700">
                     <RiCheckFill size={16} color="white" />
                   </div>
-                  <p className="text-xs font-normal">
+                  <p className="text-sm font-normal">
                     Readable, well-lit and coloured
                   </p>
                 </div>
@@ -181,7 +181,7 @@ const UserApproval = ({
                   <div className="p-1 rounded-full bg-red-700">
                     <RiCloseFill size={16} color="white" />
                   </div>
-                  <p className="text-xs font-normal">
+                  <p className="text-sm font-normal">
                     No blurred or cut images
                   </p>
                 </div>
@@ -189,7 +189,7 @@ const UserApproval = ({
                   <div className="p-1 rounded-full bg-red-700">
                     <RiCloseFill size={16} color="white" />
                   </div>
-                  <p className="text-xs font-normal">
+                  <p className="text-sm font-normal">
                     No black or white images
                   </p>
                 </div>
@@ -200,13 +200,13 @@ const UserApproval = ({
           {!isForFileRequest && (
             <div className="w-full flex flex-row items-center justify-end gap-2">
               <div
-                className="p-2 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer"
+                className="p-2 rounded-xl bg-green-700 text-sm font-normal text-white cursor-pointer"
                 onClick={approveUser}
               >
                 Approve
               </div>
               <div
-                className="p-2 rounded-xl bg-red-700 text-xs font-normal text-white cursor-pointer"
+                className="p-2 rounded-xl bg-red-700 text-sm font-normal text-white cursor-pointer"
                 onClick={declineUser}
               >
                 Decline

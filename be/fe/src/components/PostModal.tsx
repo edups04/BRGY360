@@ -25,12 +25,12 @@ const PostModal = ({
           <p className="text-sm font-bold text-green-700">Attention!</p>
         </div>
 
-        <p className="text-xs font-normal text-center">
+        <p className="text-sm font-normal text-center">
           Once posted, this will be visible to all users. Do you want to
           continue?
         </p>
         <div
-          className="p-3 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer"
+          className="p-3 rounded-xl bg-green-700 text-sm font-normal text-white cursor-pointer"
           onClick={onPost}
         >
           Post

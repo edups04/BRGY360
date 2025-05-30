@@ -55,7 +55,7 @@ const AllNews = () => {
                 className="cursor-pointer"
                 onClick={() => navigate("/user/news")}
               />
-              <p className="text-sm font-semibold text-green-700">
+              <p className="text-lg font-semibold text-green-700">
                 News and Announcements
               </p>
             </div>
@@ -81,10 +81,10 @@ const AllNews = () => {
                         ></div>
                         {/* content */}
                         <div className="w-full flex flex-col items-start justify-center gap-2">
-                          <p className="text-sm font-semibold text-green-700">
+                          <p className="text-lg font-semibold text-green-700">
                             {selectedNews.title}
                           </p>
-                          <pre className="text-xs font-normal whitespace-pre-wrap break-words font-sans">
+                          <pre className="text-lg font-normal whitespace-pre-wrap break-words font-sans">
                             {selectedNews.contents}
                           </pre>
                         </div>
@@ -113,7 +113,7 @@ const AllNews = () => {
                     key={news._id}
                   >
                     <p
-                      className={`text-xs font-semibold line-clamp-1 ${
+                      className={`text-lg font-semibold line-clamp-1 ${
                         latestNews[0]?._id === news._id
                           ? "text-white"
                           : "text-green-700"
@@ -129,7 +129,7 @@ const AllNews = () => {
                       } gap-1`}
                     >
                       <RiCalendarLine size={16} />
-                      <p className="text-xs font-normal ">
+                      <p className="text-sm font-normal ">
                         {new Date(news.date).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "long",
@@ -155,7 +155,7 @@ const AllNews = () => {
                     className={`cursor-pointer ${
                       page === pageNumber
                         ? "font-semibold text-sm text-green-700"
-                        : "font-normal text-xs text-green-700"
+                        : "font-normal text-sm text-green-700"
                     }`}
                     onClick={() => setPage(pageNumber)}
                   >

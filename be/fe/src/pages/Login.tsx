@@ -86,17 +86,17 @@ const Login = () => {
             <img src={Logo} alt="/" className="w-[60px]" />
             <div className="flex flex-col items-center justify-center">
               <p className="font-bold text-[#008A3D]">BRGY 360</p>
-              <p className="text-xs font-normal">Login to your account</p>
+              <p className="text-sm font-normal">Login to your account</p>
             </div>
           </div>
           {/* fields */}
           <div className="w-full flex flex-col items-center justify-center gap-4">
             {/* email */}
             <div className="w-full flex flex-col items-start justify-center gap-2">
-              <p className="text-xs font-normal">Email</p>
+              <p className="text-sm font-normal">Email</p>
               <input
                 type="text"
-                className="text-xs font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
+                className="text-sm font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="enter your email"
@@ -104,11 +104,11 @@ const Login = () => {
             </div>
             {/* password */}
             <div className="w-full flex flex-col items-start justify-center gap-2">
-              <p className="text-xs font-normal">Password</p>
+              <p className="text-sm font-normal">Password</p>
               <div className="w-full flex flex-row relative items-center">
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="text-xs font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
+                  className="text-sm font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="enter your password"
@@ -149,11 +149,11 @@ const Login = () => {
                   }}
                 ></div>
               )}
-              <p className="text-xs font-normal">Remember me</p>
+              <p className="text-sm font-normal">Remember me</p>
             </div>
             <div className="w-1/2 flex flex-row items-center justify-end gap-2">
               <p
-                className="text-xs font-normal text-green-600 cursor-pointer"
+                className="text-sm font-normal text-green-600 cursor-pointer"
                 onClick={onForgotPassword}
               >
                 Forgot Password
@@ -162,13 +162,13 @@ const Login = () => {
           </div>
           {/* button */}
           <div
-            className="w-full flex items-center justify-center bg-[#008A3D] py-3 rounded-xl text-white text-xs font-normal cursor-pointer"
+            className="w-full flex items-center justify-center bg-[#008A3D] py-3 rounded-xl text-white text-sm font-normal cursor-pointer"
             onClick={onLogin}
           >
             Login Now
           </div>
           {/* redirect */}
-          <p className="w-full flex flex-row items-center justify-center gap-1 text-xs font-normal whitespace-nowrap">
+          <p className="w-full flex flex-row items-center justify-center gap-1 text-sm font-normal whitespace-nowrap">
             Sign up as
             <span
               className="cursor-pointer text-[#008A3D]"

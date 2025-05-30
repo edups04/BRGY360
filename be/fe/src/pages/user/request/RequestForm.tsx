@@ -18,7 +18,9 @@ const RequestForm = () => {
   const navigate = useNavigate();
   const [formType, setFormType] = useState("barangay-clearance");
   const [clearanceData, setClearanceData] = useState({
-    fullName: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
     address: "",
     purok: "",
     birthdate: "",
@@ -33,18 +35,24 @@ const RequestForm = () => {
   };
 
   const [indigencyData, setIndigencyData] = useState({
-    fullName: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
     address: "",
     purpose: "",
   });
   const [residencyData, setResidencyData] = useState({
-    fullName: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
     address: "",
     purpose: "",
   });
   const [jobseekerData, setJobseekerData] = useState({
     honorifics: "",
-    fullName: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
     address: "",
     schoolName: "",
     // purpose: "",
@@ -106,7 +114,9 @@ const RequestForm = () => {
       switch (state) {
         case "barangay-clearance":
           setClearanceData({
-            fullName: `${userData.firstName} ${userData.middleName} ${userData.lastName}`,
+            firstName: `${userData.firstName}`,
+            middleName: `${userData.middleName}`,
+            lastName: `${userData.lastName}`,
             address: userData.address,
             purok: "",
             // const purok = (userData.address.match(/Purok\s+[A-Za-z]+(?:\s+[A-Za-z]+)*/i) || [null])[0]?.replace(/[.,]$/, "");
@@ -122,21 +132,27 @@ const RequestForm = () => {
           break;
         case "barangay-indigency":
           setIndigencyData({
-            fullName: `${userData.firstName} ${userData.middleName} ${userData.lastName}`,
+            firstName: `${userData.firstName}`,
+            middleName: `${userData.middleName}`,
+            lastName: `${userData.lastName}`,
             address: userData.address,
             purpose: "",
           });
           break;
         case "certificate-of-residency":
           setResidencyData({
-            fullName: `${userData.firstName} ${userData.middleName} ${userData.lastName}`,
+            firstName: `${userData.firstName}`,
+            middleName: `${userData.middleName}`,
+            lastName: `${userData.lastName}`,
             address: userData.address,
             purpose: "",
           });
           break;
         case "first-time-job-seeker":
           setJobseekerData({
-            fullName: `${userData.firstName} ${userData.middleName} ${userData.lastName}`,
+            firstName: `${userData.firstName}`,
+            middleName: `${userData.middleName}`,
+            lastName: `${userData.lastName}`,
             address: userData.address,
             schoolName: "",
             honorifics: userData.sex === "male" ? "Mr" : "Ms",
@@ -174,25 +190,40 @@ const RequestForm = () => {
 
     // Fill in form fields based on form type
     if (formType === "barangay-clearance") {
-      form.getTextField("fullName")?.setText(clearanceData.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${clearanceData.firstName} ${clearanceData.middleName} ${clearanceData.lastName}`
+        );
       form.getTextField("address")?.setText(clearanceData.address);
       form.getTextField("purok")?.setText(clearanceData.purok);
       form.getTextField("birthdate")?.setText(clearanceData.birthdate);
       form.getTextField("purpose")?.setText(clearanceData.purpose);
     } else if (formType === "barangay-indigency") {
-      form.getTextField("fullName")?.setText(indigencyData.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${indigencyData.firstName} ${indigencyData.middleName} ${indigencyData.lastName}`
+        );
       form.getTextField("address")?.setText(indigencyData.address);
       form.getTextField("purpose")?.setText(indigencyData.purpose);
     } else if (formType === "certificate-of-residency") {
-      form.getTextField("fullName")?.setText(residencyData.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${residencyData.firstName} ${residencyData.middleName} ${residencyData.lastName}`
+        );
       form.getTextField("address")?.setText(residencyData.address);
       form.getTextField("purpose")?.setText(residencyData.purpose);
     } else if (formType === "first-time-job-seeker") {
-      form.getTextField("fullName")?.setText(jobseekerData.fullName);
+      form
+        .getTextField("fullName")
+        ?.setText(
+          `${jobseekerData.firstName} ${jobseekerData.middleName} ${jobseekerData.lastName}`
+        );
       form.getTextField("address")?.setText(jobseekerData.address);
       form.getTextField("honorifics")?.setText(jobseekerData.honorifics);
       form.getTextField("schoolName")?.setText(jobseekerData.schoolName);
-      form.getTextField("purpose")?.setText(jobseekerData.fullName); // <- This may be a mistake (see below)
     }
 
     // Handle image field (assuming imageField is the name of the image field in the PDF)
@@ -299,7 +330,9 @@ const RequestForm = () => {
         clearanceFormData.append("requestedDocumentType", formType);
         clearanceFormData.append("requestedBy", requestedBy);
         clearanceFormData.append("barangayId", barangayId);
-        clearanceFormData.append("fullName", clearanceData.fullName);
+        clearanceFormData.append("firstName", clearanceData.firstName);
+        clearanceFormData.append("middleName", clearanceData.middleName);
+        clearanceFormData.append("lastName", clearanceData.lastName);
         clearanceFormData.append("address", clearanceData.address);
         clearanceFormData.append("purok", clearanceData.purok);
         clearanceFormData.append("birthdate", clearanceData.birthdate);
@@ -395,7 +428,7 @@ const RequestForm = () => {
             <select
               value={formType}
               onChange={handleFormTypeChange}
-              className="text-xs font-normal outline-none border border-green-700 p-3 rounded-xl"
+              className="text-sm font-normal outline-none border border-green-700 p-3 rounded-xl"
             >
               <option value="barangay-clearance">Barangay Clearance</option>
               <option value="barangay-indigency">Barangay Indigency</option>
@@ -411,23 +444,67 @@ const RequestForm = () => {
           {formType === "barangay-clearance" ? (
             <div className="w-full flex flex-col items-center justify-center gap-4">
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Full Name</p>
+                <p className="text-sm font-normal">
+                  First Name{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
                 <input
                   type="text"
-                  name="fullName"
-                  value={clearanceData.fullName}
+                  name="firstName"
+                  value={clearanceData.firstName}
                   onChange={(e) =>
                     setClearanceData({
                       ...clearanceData,
                       [e.target.name]: e.target.value,
                     })
                   }
-                  className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                   placeholder="full name"
                 />
               </div>
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Address</p>
+                <p className="text-sm font-normal">
+                  Middle Name{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
+                <input
+                  type="text"
+                  name="middleName"
+                  value={clearanceData.middleName}
+                  onChange={(e) =>
+                    setClearanceData({
+                      ...clearanceData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
+                  placeholder="full name"
+                />
+              </div>
+              <div className="w-full flex flex-col items-start justify-center gap-2">
+                <p className="text-sm font-normal">
+                  Last Name{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={clearanceData.lastName}
+                  onChange={(e) =>
+                    setClearanceData({
+                      ...clearanceData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
+                  placeholder="full name"
+                />
+              </div>
+              <div className="w-full flex flex-col items-start justify-center gap-2">
+                <p className="text-sm font-normal">
+                  Address{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
                 <input
                   type="text"
                   name="address"
@@ -438,12 +515,15 @@ const RequestForm = () => {
                       [e.target.name]: e.target.value,
                     })
                   }
-                  className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                   placeholder="address"
                 />
               </div>
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Purok</p>
+                <p className="text-sm font-normal">
+                  Purok{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
                 <input
                   type="text"
                   name="purok"
@@ -454,11 +534,14 @@ const RequestForm = () => {
                       [e.target.name]: e.target.value,
                     })
                   }
-                  className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                   placeholder="purok"
                 />
                 <div className="w-full flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Birthdate</p>
+                  <p className="text-sm font-normal">
+                    Birthdate{" "}
+                    <span className="text-red-600 font-bold text-lg">*</span>
+                  </p>
                   <input
                     type="date"
                     name="birthdate"
@@ -469,12 +552,15 @@ const RequestForm = () => {
                         [e.target.name]: e.target.value,
                       })
                     }
-                    className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                    className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                     placeholder="birth day"
                   />
                 </div>
                 <div className="w-full flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Purpose</p>
+                  <p className="text-sm font-normal">
+                    Purpose{" "}
+                    <span className="text-red-600 font-bold text-lg">*</span>
+                  </p>
                   <input
                     type="text"
                     name="purpose"
@@ -485,7 +571,7 @@ const RequestForm = () => {
                         [e.target.name]: e.target.value,
                       })
                     }
-                    className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                    className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                     placeholder="purpose"
                   />
                 </div>
@@ -499,6 +585,7 @@ const RequestForm = () => {
                   )}
                   <label className="absolute bottom-4 right-4 p-3 rounded-xl bg-white cursor-pointer">
                     <RiAddLine size={16} color="black" />
+                    <span className="text-red-600 text-xs">Required</span>
                     <input
                       type="file"
                       accept="image/*"
@@ -512,23 +599,68 @@ const RequestForm = () => {
           ) : formType === "barangay-indigency" ? (
             <div className="w-full flex flex-col items-center justify-center gap-4">
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Full Name</p>
+                <p className="text-sm font-normal">
+                  First Name{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
                 <input
                   type="text"
-                  name="fullName"
-                  value={indigencyData.fullName}
+                  name="firstName"
+                  value={indigencyData.firstName}
                   onChange={(e) =>
                     setIndigencyData({
                       ...indigencyData,
                       [e.target.name]: e.target.value,
                     })
                   }
-                  className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                   placeholder="full name"
                 />
               </div>
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Address</p>
+                <p className="text-sm font-normal">
+                  Middle Name{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
+                <input
+                  type="text"
+                  name="middleName"
+                  value={indigencyData.middleName}
+                  onChange={(e) =>
+                    setIndigencyData({
+                      ...indigencyData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
+                  placeholder="full name"
+                />
+              </div>
+              <div className="w-full flex flex-col items-start justify-center gap-2">
+                <p className="text-sm font-normal">
+                  last Name{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={indigencyData.lastName}
+                  onChange={(e) =>
+                    setIndigencyData({
+                      ...indigencyData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
+                  placeholder="full name"
+                />
+              </div>
+
+              <div className="w-full flex flex-col items-start justify-center gap-2">
+                <p className="text-sm font-normal">
+                  Address{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
                 <input
                   type="text"
                   name="address"
@@ -539,13 +671,16 @@ const RequestForm = () => {
                       [e.target.name]: e.target.value,
                     })
                   }
-                  className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                   placeholder="address"
                 />
               </div>
 
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Purpose</p>
+                <p className="text-sm font-normal">
+                  Purpose{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
                 <input
                   type="text"
                   name="purpose"
@@ -556,7 +691,7 @@ const RequestForm = () => {
                       [e.target.name]: e.target.value,
                     })
                   }
-                  className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                   placeholder="purpose"
                 />
               </div>
@@ -564,23 +699,68 @@ const RequestForm = () => {
           ) : formType === "certificate-of-residency" ? (
             <div className="w-full flex flex-col items-center justify-center gap-4">
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Full Name</p>
+                <p className="text-sm font-normal">
+                  First Name{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
                 <input
                   type="text"
-                  name="fullName"
-                  value={residencyData.fullName}
+                  name="firstName"
+                  value={residencyData.firstName}
                   onChange={(e) =>
                     setResidencyData({
                       ...residencyData,
                       [e.target.name]: e.target.value,
                     })
                   }
-                  className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                   placeholder="full name"
                 />
               </div>
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Address</p>
+                <p className="text-sm font-normal">
+                  Middle Name{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
+                <input
+                  type="text"
+                  name="middleName"
+                  value={residencyData.middleName}
+                  onChange={(e) =>
+                    setResidencyData({
+                      ...residencyData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
+                  placeholder="full name"
+                />
+              </div>
+              <div className="w-full flex flex-col items-start justify-center gap-2">
+                <p className="text-sm font-normal">
+                  last Name{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={residencyData.lastName}
+                  onChange={(e) =>
+                    setResidencyData({
+                      ...residencyData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
+                  placeholder="full name"
+                />
+              </div>
+
+              <div className="w-full flex flex-col items-start justify-center gap-2">
+                <p className="text-sm font-normal">
+                  Address{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
                 <input
                   type="text"
                   name="address"
@@ -591,13 +771,16 @@ const RequestForm = () => {
                       [e.target.name]: e.target.value,
                     })
                   }
-                  className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                   placeholder="address"
                 />
               </div>
 
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Purpose</p>
+                <p className="text-sm font-normal">
+                  Purpose{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
                 <input
                   type="text"
                   name="purpose"
@@ -608,7 +791,7 @@ const RequestForm = () => {
                       [e.target.name]: e.target.value,
                     })
                   }
-                  className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                   placeholder="purpose"
                 />
               </div>
@@ -616,7 +799,10 @@ const RequestForm = () => {
           ) : formType === "first-time-job-seeker" ? (
             <div className="w-full flex flex-col items-center justify-center gap-4">
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Honorifics</p>
+                <p className="text-sm font-normal">
+                  Honorifics{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
                 <input
                   type="text"
                   name="honorifics"
@@ -627,28 +813,74 @@ const RequestForm = () => {
                       [e.target.name]: e.target.value,
                     })
                   }
-                  className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                   placeholder="honorifics"
                 />
               </div>
+
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Full Name</p>
+                <p className="text-sm font-normal">
+                  First Name{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
                 <input
                   type="text"
-                  name="fullName"
-                  value={jobseekerData.fullName}
+                  name="firstName"
+                  value={jobseekerData.firstName}
                   onChange={(e) =>
                     setJobseekerData({
                       ...jobseekerData,
                       [e.target.name]: e.target.value,
                     })
                   }
-                  className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                   placeholder="full name"
                 />
               </div>
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Address</p>
+                <p className="text-sm font-normal">
+                  Middle Name{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
+                <input
+                  type="text"
+                  name="middleName"
+                  value={jobseekerData.middleName}
+                  onChange={(e) =>
+                    setJobseekerData({
+                      ...jobseekerData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
+                  placeholder="full name"
+                />
+              </div>
+              <div className="w-full flex flex-col items-start justify-center gap-2">
+                <p className="text-sm font-normal">
+                  last Name{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={jobseekerData.lastName}
+                  onChange={(e) =>
+                    setJobseekerData({
+                      ...jobseekerData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
+                  placeholder="full name"
+                />
+              </div>
+
+              <div className="w-full flex flex-col items-start justify-center gap-2">
+                <p className="text-sm font-normal">
+                  Address{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
                 <input
                   type="text"
                   name="address"
@@ -659,12 +891,15 @@ const RequestForm = () => {
                       [e.target.name]: e.target.value,
                     })
                   }
-                  className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                   placeholder="address"
                 />
               </div>
               <div className="w-full flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">School Name</p>
+                <p className="text-sm font-normal">
+                  School Name{" "}
+                  <span className="text-red-600 font-bold text-lg">*</span>
+                </p>
                 <input
                   type="text"
                   name="schoolName"
@@ -675,11 +910,11 @@ const RequestForm = () => {
                       [e.target.name]: e.target.value,
                     })
                   }
-                  className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                  className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                   placeholder="school name"
                 />
                 {/* <div className="w-full flex flex-col items-start justify-center gap-2">
-                  <p className="text-xs font-normal">Purpose</p>
+                  <p className="text-sm font-normal">Purpose</p>
                   <input
                     type="text"
                     name="purpose"
@@ -690,7 +925,7 @@ const RequestForm = () => {
                         [e.target.name]: e.target.value,
                       })
                     }
-                    className="w-full outline-none border border-green-700 text-xs font-normal p-3 rounded-xl"
+                    className="w-full outline-none border border-green-700 text-sm font-normal p-3 rounded-xl"
                     placeholder="purpose"
                   />
                 </div> */}
@@ -700,19 +935,19 @@ const RequestForm = () => {
           <div className="w-full flex flex-row items-center justify-end gap-4">
             {isFormComplete() ? (
               <button
-                className="p-3 rounded-xl bg-green-700 text-xs font-normal text-white"
+                className="p-3 rounded-xl bg-green-700 text-sm font-normal text-white"
                 onClick={() => showRequestModal(true)}
               >
                 Submit Request
               </button>
             ) : (
-              <button className="p-3 rounded-xl bg-green-700/20 text-xs font-normal text-white">
+              <button className="p-3 rounded-xl bg-green-700/20 text-sm font-normal text-white">
                 Submit Request
               </button>
             )}
             <button
               onClick={generateAndPreviewPdf}
-              className="p-3 bg-green-700 text-white rounded-xl text-xs font-normal"
+              className="p-3 bg-green-700 text-white rounded-xl text-sm font-normal"
             >
               View File
             </button>

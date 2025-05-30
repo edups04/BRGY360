@@ -35,7 +35,7 @@ const AdminTransparency = () => {
       {activeTab === "transparency" ? (
         <div className="flex flex-row gap-2 p-3 rounded-xl bg-green-700 text-white cursor-pointer">
           <RiFundsBoxLine size={16} />
-          <p className="hidden lg:block text-xs font-normal">
+          <p className="hidden lg:block text-sm font-normal">
             Transparency Dashboard
           </p>
         </div>
@@ -45,7 +45,7 @@ const AdminTransparency = () => {
           onClick={() => navigate("/admin/transparency")}
         >
           <RiFundsBoxLine size={16} />
-          <p className="hidden lg:block text-xs font-normal">
+          <p className="hidden lg:block text-sm font-normal">
             Transparency Dashboard
           </p>
         </div>
@@ -54,7 +54,7 @@ const AdminTransparency = () => {
       {activeTab === "budgets" ? (
         <div className="flex flex-row gap-2 p-3 rounded-xl bg-green-700 text-white cursor-pointer">
           <RiMoneyDollarCircleLine size={16} />
-          <p className="hidden lg:block text-xs font-normal">Budget Overview</p>
+          <p className="hidden lg:block text-sm font-normal">Budget Overview</p>
         </div>
       ) : (
         <div
@@ -62,14 +62,14 @@ const AdminTransparency = () => {
           onClick={() => navigate("/admin/transparency/budgets")}
         >
           <RiMoneyDollarCircleLine size={16} />
-          <p className="hidden lg:block text-xs font-normal">Budget Overview</p>
+          <p className="hidden lg:block text-sm font-normal">Budget Overview</p>
         </div>
       )}
 
       {activeTab === "updates" ? (
         <div className="flex flex-row gap-2 p-3 rounded-xl bg-green-700 text-white cursor-pointer">
           <RiFolderChartLine size={16} />
-          <p className="hidden lg:block text-xs font-normal">Project Updates</p>
+          <p className="hidden lg:block text-sm font-normal">Project Updates</p>
         </div>
       ) : (
         <div
@@ -77,14 +77,14 @@ const AdminTransparency = () => {
           onClick={() => navigate("/admin/transparency/updates")}
         >
           <RiFolderChartLine size={16} />
-          <p className="hidden lg:block text-xs font-normal">Project Updates</p>
+          <p className="hidden lg:block text-sm font-normal">Project Updates</p>
         </div>
       )}
 
       {activeTab === "achievements" ? (
         <div className="flex flex-row gap-2 p-3 rounded-xl bg-green-700 text-white cursor-pointer">
           <RiMedalLine size={16} />
-          <p className="hidden lg:block text-xs font-normal">Achievements</p>
+          <p className="hidden lg:block text-sm font-normal">Achievements</p>
         </div>
       ) : (
         <div
@@ -92,7 +92,7 @@ const AdminTransparency = () => {
           onClick={() => navigate("/admin/transparency/achievements")}
         >
           <RiMedalLine size={16} />
-          <p className="hidden lg:block text-xs font-normal">Achievements</p>
+          <p className="hidden lg:block text-sm font-normal">Achievements</p>
         </div>
       )}
     </div>

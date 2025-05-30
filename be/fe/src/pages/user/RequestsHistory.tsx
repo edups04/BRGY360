@@ -126,14 +126,14 @@ const RequestsHistory = () => {
           <div className="w-full flex flex-row items-center justify-between">
             <div className="w-1/2 flex flex-col items-start justify-center">
               <p className="text-sm font-semibold">File Requests</p>
-              <p className="text-xs font-normal w-full truncate">
+              <p className="text-sm font-normal w-full truncate">
                 View, monitor and track your requests
               </p>
             </div>
           </div>
           <div className="w-full flex flex-row gap-4 items-center justify-start">
             <select
-              className="outline-none bg-green-700 text-white p-3 rounded-xl text-xs font-normal"
+              className="outline-none bg-green-700 text-white p-3 rounded-xl text-sm font-normal"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
@@ -144,7 +144,7 @@ const RequestsHistory = () => {
               <option value="completed">Completed</option>
             </select>
             <select
-              className="outline-none bg-green-700 text-white p-3 rounded-xl text-xs font-normal"
+              className="outline-none bg-green-700 text-white p-3 rounded-xl text-sm font-normal"
               value={formType}
               onChange={(e) => setFormType(e.target.value)}
             >
@@ -183,21 +183,21 @@ const RequestsHistory = () => {
               {userRequests.length > 0 ? (
                 userRequests.map((request: any) => (
                   <tr key={request._id}>
-                    <td className="border border-black/10 text-left text-xs font-normal p-3">
+                    <td className="border border-black/10 text-left text-sm font-normal p-3">
                       <div className="w-full flex flex-wrap items-center justify-start gap-2">
-                        <p className="text-xs font-normal">
+                        <p className="text-sm font-normal">
                           {request.requestNumber}
                         </p>
                       </div>
                     </td>
-                    <td className="hidden lg:table-cell border border-black/10 text-left text-xs font-normal p-3">
-                      <p className="text-xs font-normal capitalize">
+                    <td className="hidden lg:table-cell border border-black/10 text-left text-sm font-normal p-3">
+                      <p className="text-sm font-normal capitalize">
                         {request.requestedBy
                           ? `${request.requestedBy.firstName} ${request.requestedBy.lastName}`
                           : "Not Found"}
                       </p>
                     </td>
-                    <td className="hidden lg:table-cell border border-black/10 text-left text-xs font-normal p-3">
+                    <td className="hidden lg:table-cell border border-black/10 text-left text-sm font-normal p-3">
                       {request.requestedDocumentType === "barangay-clearance"
                         ? "Barangay Clearance"
                         : request.requestedDocumentType === "barangay-indigency"
@@ -212,27 +212,27 @@ const RequestsHistory = () => {
                     </td>
                     <td className="border border-black/10 text-left p-3">
                       <p
-                        className="text-green-700 text-xs font-semibold cursor-pointer"
+                        className="text-green-700 text-sm font-semibold cursor-pointer"
                         onClick={() => generateAndPreviewPdf(request)}
                       >
                         View File
                       </p>
                     </td>
-                    <td className="border border-black/10 text-left text-xs font-normal p-3">
+                    <td className="border border-black/10 text-left text-sm font-normal p-3">
                       {request.status === "pending" ? (
-                        <div className="inline-flex p-2 rounded-xl bg-yellow-500 text-white text-xs font-normal">
+                        <div className="inline-flex p-2 rounded-xl bg-yellow-500 text-white text-sm font-normal">
                           Pending
                         </div>
                       ) : request.status === "approved" ? (
-                        <div className="inline-flex p-2 rounded-xl bg-green-700 text-white text-xs font-normal">
+                        <div className="inline-flex p-2 rounded-xl bg-green-700 text-white text-sm font-normal">
                           Approved
                         </div>
                       ) : request.status === "declined" ? (
-                        <div className="inline-flex p-2 rounded-xl bg-red-700 text-white text-xs font-normal">
+                        <div className="inline-flex p-2 rounded-xl bg-red-700 text-white text-sm font-normal">
                           Declined
                         </div>
                       ) : request.status === "completed" ? (
-                        <div className="inline-flex p-2 rounded-xl bg-yellow-500 text-white text-xs font-normal">
+                        <div className="inline-flex p-2 rounded-xl bg-yellow-500 text-white text-sm font-normal">
                           Completed
                         </div>
                       ) : null}
@@ -242,7 +242,7 @@ const RequestsHistory = () => {
               ) : (
                 <tr className="">
                   <td
-                    className="text-center p-6 text-xs font-normal"
+                    className="text-center p-6 text-sm font-normal"
                     colSpan={5}
                   >
                     No Results Found
@@ -265,7 +265,7 @@ const RequestsHistory = () => {
                   className={`cursor-pointer ${
                     page === pageNumber
                       ? "font-semibold text-sm"
-                      : "font-normal text-xs text-[#6E6E6E]"
+                      : "font-normal text-sm text-[#6E6E6E]"
                   }`}
                   onClick={() => setPage(pageNumber)}
                 >

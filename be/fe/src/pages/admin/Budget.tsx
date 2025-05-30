@@ -102,7 +102,7 @@ const Budget = () => {
           {/* header */}
           <div className="w-full flex flex-col items-start justify-center">
             <p className="text-sm font-semibold">Budget Overview</p>
-            <p className="text-xs font-normal">
+            <p className="text-sm font-normal">
               overview of brgy budgets over the years
             </p>
           </div>
@@ -118,8 +118,8 @@ const Budget = () => {
                     <div
                       className={`${
                         isActive
-                          ? "p-3 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer"
-                          : "p-3 rounded-xl text-xs font-normal cursor-pointer"
+                          ? "p-3 rounded-xl bg-green-700 text-sm font-normal text-white cursor-pointer"
+                          : "p-3 rounded-xl text-sm font-normal cursor-pointer"
                       }`}
                       key={budgetYear}
                       onClick={() => setYear(value)}
@@ -131,7 +131,7 @@ const Budget = () => {
               </div>
             ) : null}
             <div
-              className="flex items-center justify-center cursor-pointer text-xs font-normal text-white bg-green-700 p-3 rounded-xl"
+              className="flex items-center justify-center cursor-pointer text-sm font-normal text-white bg-green-700 p-3 rounded-xl"
               onClick={() => navigate("/admin/transparency/budgets/add")}
             >
               Add New
@@ -139,7 +139,7 @@ const Budget = () => {
           </div>
           {/* count */}
           <div className="w-full flex items-center justify-start">
-            <p className="text-xs font-normal">Count: {budgets.length}</p>
+            <p className="text-sm font-normal">Count: {budgets.length}</p>
           </div>
           {/* data */}
           <div className="w-full flex flex-col items-center justify-center gap-4">
@@ -160,7 +160,7 @@ const Budget = () => {
                         </p>
                         <div className="w-full flex flex-row items-center justify-start gap-1">
                           <RiCalendarLine size={14} color="black" />
-                          <p className="text-xs font-normal">
+                          <p className="text-sm font-normal">
                             {new Date(budget.date).toLocaleDateString("en-US", {
                               year: "numeric",
                             })}
@@ -196,7 +196,7 @@ const Budget = () => {
               <div className="w-full flex flex-row items-center justify-center h-[60vh]">
                 <div className="flex flex-col items-center justify-center text-green-700 gap-4">
                   <RiEmotionUnhappyLine size={46} />
-                  <p className="text-xs font-semibold">No Results Found</p>
+                  <p className="text-sm font-semibold">No Results Found</p>
                 </div>
               </div>
             )}
@@ -216,7 +216,7 @@ const Budget = () => {
                   className={`cursor-pointer ${
                     page === pageNumber
                       ? "font-semibold text-sm text-green-700"
-                      : "font-normal text-xs text-green-700"
+                      : "font-normal text-sm text-green-700"
                   }`}
                   onClick={() => setPage(pageNumber)}
                 >

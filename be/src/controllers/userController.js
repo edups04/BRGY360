@@ -176,6 +176,99 @@ const verifyResetToken = async (req, res) => {
   }
 };
 
+const verifyEmailRegistered = async (req, res) => {
+  try {
+    // * nulls
+    const {
+      firstName,
+      middleName,
+      lastName,
+      sex,
+      birthdate,
+      age,
+      email,
+      phoneNumber,
+      password,
+      address,
+      barangayId,
+    } = req.body;
+
+    console.log(req.body);
+
+    // * Check for missing required fields
+    const hasMissingFields = nullChecker(res, {
+      firstName,
+      middleName,
+      lastName,
+      sex,
+      birthdate,
+      age,
+      email,
+      phoneNumber,
+      password,
+      address,
+      barangayId,
+    });
+
+    if (hasMissingFields) return;
+
+    // * check duplicates
+    let isDup = await checkDuplicate(res, User, { email: req.body.email });
+    if (isDup) return;
+
+    isDup = await checkDuplicate(res, User, {
+      phoneNumber: req.body.phoneNumber,
+    });
+    if (isDup) return;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required to send a verification code.",
+      });
+    }
+
+    // * Generate 6-digit numeric code
+    const verificationCode = Math.floor(
+      100000 + Math.random() * 900000
+    ).toString();
+
+    // * Create email transporter
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL,
+        pass: process.env.GMAIL_PK,
+      },
+    });
+
+    // * Send email with code
+    await transporter.sendMail({
+      from: `"BRGY360" <${process.env.GMAIL}>`,
+      to: email,
+      subject: "Your Email Verification Code",
+      html: `
+        <h3>Email Verification Code</h3>
+        <p>Use the following code to verify your email</p>
+        <h2>${verificationCode}</h2>
+      `,
+    });
+
+    return res.json({
+      success: true,
+      message: "Verification code sent to your email.",
+      data: verificationCode,
+    });
+  } catch (error) {
+    console.error("Error in verifyEmailRegistered:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error.",
+      error: error.message,
+    });
+  }
+};
+
 // * register new user
 const registerUser = async (req, res) => {
   try {
@@ -642,4 +735,5 @@ export {
   forgotPassword,
   resetPassword,
   verifyResetToken,
+  verifyEmailRegistered,
 };

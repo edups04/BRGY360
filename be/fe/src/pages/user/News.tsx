@@ -37,8 +37,8 @@ const News = () => {
         <div className="w-full flex flex-col items-center justify-center px-4 py-6 gap-6">
           {/* title */}
           <div className="w-full flex flex-col items-start justify-center">
-            <p className="text-sm font-semibold">News and Announcements</p>
-            <p className="text-xs font-normal">
+            <p className="text-lg font-semibold">News and Announcements</p>
+            <p className="text-sm font-normal">
               latest news and annoucements for your barangay
             </p>
           </div>
@@ -66,13 +66,13 @@ const News = () => {
                     <p className="w-full truncate text-sm font-semibold">
                       {recentNews.title}
                     </p>
-                    <p className="line-clamp-3 text-xs font-normal">
+                    <p className="line-clamp-3 text-sm font-normal">
                       {recentNews.contents}
                     </p>
 
                     <div className="w-full flex flex-row items-center justify-start pt-4 gap-2">
                       <RiCalendarLine size={16} />
-                      <p className="text-xs font-normal">
+                      <p className="text-sm font-normal">
                         {new Date(recentNews.date).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "long",
@@ -87,7 +87,7 @@ const News = () => {
               <div className="w-full flex flex-row items-center justify-center h-[80vh]">
                 <div className="flex flex-col items-center justify-center text-green-700 gap-4">
                   <RiEmotionUnhappyLine size={46} />
-                  <p className="text-xs font-semibold">
+                  <p className="text-lg font-semibold">
                     No News and Announcements Found
                   </p>
                 </div>
@@ -98,7 +98,7 @@ const News = () => {
           {recentNews.length > 0 ? (
             <div className="w-full flex flex-row items-center justify-end">
               <div
-                className="p-3 rounded-xl bg-green-700 text-xs font-normal text-white cursor-pointer"
+                className="p-3 rounded-xl bg-green-700 text-sm font-normal text-white cursor-pointer"
                 onClick={() => navigate("/user/news/all")}
               >
                 View All

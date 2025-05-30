@@ -51,7 +51,7 @@ const ViewUpdates = () => {
                 className="cursor-pointer"
                 onClick={() => navigate("/user/transparency/updates")}
               />
-              <p className="text-sm font-semibold text-green-700">
+              <p className="text-lg font-semibold text-green-700">
                 Project Updates
               </p>
             </div>
@@ -69,12 +69,12 @@ const ViewUpdates = () => {
             ></div>
             {/* title */}
             <div className="w-full flex flex-col items-start justify-center gap-2">
-              <p className="text-sm font-semibold text-green-700">
+              <p className="text-lg font-semibold text-green-700">
                 {data.title}
               </p>
               <div className="w-full flex flex-row items-center justify-start gap-2 text-green-700">
                 <RiCalendarLine size={16} />
-                <p className="text-xs font-normal">
+                <p className="text-sm font-normal">
                   {new Date(data.date).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
@@ -84,7 +84,7 @@ const ViewUpdates = () => {
               </div>
             </div>
             <div className="w-full flex items-center justify-start">
-              <pre className="text-xs font-normal whitespace-pre-wrap break-words font-sans">
+              <pre className="text-lg font-normal whitespace-pre-wrap break-words font-sans">
                 {data.contents}
               </pre>
             </div>
@@ -92,7 +92,7 @@ const ViewUpdates = () => {
           {/* MORE NEWS */}
           <div className="w-full lg:w-1/4 flex flex-col items-center justify-center gap-4">
             {/* header */}
-            <div className="w-full flex items-center justify-start bg-green-700 p-3 text-sm font-normal text-white rounded-xl">
+            <div className="w-full flex items-center justify-start bg-green-700 p-3 text-lg font-normal text-white rounded-xl">
               More Updates
             </div>
             {/* news */}
@@ -111,7 +111,7 @@ const ViewUpdates = () => {
                     key={update._id}
                   >
                     <p
-                      className={`text-xs font-semibold line-clamp-1 ${
+                      className={`text-lg font-semibold line-clamp-1 ${
                         data._id === update._id
                           ? "text-white"
                           : "text-green-700"
@@ -127,7 +127,7 @@ const ViewUpdates = () => {
                       } gap-1`}
                     >
                       <RiCalendarLine size={16} />
-                      <p className="text-xs font-normal ">
+                      <p className="text-sm font-normal ">
                         {new Date(update.date).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "long",
@@ -153,7 +153,7 @@ const ViewUpdates = () => {
                     className={`cursor-pointer ${
                       page === pageNumber
                         ? "font-semibold text-sm text-green-700"
-                        : "font-normal text-xs text-green-700"
+                        : "font-normal text-sm text-green-700"
                     }`}
                     onClick={() => setPage(pageNumber)}
                   >

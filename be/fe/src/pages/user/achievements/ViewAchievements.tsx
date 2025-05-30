@@ -51,7 +51,7 @@ const ViewAchievements = () => {
                 className="cursor-pointer"
                 onClick={() => navigate("/user/transparency/achievements")}
               />
-              <p className="text-sm font-semibold text-green-700">
+              <p className="text-lg font-semibold text-green-700">
                 Accomplishments and Achievements
               </p>
             </div>
@@ -69,12 +69,12 @@ const ViewAchievements = () => {
             ></div>
             {/* title */}
             <div className="w-full flex flex-col items-start justify-center gap-2">
-              <p className="text-sm font-semibold text-green-700">
+              <p className="text-lg font-semibold text-green-700">
                 {data.title}
               </p>
               <div className="w-full flex flex-row items-center justify-start gap-2 text-green-700">
                 <RiCalendarLine size={16} />
-                <p className="text-xs font-normal">
+                <p className="text-sm font-normal">
                   {new Date(data.date).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
@@ -84,7 +84,7 @@ const ViewAchievements = () => {
               </div>
             </div>
             <div className="w-full flex items-center justify-start">
-              <pre className="text-xs font-normal whitespace-pre-wrap break-words font-sans">
+              <pre className="text-lg font-normal whitespace-pre-wrap break-words font-sans">
                 {data.contents}
               </pre>
             </div>
@@ -92,7 +92,7 @@ const ViewAchievements = () => {
           {/* * MORE ACHIEVEMENTS */}
           <div className="w-full lg:w-1/4 flex flex-col items-center justify-center gap-4">
             {/* header */}
-            <div className="w-full flex items-center justify-start bg-green-700 p-3 text-sm font-normal text-white rounded-xl">
+            <div className="w-full flex items-center justify-start bg-green-700 p-3 text-lg font-normal text-white rounded-xl">
               More Accomplishments
             </div>
             {/* news */}
@@ -102,15 +102,16 @@ const ViewAchievements = () => {
                     className={`w-full flex flex-col items-start justify-center p-3 gap-2 cursor-pointer border-b border-black/5 rounded-xl ${
                       data._id === achievement._id ? "bg-green-700/60" : ""
                     }`}
-                    onClick={() =>
-                      navigate("/user/transparency/achievements/view", {
-                        state: achievement._id,
-                      })
+                    onClick={
+                      () => setData(achievement)
+                      // navigate("/user/transparency/achievements/view", {
+                      //   state: achievement._id,
+                      // })
                     }
                     key={achievement._id}
                   >
                     <p
-                      className={`text-xs font-semibold line-clamp-1 text-green-700 ${
+                      className={`text-lg font-semibold line-clamp-1 text-green-700 ${
                         data._id === achievement._id
                           ? "text-white"
                           : "text-green-700"
@@ -126,7 +127,7 @@ const ViewAchievements = () => {
                       }`}
                     >
                       <RiCalendarLine size={16} />
-                      <p className="text-xs font-normal ">
+                      <p className="text-sm font-normal ">
                         {new Date(achievement.date).toLocaleDateString(
                           "en-US",
                           {
@@ -155,7 +156,7 @@ const ViewAchievements = () => {
                     className={`cursor-pointer ${
                       page === pageNumber
                         ? "font-semibold text-sm text-green-700"
-                        : "font-normal text-xs text-green-700"
+                        : "font-normal text-sm text-green-700"
                     }`}
                     onClick={() => setPage(pageNumber)}
                   >

@@ -67,7 +67,7 @@ const ViewNews = () => {
             <p className="text-sm font-semibold text-green-700">{data.title}</p>
             <div className="w-full flex flex-row items-center justify-start gap-2 text-green-700">
               <RiCalendarLine size={16} />
-              <p className="text-xs font-normal">
+              <p className="text-sm font-normal">
                 {new Date(data.date).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
@@ -77,7 +77,7 @@ const ViewNews = () => {
             </div>
           </div>
           <div className="w-full flex items-center justify-start">
-            <pre className="text-xs font-normal whitespace-pre-wrap break-words font-sans">
+            <pre className="text-sm font-normal whitespace-pre-wrap break-words font-sans">
               {data.contents}
             </pre>
           </div>

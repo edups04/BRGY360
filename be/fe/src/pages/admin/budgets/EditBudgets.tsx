@@ -198,9 +198,9 @@ const EditBudgets = () => {
           {/* text */}
           <div className="w-full flex flex-col items-center justify-center gap-4">
             <div className="w-full flex flex-col items-start justify-center gap-2">
-              <p className="text-xs font-normal">Year</p>
+              <p className="text-sm font-normal">Year</p>
               <select
-                className="w-full p-3 rounded-xl outline-none border border-green-700 text-xs font-normal"
+                className="w-full p-3 rounded-xl outline-none border border-green-700 text-sm font-normal"
                 onChange={(e) => {
                   setBudgetYear(e.target.value);
                   console.log(e.target.value);
@@ -220,11 +220,11 @@ const EditBudgets = () => {
             </div>
             {/* title */}
             <div className="w-full flex flex-col items-start justify-center gap-2">
-              <p className="text-xs font-normal">Title</p>
+              <p className="text-sm font-normal">Title</p>
               <input
                 type="text"
                 placeholder="header or title"
-                className="outline-none text-xs font-normal capitalize p-3 border border-green-700 rounded-xl w-full"
+                className="outline-none text-sm font-normal capitalize p-3 border border-green-700 rounded-xl w-full"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
@@ -233,7 +233,7 @@ const EditBudgets = () => {
           {/* button */}
           <div className="w-full flex flex-row items-center justify-end">
             <div
-              className="p-3 rounded-xl bg-green-700 text-white text-xs font-normal cursor-pointer"
+              className="p-3 rounded-xl bg-green-700 text-white text-sm font-normal cursor-pointer"
               onClick={() => showPostModal(true)}
             >
               Post Budget

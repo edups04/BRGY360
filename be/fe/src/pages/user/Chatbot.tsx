@@ -95,7 +95,7 @@ const Chatbot = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="fixed bottom-20 lg:bottom-2 left-2 lg:left-[100px] bg-green-700 rounded-xl w-[300px] lg:w-[600px] z-20 shadow-xl shadow-black/10 overflow-hidden">
       <div className="w-full flex flex-row items-center justify-between p-6">
-        <p className="text-xs font-normal text-white">BRGY 360 Messages</p>
+        <p className="text-sm font-normal text-white">BRGY 360 Messages</p>
         <RiCloseLine
           size={16}
           color="white"
@@ -113,7 +113,7 @@ const Chatbot = ({ onClose }: { onClose: () => void }) => {
                 : "bg-green-700 self-start text-left text-white"
             }`}
           >
-            <p className="text-xs font-normal">{chat.message}</p>
+            <p className="text-sm font-normal">{chat.message}</p>
           </div>
         ))}
         <div ref={chatEndRef} />
@@ -121,7 +121,7 @@ const Chatbot = ({ onClose }: { onClose: () => void }) => {
       <div className="w-full flex flex-row items-center justify-between gap-4 p-6 bg-white">
         <input
           type="text"
-          className="text-xs font-normal outline-none border border-green-700 p-3 rounded-xl w-full"
+          className="text-sm font-normal outline-none border border-green-700 p-3 rounded-xl w-full"
           placeholder="message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}

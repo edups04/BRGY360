@@ -150,7 +150,7 @@ const Dashboard = () => {
             <div className="w-full lg:w-1/3 flex flex-col items-center justify-center bg-gray-200 p-6 rounded-2xl gap-12">
               <div className="w-full flex flex-row items-center justify-start gap-2">
                 <RiUser4Line size={24} color="black" />
-                <p className="text-xs font-normal">Total Users</p>
+                <p className="text-sm font-normal">Total Users</p>
               </div>
               <div className="w-full flex items-center justify-start">
                 <p className="text-xl font-semibold text-green-700">{users}</p>
@@ -159,7 +159,7 @@ const Dashboard = () => {
             <div className="w-full lg:w-1/3 flex flex-col items-center justify-center bg-gray-200 p-6 rounded-2xl gap-12">
               <div className="w-full flex flex-row items-center justify-start gap-2">
                 <RiFilePdf2Line size={24} color="black" />
-                <p className="text-xs font-normal">Pending Requests</p>
+                <p className="text-sm font-normal">Pending Requests</p>
               </div>
               <div className="w-full flex items-center justify-start">
                 <p className="text-xl font-semibold text-green-700">
@@ -170,7 +170,7 @@ const Dashboard = () => {
             <div className="w-full lg:w-1/3 flex flex-col items-center justify-center bg-gray-200 p-6 rounded-2xl gap-12">
               <div className="w-full flex flex-row items-center justify-start gap-2">
                 <RiFilePdf2Line size={24} color="black" />
-                <p className="text-xs font-normal">Completed Documents</p>
+                <p className="text-sm font-normal">Completed Documents</p>
               </div>
               <div className="w-full flex items-center justify-start">
                 <p className="text-xl font-semibold text-green-700">
@@ -184,7 +184,7 @@ const Dashboard = () => {
             {/* news */}
             <div className="w-full lg:w-1/3 flex flex-col items-center justify-start p-6 rounded-2xl bg-gray-200 gap-6">
               <div className="w-full flex items-center justify-start">
-                <p className="text-xs font-normal">Recent News</p>
+                <p className="text-sm font-normal">Recent News</p>
               </div>
               {recentNews.length > 0 ? (
                 recentNews.map((news: any) => (
@@ -195,10 +195,10 @@ const Dashboard = () => {
                       navigate("/admin/news/edit", { state: news._id })
                     }
                   >
-                    <p className="text-xs font-normal">{news.title}</p>
+                    <p className="text-sm font-normal">{news.title}</p>
                     <div className="w-full flex flex-row items-center justify-start gap-2">
                       <RiCalendarLine size={16} color="black" />
-                      <p className="text-xs font-normal">
+                      <p className="text-sm font-normal">
                         {new Date(news.date).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "long",
@@ -212,7 +212,7 @@ const Dashboard = () => {
                 <div className="w-full flex flex-row items-center justify-center h-[20vh]">
                   <div className="flex flex-col items-center justify-center text-green-700 gap-4">
                     <RiEmotionUnhappyLine size={46} />
-                    <p className="text-xs font-semibold">Nothing to show</p>
+                    <p className="text-sm font-semibold">Nothing to show</p>
                   </div>
                 </div>
               )}
@@ -220,7 +220,7 @@ const Dashboard = () => {
             {/* updates */}
             <div className="w-full lg:w-1/3 flex flex-col items-center justify-start p-6 rounded-2xl bg-gray-200 gap-6">
               <div className="w-full flex items-center justify-start">
-                <p className="text-xs font-normal">Recent Updates</p>
+                <p className="text-sm font-normal">Recent Updates</p>
               </div>
               {recentUpdates.length > 0 ? (
                 recentUpdates.map((updates: any) => (
@@ -233,10 +233,10 @@ const Dashboard = () => {
                       })
                     }
                   >
-                    <p className="text-xs font-normal">{updates.title}</p>
+                    <p className="text-sm font-normal">{updates.title}</p>
                     <div className="w-full flex flex-row items-center justify-start gap-2">
                       <RiCalendarLine size={16} color="black" />
-                      <p className="text-xs font-normal">
+                      <p className="text-sm font-normal">
                         {new Date(updates.date).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "long",
@@ -250,7 +250,7 @@ const Dashboard = () => {
                 <div className="w-full flex flex-row items-center justify-center h-[20vh]">
                   <div className="flex flex-col items-center justify-center text-green-700 gap-4">
                     <RiEmotionUnhappyLine size={46} />
-                    <p className="text-xs font-semibold">Nothing to show</p>
+                    <p className="text-sm font-semibold">Nothing to show</p>
                   </div>
                 </div>
               )}
@@ -263,14 +263,14 @@ const Dashboard = () => {
           {/* quick buttons */}
           <div className="w-full flex flex-row items-center justify-start gap-4">
             <button
-              className="flex flex-row gap-2 items-center justify-centers p-3 rounded-xl bg-green-700 text-xs font-normal text-white"
+              className="flex flex-row gap-2 items-center justify-centers p-3 rounded-xl bg-green-700 text-sm font-normal text-white"
               onClick={() => navigate("/admin/news/add")}
             >
               <RiAddLine size={24} />
               <p>Add News/Announcements</p>
             </button>
             <button
-              className="flex flex-row gap-2 items-center justify-centers p-3 rounded-xl bg-green-700 text-xs font-normal text-white"
+              className="flex flex-row gap-2 items-center justify-centers p-3 rounded-xl bg-green-700 text-sm font-normal text-white"
               onClick={() => navigate("/admin/transparency/updates/add")}
             >
               <RiUploadCloud2Line size={24} />
@@ -284,7 +284,7 @@ const Dashboard = () => {
               <p className="text-sm font-semibold">
                 Document Distribution Overview
               </p>
-              <p className="text-xs font-normal">
+              <p className="text-sm font-normal">
                 overview of requested barangay documents
               </p>
             </div>
@@ -308,7 +308,7 @@ const Dashboard = () => {
                 <div className="w-full flex flex-col items-start justify-center gap-6 p-6 rounded-xl bg-gray-200">
                   <div className="w-full flex flex-row items-center justify-start gap-2">
                     <RiFilePdf2Line size={24} />
-                    <p className="text-xs font-normal">Barangay Clearance</p>
+                    <p className="text-sm font-normal">Barangay Clearance</p>
                   </div>
                   <p className="text-md font-semibold text-green-700">
                     {clearanceCount}
@@ -318,7 +318,7 @@ const Dashboard = () => {
                 <div className="w-full flex flex-col items-start justify-center gap-6 p-6 rounded-xl bg-gray-200">
                   <div className="w-full flex flex-row items-center justify-start gap-2">
                     <RiFilePdf2Line size={24} />
-                    <p className="text-xs font-normal">Barangay Indigency</p>
+                    <p className="text-sm font-normal">Barangay Indigency</p>
                   </div>
                   <p className="text-md font-semibold text-green-700">
                     {indigencyCount}
@@ -328,7 +328,7 @@ const Dashboard = () => {
                 <div className="w-full flex flex-col items-start justify-center gap-6 p-6 rounded-xl bg-gray-200">
                   <div className="w-full flex flex-row items-center justify-start gap-2">
                     <RiFilePdf2Line size={24} />
-                    <p className="text-xs font-normal">
+                    <p className="text-sm font-normal">
                       Certificate of Residency
                     </p>
                   </div>
@@ -340,7 +340,7 @@ const Dashboard = () => {
                 <div className="w-full flex flex-col items-start justify-center gap-6 p-6 rounded-xl bg-gray-200">
                   <div className="w-full flex flex-row items-center justify-start gap-2">
                     <RiFilePdf2Line size={24} />
-                    <p className="text-xs font-normal">First Time Job Seeker</p>
+                    <p className="text-sm font-normal">First Time Job Seeker</p>
                   </div>
                   <p className="text-md font-semibold text-green-700">
                     {jobseekerCount}

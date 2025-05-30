@@ -68,13 +68,13 @@ const Achievements = () => {
                       <p className="w-full truncate text-sm font-semibold">
                         {recentAchievement.title}
                       </p>
-                      <p className="line-clamp-3 text-xs font-normal">
+                      <p className="line-clamp-3 text-sm font-normal">
                         {recentAchievement.contents}
                       </p>
 
                       <div className="w-full flex flex-row items-center justify-start pt-4 gap-2">
                         <RiCalendarLine size={16} />
-                        <p className="text-xs font-normal">
+                        <p className="text-sm font-normal">
                           {new Date(recentAchievement.date).toLocaleDateString(
                             "en-US",
                             {
@@ -92,7 +92,7 @@ const Achievements = () => {
                 <div className="w-full flex flex-row items-center justify-center h-[80vh]">
                   <div className="flex flex-col items-center justify-center text-green-700 gap-4">
                     <RiEmotionUnhappyLine size={46} />
-                    <p className="text-xs font-semibold">
+                    <p className="text-lg font-semibold">
                       No Accomplishment and Achievements Found
                     </p>
                   </div>
@@ -103,7 +103,7 @@ const Achievements = () => {
           {/* * MORE ACHIEVEMENTS */}
           <div className="w-full lg:w-1/4 flex flex-col items-center justify-center gap-4">
             {/* header */}
-            <div className="w-full flex items-center justify-start bg-green-700 p-3 text-sm font-normal text-white rounded-xl">
+            <div className="w-full flex items-center justify-start bg-green-700 p-3 text-lg font-normal text-white rounded-xl">
               More Accomplishments
             </div>
             {/* news */}
@@ -118,12 +118,12 @@ const Achievements = () => {
                     }
                     key={achievement._id}
                   >
-                    <p className="text-xs font-semibold line-clamp-1 text-green-700">
+                    <p className="text-lg font-semibold line-clamp-1 text-green-700">
                       {achievement.title}
                     </p>
                     <div className="w-full flex flex-row items-center justify-start text-green-700 gap-1">
                       <RiCalendarLine size={16} />
-                      <p className="text-xs font-normal ">
+                      <p className="text-sm font-normal ">
                         {new Date(achievement.date).toLocaleDateString(
                           "en-US",
                           {
@@ -152,7 +152,7 @@ const Achievements = () => {
                     className={`cursor-pointer ${
                       page === pageNumber
                         ? "font-semibold text-sm text-green-700"
-                        : "font-normal text-xs text-green-700"
+                        : "font-normal text-sm text-green-700"
                     }`}
                     onClick={() => setPage(pageNumber)}
                   >

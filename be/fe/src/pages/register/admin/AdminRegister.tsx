@@ -36,6 +36,11 @@ const AdminRegister = () => {
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
 
+  // * EMAIL VERIFICATION
+  const [showCodeModal, setShowCodeModal] = useState(false);
+  const [confirmationCode, setConfirmationCode] = useState("");
+  const [backendConfirmationCode, setBackendConfirmationCode] = useState("");
+
   useEffect(() => {
     getBarangays();
   }, []);
@@ -49,6 +54,13 @@ const AdminRegister = () => {
   }, [birthDate]);
 
   const registerAdmin = async () => {
+    if (backendConfirmationCode !== confirmationCode) {
+      setShowModal(true);
+      setMessage("Incorrect Code!");
+      setError(true);
+      return;
+    }
+
     if (password === rePassword) {
       try {
         let url = `${BACKEND_API}/users`;
@@ -82,6 +94,10 @@ const AdminRegister = () => {
           setError(false);
           setMessage(response.data.message);
           setShowModal(true);
+
+          setTimeout(() => {
+            navigate("/");
+          }, 1500);
         }
       } catch (error: any) {
         setMessage(error.response.data.message);
@@ -94,6 +110,60 @@ const AdminRegister = () => {
         "Passwords need to match in order to continue, please try again"
       );
       setError(true);
+    }
+  };
+
+  const sendConfirmationCode = async () => {
+    try {
+      if (password === rePassword) {
+        let url = `${BACKEND_API}/users/verify-email`;
+
+        const formData = new FormData();
+        formData.append("firstName", firstName);
+        formData.append("middleName", middleName);
+        formData.append("lastName", lastName);
+        formData.append("sex", sex);
+        formData.append("birthdate", birthDate);
+        formData.append("age", age);
+        formData.append("email", email);
+        formData.append("phoneNumber", mobileNumber);
+        formData.append("password", password);
+        formData.append("address", street);
+        formData.append("type", idType);
+        formData.append("role", position);
+        formData.append("barangayId", barangay);
+
+        const response = await axios.post(url, formData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.data.success === true) {
+          setError(false);
+          setMessage(response.data.message);
+          setShowModal(true);
+          setBackendConfirmationCode(response.data.data);
+
+          setTimeout(() => {
+            setShowCodeModal(true);
+          }, 1500);
+        }
+      } else {
+        setShowModal(true);
+        setMessage(
+          "Passwords need to match in order to continue, please try again"
+        );
+        setError(true);
+      }
+    } catch (error: any) {
+      if (error.response.data.error === "No recipients defined") {
+        setMessage("Invalid email!");
+      } else {
+        setMessage(error.response.data.message);
+      }
+      setError(true);
+      setShowModal(true);
     }
   };
 
@@ -162,30 +232,30 @@ const AdminRegister = () => {
             {/* name */}
             <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
               <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">First Name</p>
+                <p className="text-sm font-normal">First Name</p>
                 <input
                   type="text"
-                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                   placeholder="enter first name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
               </div>
               <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Middle Name</p>
+                <p className="text-sm font-normal">Middle Name</p>
                 <input
                   type="text"
-                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                   placeholder="enter middle name"
                   value={middleName}
                   onChange={(e) => setMiddleName(e.target.value)}
                 />
               </div>
               <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Last Name</p>
+                <p className="text-sm font-normal">Last Name</p>
                 <input
                   type="text"
-                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                   placeholder="enter last name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
@@ -195,10 +265,10 @@ const AdminRegister = () => {
             {/* mobile, email */}
             <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
               <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Mobile Number</p>
+                <p className="text-sm font-normal">Mobile Number</p>
                 <input
                   type="text"
-                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                   placeholder="enter mobile number"
                   value={mobileNumber}
                   onChange={(e) => {
@@ -208,10 +278,10 @@ const AdminRegister = () => {
                 />
               </div>
               <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Email</p>
+                <p className="text-sm font-normal">Email</p>
                 <input
                   type="text"
-                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                   placeholder="enter email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -221,11 +291,11 @@ const AdminRegister = () => {
             {/* address */}
             <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
               <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Barangay</p>
+                <p className="text-sm font-normal">Barangay</p>
                 <select
                   value={barangay}
                   onChange={(e) => setBarangay(e.target.value)}
-                  className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-xs font-normal"
+                  className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-sm font-normal"
                 >
                   <option value="" disabled>
                     Select an option
@@ -239,10 +309,10 @@ const AdminRegister = () => {
                 </select>
               </div>
               <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Street No.</p>
+                <p className="text-sm font-normal">Street No.</p>
                 <input
                   type="text"
-                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                   placeholder="enter street number"
                   value={street}
                   onChange={(e) => setStreet(e.target.value)}
@@ -252,19 +322,19 @@ const AdminRegister = () => {
             {/* birthday, age, sex */}
             <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
               <div className="w-full lg:w-2/4 flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Birthday</p>
+                <p className="text-sm font-normal">Birthday</p>
                 <input
                   type="date"
-                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                   value={birthDate}
                   onChange={(e) => setBirthDate(e.target.value)}
                 />
               </div>
               <div className="w-full lg:w-1/4 flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Age</p>
+                <p className="text-sm font-normal">Age</p>
                 <input
                   type="text"
-                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-xs font-normal w-full"
+                  className="outline-none border border-[#008A3D] p-3 rounded-xl text-sm font-normal w-full"
                   placeholder="enter age"
                   value={age}
                   disabled
@@ -275,11 +345,11 @@ const AdminRegister = () => {
                 />
               </div>
               <div className="w-full lg:w-1/4 flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Sex</p>
+                <p className="text-sm font-normal">Sex</p>
                 <select
                   value={sex}
                   onChange={(e) => setSex(e.target.value)}
-                  className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-xs font-normal"
+                  className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-sm font-normal"
                 >
                   <option value="" disabled>
                     Select an option
@@ -292,11 +362,11 @@ const AdminRegister = () => {
             {/* passwords */}
             <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
               <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Password</p>
+                <p className="text-sm font-normal">Password</p>
                 <div className="w-full flex flex-row relative items-center">
                   <input
                     type={showPassword ? "text" : "password"}
-                    className="text-xs font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
+                    className="text-sm font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="enter your password"
@@ -319,11 +389,11 @@ const AdminRegister = () => {
                 </div>
               </div>
               <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Confirm Password</p>
+                <p className="text-sm font-normal">Confirm Password</p>
                 <div className="w-full flex flex-row relative items-center">
                   <input
                     type={showRePassword ? "text" : "password"}
-                    className="text-xs font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
+                    className="text-sm font-normal outline-none border border-[#008A3D] p-3 w-full rounded-xl bg-white"
                     value={rePassword}
                     onChange={(e) => setRePassword(e.target.value)}
                     placeholder="re-enter your password"
@@ -349,11 +419,11 @@ const AdminRegister = () => {
             {/* role */}
             <div className="w-full flex flex-col lg:flex-row items-center justify-start gap-4">
               <div className="w-full lg:w-1/2 flex flex-col items-start justify-center gap-2">
-                <p className="text-xs font-normal">Barangay Position</p>
+                <p className="text-sm font-normal">Barangay Position</p>
                 <select
                   value={position}
                   onChange={(e) => setPosition(e.target.value)}
-                  className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-xs font-normal"
+                  className="w-full p-3 rounded-xl outline-none border border-[#008A3D] text-sm font-normal"
                 >
                   <option value="" disabled>
                     Select an option
@@ -367,11 +437,11 @@ const AdminRegister = () => {
           <div className="w-full flex flex-col items-center justify-center gap-4">
             {/* id type */}
             <div className="w-full flex flex-col items-start justify-center gap-2">
-              <p className="text-xs font-normal">Choose Valid ID</p>
+              <p className="text-sm font-normal">Choose Valid ID</p>
               <select
                 value={idType}
                 onChange={(e) => setIdType(e.target.value)}
-                className="text-xs font-normal outline-none border border-[#008A3D] p-3 rounded-xl"
+                className="text-sm font-normal outline-none border border-[#008A3D] p-3 rounded-xl"
               >
                 <option value="" disabled>
                   Select ID
@@ -406,7 +476,7 @@ const AdminRegister = () => {
                     disabled={idType ? false : true}
                   />
                 </label>
-                <p className="text-xs font-normal">Front</p>
+                <p className="text-sm font-normal">Front</p>
               </div>
               <div
                 className="w-full lg:w-1/2 bg-black/10 h-[220px] rounded-xl gap-2 flex flex-col items-center justify-center"
@@ -428,38 +498,85 @@ const AdminRegister = () => {
                     disabled={idType ? false : true}
                   />
                 </label>
-                <p className="text-xs font-normal">Back</p>
+                <p className="text-sm font-normal">Back</p>
               </div>
             </div>
           </div>
           {/* buttons */}
           <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4">
             <div
-              className="w-full lg:w-1/2 flex items-center justify-center truncate bg-black/10 p-3 rounded-xl text-xs font-normal cursor-pointer"
+              className="w-full lg:w-1/2 flex items-center justify-center truncate bg-black/10 p-3 rounded-xl text-sm font-normal cursor-pointer"
               onClick={() => navigate("/")}
             >
               Cancel
             </div>
             <div
-              className="w-full lg:w-1/2 flex items-center justify-center truncate bg-black p-3 rounded-xl text-xs font-normal text-white cursor-pointer"
-              onClick={registerAdmin}
+              className="w-full lg:w-1/2 flex items-center justify-center truncate bg-black p-3 rounded-xl text-sm font-normal text-white cursor-pointer"
+              onClick={sendConfirmationCode}
             >
               Create Account
             </div>
           </div>
         </div>
       </div>
+
       {showModal && (
         <Modal
           message={message}
           error={error}
           onClose={() => {
             setShowModal(false);
-            if (!error) {
-              navigate("/");
-            }
           }}
         />
+      )}
+
+      {/* * CONFIRMATION CODE HERE */}
+      {showCodeModal && (
+        <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/40 px-4">
+          <div className="bg-white w-full max-w-md p-6 rounded-2xl shadow-lg flex flex-col gap-6">
+            {/* Header */}
+            <div className="flex flex-row items-center justify-start gap-2">
+              <img src={Logo} width={32} alt="logo" />
+              <p className="text-[#008A3D] font-bold text-lg">
+                Enter Confirmation Code
+              </p>
+            </div>
+
+            {/* Instructions */}
+            <p className="text-sm text-gray-600">
+              Please enter the 6-digit confirmation code sent to your email or
+              mobile number.
+            </p>
+
+            {/* Input */}
+            <input
+              type="text"
+              maxLength={6}
+              value={confirmationCode}
+              onChange={(e) =>
+                setConfirmationCode(e.target.value.replace(/\D/g, ""))
+              }
+              className="border border-[#008A3D] p-3 rounded-xl outline-none text-center tracking-widest text-lg font-bold text-[#008A3D]"
+              placeholder="______"
+            />
+
+            {/* Actions */}
+            <div className="flex flex-row justify-end gap-3">
+              <button
+                onClick={() => setShowCodeModal(false)}
+                className="text-sm font-semibold text-gray-500 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={registerAdmin}
+                className="bg-[#008A3D] text-white text-sm font-semibold px-5 py-2 rounded-xl hover:bg-[#006c30]"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

@@ -11,6 +11,7 @@ import {
   forgotPassword,
   resetPassword,
   verifyResetToken,
+  verifyEmailRegistered,
 } from "../controllers/userController.js";
 
 let userRoutes = express.Router();
@@ -29,6 +30,7 @@ const upload = multer({ storage });
 userRoutes.post("/forgot-password/", forgotPassword);
 userRoutes.post("/reset-password/", resetPassword);
 userRoutes.post("/verify-reset-token", verifyResetToken);
+userRoutes.post("/verify-email", verifyEmailRegistered);
 userRoutes.post("/login/", loginUser);
 userRoutes.post(
   "/",
@@ -78,7 +80,5 @@ userRoutes.get("/proxy/chatbot", async (req, res) => {
     res.status(500).send("Proxy failed: " + err.message);
   }
 });
-
-
 
 export { userRoutes };

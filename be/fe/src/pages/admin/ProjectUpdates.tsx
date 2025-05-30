@@ -100,7 +100,7 @@ const ProjectUpdates = () => {
           {/* header */}
           <div className="w-full flex flex-col items-start justify-center">
             <p className="text-sm font-semibold">Project Updates</p>
-            <p className="text-xs font-normal">
+            <p className="text-sm font-normal">
               post and manage project updates on your barangay
             </p>
           </div>
@@ -109,7 +109,7 @@ const ProjectUpdates = () => {
             <div className="w-3/4 lg:w-2/4 relative flex items-center justify-center">
               <input
                 type="text"
-                className="outline-none border border-green-700 text-xs font-normal w-full pl-10 pr-3 py-3 rounded-xl"
+                className="outline-none border border-green-700 text-sm font-normal w-full pl-10 pr-3 py-3 rounded-xl"
                 placeholder="search for project updates"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -121,7 +121,7 @@ const ProjectUpdates = () => {
               />
             </div>
             <div
-              className="flex items-center justify-center cursor-pointer text-xs font-normal text-white bg-green-700 p-3 rounded-xl"
+              className="flex items-center justify-center cursor-pointer text-sm font-normal text-white bg-green-700 p-3 rounded-xl"
               onClick={() => navigate("/admin/transparency/updates/add")}
             >
               Add New
@@ -129,7 +129,7 @@ const ProjectUpdates = () => {
           </div>
           {/* count */}
           <div className="w-full flex items-center justify-start">
-            <p className="text-xs font-normal">Count: {updates.length}</p>
+            <p className="text-sm font-normal">Count: {updates.length}</p>
           </div>
           {/* data */}
           <div className="w-full flex flex-col items-center justify-center gap-4">
@@ -158,7 +158,7 @@ const ProjectUpdates = () => {
                         </p>
                         <div className="w-full flex flex-row items-center justify-start gap-1">
                           <RiCalendarLine size={14} color="black" />
-                          <p className="text-xs font-normal">
+                          <p className="text-sm font-normal">
                             {new Date(update.date).toLocaleDateString("en-US", {
                               year: "numeric",
                               month: "long",
@@ -196,7 +196,7 @@ const ProjectUpdates = () => {
               <div className="w-full flex flex-row items-center justify-center h-[60vh]">
                 <div className="flex flex-col items-center justify-center text-green-700 gap-4">
                   <RiEmotionUnhappyLine size={46} />
-                  <p className="text-xs font-semibold">No Results Found</p>
+                  <p className="text-sm font-semibold">No Results Found</p>
                 </div>
               </div>
             )}
@@ -216,7 +216,7 @@ const ProjectUpdates = () => {
                   className={`cursor-pointer ${
                     page === pageNumber
                       ? "font-semibold text-sm text-green-700"
-                      : "font-normal text-xs text-green-700"
+                      : "font-normal text-sm text-green-700"
                   }`}
                   onClick={() => setPage(pageNumber)}
                 >
