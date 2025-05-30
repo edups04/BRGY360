@@ -68,7 +68,7 @@ const ViewAchievements = () => {
               }}
             ></div>
             {/* title */}
-            <div className="w-full flex flex-col items-start justify-center gap-2">
+            <div className="w-full flex flex-col items-start justify-center gap-2 bg-gray-50 p-2 rounded-lg">
               <p className="text-lg font-semibold text-green-700">
                 {data.title}
               </p>
@@ -83,7 +83,7 @@ const ViewAchievements = () => {
                 </p>
               </div>
             </div>
-            <div className="w-full flex items-center justify-start">
+            <div className="w-full flex items-center justify-start bg-gray-50 p-2 rounded-lg">
               <pre className="text-lg font-normal whitespace-pre-wrap break-words font-sans">
                 {data.contents}
               </pre>
